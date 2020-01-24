@@ -49,8 +49,8 @@ const NewsletterCard = ({ newsletter }) => {
     return (<>
         <div className='CardContainer'>
             <div className='CardImageContainer'>
-                <Label corner="right">
-                    <Icon name='thumbs up' onClick={handleLikeButtonClick} color={liked ? 'teal' : null}/>
+                <Label as='a' corner="right" onClick={handleLikeButtonClick}>
+                    <Icon style={{cursor: 'pointer'}} name='thumbs up' onClick={handleLikeButtonClick} color={liked ? 'teal' : null}/>
                 </Label>
                 {/*
                 <div className='CardLikeContainer'>
