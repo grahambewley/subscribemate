@@ -1,4 +1,4 @@
-import { Menu, Container, Icon, Input, Dropdown } from "semantic-ui-react";
+import { Menu, Container, Icon, Input, Image } from "semantic-ui-react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 
@@ -24,8 +24,11 @@ function Header({ user }) {
     <Menu attached stackable fluid id="menu" inverted color="teal">
       <Container>
         <Link href="/">
-          <Menu.Item header active={isActive("/")}>
-            SubscribeMate
+          <Menu.Item header>
+            <Image
+                size="small"
+                src="/static/logo_horizontal.png"
+              />
           </Menu.Item>
         </Link>
 

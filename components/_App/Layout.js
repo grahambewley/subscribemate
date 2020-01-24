@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import { Container } from 'semantic-ui-react';
 import Header from './Navigation';
+import Footer from './Footer';
 import HeadContent from './HeadContent';
 
 function Layout({ children }) {
@@ -14,13 +14,17 @@ function Layout({ children }) {
                     href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css"
                 />
                 
-                <title>SubscribeMate &mdash; The Freshest Newsletters, Podcasts, and Blogs</title>
+                <title>Feed Seek &mdash; The Freshest Newsletters, Podcasts, and Blogs</title>
                 
             </Head>
             <Header />
             <>
                 { children }
+                
             </>
+            {/*
+            <Footer />
+            */}
         </>
     )
 }

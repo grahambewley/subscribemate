@@ -84,8 +84,9 @@ const Hero = () => {
     <style jsx>{`
 
     .HeroContainer {
-      height: 30vh;
+      height: 35vh;
       margin-bottom: 1rem;
+      border-bottom: 1px solid #eee;
     }
     .HeroSlide {
       position: relative;
@@ -107,13 +108,14 @@ const Hero = () => {
       z-index: -1;
     }
     .HeroSlideInner {
+      height: 100%;
       width: 100%;
       display:flex;
       align-items: center;
     }
     .HeroSlideImageContainer {
-      height: 240px;
-      min-width: 320px;
+      height: 100%;
+      width: 360px;
       background-image: url('https://pbs.twimg.com/media/EJ-OiPSXkAArawg?format=jpg&name=4096x4096');
       background-size: cover;
       background-position: center;

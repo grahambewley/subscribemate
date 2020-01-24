@@ -1,5 +1,5 @@
-import Hero from '../components/Index/Hero';
-import HomeGrid from '../components/_App/HomeGrid';
+import HeroCarousel from '../components/Index/HeroCarousel';
+import HomeGrid from '../components/Index/HomeGrid';
 const Home = () => {
     const featured = [
         {
@@ -73,10 +73,28 @@ const Home = () => {
                 }
             ],
             categories: ['design'],
-            frequency: '1d',
+            frequency: '7w',
             imageUrl: 'https://i.imgur.com/xNI9f9h.png',
             description: `The 5 best design links, every day.`,
             actionUrl: 'https://sidebar.io/'
+        },
+        {
+            type: 'newsletter',
+            name: 'This Week in Web Design & Development',
+            twitter_username: '@css',
+            authors: [
+                {
+                    name: 'CSS Tricks',
+                    twitter_username: '@css',
+                    twitter_thumbnailUrl: 'https://pbs.twimg.com/profile_images/1080202898372362240/akqRGyta_400x400.jpg',
+                    twitter_profileUrl: 'https://twitter.com/css'
+                }
+            ],
+            categories: ['design', 'development'],
+            frequency: '1w',
+            imageUrl: 'https://css-tricks.com/wp-content/uploads/2014/03/css-tricks-star.png',
+            description: `Ever wonder to yourself: how do I stay up to date with all the new stuff in this fast-moving industry? We hope our newsletter is part of an answer to that for you.`,
+            actionUrl: 'https://css-tricks.com/newsletters'
         }
     ];
 
@@ -84,7 +102,7 @@ const Home = () => {
     const topBlogs = [];
 
     return (<>
-        <Hero featured={featured}></Hero>
+        <HeroCarousel featured={featured}></HeroCarousel>
         <HomeGrid
             topNewsletters={topNewsletters}
             topPodcasts={topPodcasts}
