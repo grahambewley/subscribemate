@@ -24,50 +24,50 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
         <div className='LayoutContainer'>
             
             <main>
-            <Label.Group>
-                <Label 
-                    as='a' 
-                    name='all'
-                    color={categories.length == 0 ? 'teal' : null}
-                    onClick={() => setCategories([])}>
-                All
-                </Label>
-                <Label 
-                    as='a'
-                    name='development'
-                    color={categories.includes('development') ? 'teal' : null}
-                    onClick={handleCategoryClick}>
-                Development
-                </Label>
-                <Label 
-                    as='a'
-                    name='design'
-                    color={categories.includes('design') ? 'teal' : null}
-                    onClick={handleCategoryClick}>
-                Design
-                </Label>
-                <Label 
-                    as='a'
-                    name='entrepreneurship'
-                    color={categories.includes('entrepreneurship') ? 'teal' : null}
-                    onClick={handleCategoryClick}>
-                Entrepreneurship
-                </Label>
-                <Label 
-                    as='a'
-                    name='technology'
-                    color={categories.includes('technology') ? 'teal' : null}
-                    onClick={handleCategoryClick}>
-                Technology
-                </Label>
-                <Label 
-                    as='a'
-                    name='personalFinance'
-                    color={categories.includes('personalFinance') ? 'teal' : null}
-                    onClick={handleCategoryClick}>
-                Personal Finance
-                </Label>
-            </Label.Group>
+                <Label.Group>
+                    <Label 
+                        as='a' 
+                        name='all'
+                        color={categories.length == 0 ? 'teal' : null}
+                        onClick={() => setCategories([])}>
+                    All
+                    </Label>
+                    <Label 
+                        as='a'
+                        name='development'
+                        color={categories.includes('development') ? 'teal' : null}
+                        onClick={handleCategoryClick}>
+                    Development
+                    </Label>
+                    <Label 
+                        as='a'
+                        name='design'
+                        color={categories.includes('design') ? 'teal' : null}
+                        onClick={handleCategoryClick}>
+                    Design
+                    </Label>
+                    <Label 
+                        as='a'
+                        name='entrepreneurship'
+                        color={categories.includes('entrepreneurship') ? 'teal' : null}
+                        onClick={handleCategoryClick}>
+                    Entrepreneurship
+                    </Label>
+                    <Label 
+                        as='a'
+                        name='technology'
+                        color={categories.includes('technology') ? 'teal' : null}
+                        onClick={handleCategoryClick}>
+                    Technology
+                    </Label>
+                    <Label 
+                        as='a'
+                        name='personalFinance'
+                        color={categories.includes('personalFinance') ? 'teal' : null}
+                        onClick={handleCategoryClick}>
+                    Personal Finance
+                    </Label>
+                </Label.Group>
                 <Menu 
                     size='small'
                     defaultActiveIndex={0}
@@ -103,7 +103,7 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                         {topNewsletters.map(newsletter => {
                             return (
 
-                                <Card key={newsletter.name} newsletter={newsletter} />
+                                <Card key={newsletter.title} entity={newsletter} />
                             );
                         })}
                         <Link href='/newsletters'><a className='MoreLink'>More Newsletters</a></Link>
@@ -111,10 +111,17 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                     
                     <div className='Column'>
                         <Link href='/podcasts'>
-                        <div className='ColumnHeader'>
-                            <h2>Podcasts</h2>
-                        </div>
+                            <div className='ColumnHeader'>
+                                <h2>Podcasts</h2>
+                            </div>
                         </Link>
+                        {topPodcasts.map(podcast => {
+                            return (
+
+                                <Card key={podcast.title} entity={podcast} />
+                            );
+                        })}
+                        <Link href='/podcasts'><a className='MoreLink'>More Podcasts</a></Link>
                     </div>
                     
                     
@@ -124,6 +131,12 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                             <h2>Blogs</h2>
                         </div>
                         </Link>
+                        {topBlogs.map(blog => {
+                            return (
+                                <Card key={blog.title} entity={blog} />
+                            );
+                        })}
+                        <Link href='/blogs'><a className='MoreLink'>More Blogs</a></Link>
                     </div>
                 </div>
             </main>

@@ -37,7 +37,6 @@ export default async (req, res) => {
             email,
             password: hash
         }).save();
-        console.log("New user is ", newUser);
         
         // Create token for new use -- using JWT - signed with expiration date and a piece of data
         // that corresponds to the user, plus secret grabbed from environment variable

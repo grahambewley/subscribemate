@@ -1,9 +1,10 @@
 import React from 'react';
+import Link from 'next/link';
 import { Label, Icon} from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
 
-const NewsletterCard = ({ newsletter }) => {
+const Card = ({ entity }) => {
     const [liked, setLiked] = React.useState(false);
 
     function handleLikeButtonClick() {
@@ -45,28 +46,35 @@ const NewsletterCard = ({ newsletter }) => {
         
     }
 
+    function getTwitterProfileUrl(username) {
+        return ("https://www.twitter.com/" + username);
+    }
+
     return (<>
         <div className='CardContainer'>
             <div className='CardImageContainer'>
+                <h4 style={{fontSize: '.8em', color: '#ccc', margin: '0', position: 'absolute', top: '5px', left: '5px'}}>ID: {entity.id}</h4>
                 <Label as='a' corner="right" onClick={handleLikeButtonClick}>
                     <Icon style={{cursor: 'pointer'}} name='thumbs up' onClick={handleLikeButtonClick} color={liked ? 'teal' : null}/>
                 </Label>
             </div>
             <div className='CardDetails'>
-                <h3 className='CardName'>{newsletter.name}</h3>
-                <p className='CardDescription'>{newsletter.description}</p>
+                
+                <h3 className='CardName'>{entity.title}</h3>
+                <p className='CardDescription'>{entity.description}</p>
                 <div className='CardFrequencyContainer'>
                     <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
-                    <span className='CardFrequency'>{getFrequencyText(newsletter.frequency)}</span>
+                    <span className='CardFrequency'>{getFrequencyText(entity.frequency)}</span>
                 </div>
             </div>
             <div className='CardAuthorContainer'>
-                { newsletter.authors.map((author) => {
+                { entity.authors.map((author) => {
                     return (
                         <div key={author.twitter_username} className='CardAuthor'>
-                            <img className='CardAuthorImage' src={author.twitter_thumbnailUrl} />
-                            <h4 className='CardAuthorName'>{author.name}</h4>
-                            <h4 className='CardAuthorTwitterUsername'>{author.twitter_username}</h4>
+                            <img className='CardAuthorImage' src={author.authorTwitterProfileImageUrl} />
+                            <h4 className='CardAuthorName'>{author.authorName}</h4>
+                            {/*<Link href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4 className='CardAuthorTwitterUsername'>@{author.authorTwitterUsername}</h4></Link>*/}
+                            <a className='CardAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4>@{author.authorTwitterUsername}</h4></a>
                         </div>
                     );
                 })}
@@ -98,7 +106,7 @@ const NewsletterCard = ({ newsletter }) => {
             position: relative;
             height: 120px;
             overflow: hidden;
-            background-image: url("${newsletter.imageUrl}");
+            background-image: url("${entity.imageUrl}");
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -175,13 +183,17 @@ const NewsletterCard = ({ newsletter }) => {
             margin: 0;
         }
         .CardAuthorTwitterUsername {
+            color: inherit;
             grid-column: 2 / span 1;
             grid-row: 2 / span 1;
             margin: 0;
             opacity: .75;
         }
+        .CardAuthorTwitterUsername:hover {
+            text-decoration: underline;
+        }
         `}</style>
     </>);
 }
 
-export default NewsletterCard;
+export default Card;

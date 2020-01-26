@@ -1,7 +1,9 @@
 import HeroCarousel from '../components/_App/HeroCarousel';
 import HomeGrid from '../components/Index/HomeGrid';
+import baseCraftUrl from '../utils/baseCraftUrl';
+import axios from 'axios';
 
-const Home = () => {
+const Home = ({ topNewsletters, topPodcasts, topBlogs }) => {
     const featured = [
         {
             type: 'newsletter',
@@ -42,78 +44,43 @@ const Home = () => {
         }
     ];
 
-    const topNewsletters = [
-        {
-            type: 'newsletter',
-            name: 'Indie Hackers',
-            twitter_username: '@indiehackers',
-            authors: [
-                {
-                    name: 'Courtland Allen',
-                    twitter_username: '@csallen',
-                    twitter_thumbnailUrl: 'https://pbs.twimg.com/profile_images/1086465027949776896/yJffWzR9_400x400.jpg',
-                    twitter_profileUrl: 'https://twitter.com/csallen?s=20'
-                }
-            ],
-            categories: ['entrepreneurship'],
-            frequency: '3w',
-            imageUrl: 'https://pbs.twimg.com/media/EJ-OiPSXkAArawg?format=jpg&name=4096x4096',
-            description: `We compile the top interviews, posts, and articles for the week in each issue, as determined by what the community is upvoting.`,
-            actionUrl: 'https://www.indiehackers.com/newsletters'
-        },
-        {
-            type: 'newsletter',
-            name: 'Sidebar',
-            twitter_username: '@SidebarIO',
-            authors: [
-                {
-                    name: 'Sacha Greif',
-                    twitter_username: '@sachagrief',
-                    twitter_thumbnailUrl: 'https://pbs.twimg.com/profile_images/2487116271/j8ehsrukq7v6bh6tswfc_400x400.png',
-                    twitter_profileUrl: 'https://twitter.com/SachaGreif?s=20'
-                }
-            ],
-            categories: ['design'],
-            frequency: '7w',
-            imageUrl: 'https://i.imgur.com/xNI9f9h.png',
-            description: `The 5 best design links, every day.`,
-            actionUrl: 'https://sidebar.io/'
-        },
-        {
-            type: 'newsletter',
-            name: 'This Week in Web Design & Development',
-            twitter_username: '@css',
-            authors: [
-                {
-                    name: 'CSS Tricks',
-                    twitter_username: '@css',
-                    twitter_thumbnailUrl: 'https://pbs.twimg.com/profile_images/1080202898372362240/akqRGyta_400x400.jpg',
-                    twitter_profileUrl: 'https://twitter.com/css'
-                }
-            ],
-            categories: ['design', 'development'],
-            frequency: '1w',
-            imageUrl: 'https://css-tricks.com/wp-content/uploads/2014/03/css-tricks-star.png',
-            description: `Ever wonder to yourself: how do I stay up to date with all the new stuff in this fast-moving industry? We hope our newsletter is part of an answer to that for you.`,
-            actionUrl: 'https://css-tricks.com/newsletters'
-        }
-    ];
-
-    const topPodcasts = [];
-    const topBlogs = [];
-
     return (<>
         <HeroCarousel featured={featured}></HeroCarousel>
+
         <HomeGrid
+            
             topNewsletters={topNewsletters}
             topPodcasts={topPodcasts}
-            topBlogs={topBlogs}    
+            topBlogs={topBlogs}
+               
         />
+
 
     </>);
 }
 
 // GET INITIAL PROPS
+Home.getInitialProps = async ctx => {
+    const newslettersUrl = `${baseCraftUrl}/newsletters.json`;
+    const newslettersResponse = await axios.get(newslettersUrl);
+    console.log(newslettersResponse.data); 
+
+    const podcastsUrl = `${baseCraftUrl}/podcasts.json`;
+    const podcastsResponse = await axios.get(podcastsUrl);
+    console.log(podcastsResponse.data); 
+
+    const blogsUrl = `${baseCraftUrl}/blogs.json`;
+    const blogsResponse = await axios.get(blogsUrl);
+    console.log(blogsResponse.data); 
+
+    return {
+        topNewsletters: newslettersResponse.data.newsletters,
+        topPodcasts: podcastsResponse.data.podcasts,
+        topBlogs: blogsResponse.data.blogs
+    }
+}
+    
+
 // Get featured
 // Get top newsletters, pods, etc.
 export default Home;
