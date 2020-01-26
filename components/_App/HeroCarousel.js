@@ -1,5 +1,5 @@
 import { Container, Segment, Label } from 'semantic-ui-react';
-import BigButton from '../_App/BigButton';
+import BigButton from './BigButton';
 
 const Hero = () => {
   const featured = [
@@ -85,7 +85,6 @@ const Hero = () => {
 
     .HeroContainer {
       height: 35vh;
-      margin-bottom: 1rem;
       border-bottom: 1px solid #eee;
     }
     .HeroSlide {

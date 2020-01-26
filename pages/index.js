@@ -1,5 +1,6 @@
-import HeroCarousel from '../components/Index/HeroCarousel';
+import HeroCarousel from '../components/_App/HeroCarousel';
 import HomeGrid from '../components/Index/HomeGrid';
+
 const Home = () => {
     const featured = [
         {

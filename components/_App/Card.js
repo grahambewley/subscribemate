@@ -1,8 +1,7 @@
 import React from 'react';
-import CategoryIcon from '../_App/CategoryIcon';
 import { Label, Icon} from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faThumbsUp, faCalendarDay} from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
 
 const NewsletterCard = ({ newsletter }) => {
     const [liked, setLiked] = React.useState(false);
@@ -52,15 +51,6 @@ const NewsletterCard = ({ newsletter }) => {
                 <Label as='a' corner="right" onClick={handleLikeButtonClick}>
                     <Icon style={{cursor: 'pointer'}} name='thumbs up' onClick={handleLikeButtonClick} color={liked ? 'teal' : null}/>
                 </Label>
-                {/*
-                <div className='CardLikeContainer'>
-                <span className="fa-layers fa-fw">
-                    <FontAwesomeIcon size='2x' onClick={handleLikeButtonClick} icon={faCircle} color='white'/>
-                    <FontAwesomeIcon size='2x' onClick={handleLikeButtonClick} icon={faThumbsUp} color={ liked ? '#00B5AD' : '#ccc'} transform='shrink-6' />
-                </span>
-                </div>
-                */}
-                {/*<CategoryIcon category={newsletter.categories[0]}/>*/}
             </div>
             <div className='CardDetails'>
                 <h3 className='CardName'>{newsletter.name}</h3>

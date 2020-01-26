@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Container, Menu, Label } from "semantic-ui-react";
-import NewsletterCard from '../Newsletters/NewsletterCard';
+import Card from '../_App/Card';
 
 const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
     const [categories, setCategories] = React.useState([]);
@@ -95,20 +95,35 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                 
                 <div className='ColumnContainer'>
                     <div className='Column'>
-                        <h2 className='ColumnHeader'>Newsletters</h2>
+                        <Link href='/newsletters'>
+                            <div className='ColumnHeader'>
+                                <h2>Newsletters</h2>
+                            </div>
+                        </Link>
                         {topNewsletters.map(newsletter => {
                             return (
 
-                                <NewsletterCard key={newsletter.name} newsletter={newsletter} />
+                                <Card key={newsletter.name} newsletter={newsletter} />
                             );
                         })}
                         <Link href='/newsletters'><a className='MoreLink'>More Newsletters</a></Link>
                     </div>
+                    
                     <div className='Column'>
-                        <h2 className='ColumnHeader'>Podcasts</h2>
+                        <Link href='/podcasts'>
+                        <div className='ColumnHeader'>
+                            <h2>Podcasts</h2>
+                        </div>
+                        </Link>
                     </div>
+                    
+                    
                     <div className='Column'>
-                        <h2 className='ColumnHeader'>Blogs</h2>
+                        <Link href='/blogs'>
+                        <div className='ColumnHeader'>
+                            <h2>Blogs</h2>
+                        </div>
+                        </Link>
                     </div>
                 </div>
             </main>
@@ -133,6 +148,7 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
                 }
                 .LayoutContainer {
+                    padding-top: 1rem;
                     display: grid;
                     grid-template-columns: 1fr 280px;
                     height: 100px;
@@ -146,11 +162,18 @@ const Grid = ({ topNewsletters, topPodcasts, topBlogs }) => {
                     height: 100px;
                 }
                 .ColumnHeader {
-                    font-weight: 400;
+                    cursor: pointer;
+                    background-color: #84CAE7;
+                    border-radius: 2px;
+                    padding: 2px 8px;
+                    margin-bottom: 10px;
+                }
+                .ColumnHeader h2 {
+                    color: white;
+                    font-size: 1.2rem;
+                    font-weight: 200;
                     letter-spacing: 2px;
-                    opacity: .6;
                     text-transform: uppercase;
-                    font-size: 1rem;
                 }
                 .MoreLink {
                     display: block;

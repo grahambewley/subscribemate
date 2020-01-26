@@ -20,7 +20,6 @@ function Layout({ children }) {
             <Header />
             <>
                 { children }
-                
             </>
             {/*
             <Footer />
