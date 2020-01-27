@@ -6,9 +6,12 @@ import baseUrl from '../../utils/baseUrl';
 import axios from 'axios';
 import cookie from 'js-cookie';
 
-const Card = ({ entity, user }) => {
-    const [liked, setLiked] = React.useState(false);
+const Card = ({ preliked, entity, user }) => {
+    const [liked, setLiked] = React.useState(preliked);
     const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
+
+    console.log("Entity is ", entity);
+    console.log("Liked? ", preliked);
 
     async function handleLikeButtonClick() {
         if(!user) {
@@ -25,7 +28,6 @@ const Card = ({ entity, user }) => {
                 // Sending user token along with this reqest to only allow authorized users to like stuff
                 const headers = { headers: { Authorization: token } };
                 const userLikeResponse = await axios.post(url, payload, headers);
-                console.log(userLikeResponse);
             } 
             else {
                 // Flip the thumbs up right away
@@ -39,9 +41,7 @@ const Card = ({ entity, user }) => {
                     headers: { Authorization: token } 
                 };
                 const userUnlikeResponse = await axios.delete(url, payload);
-                console.log(userUnlikeResponse);
             }
-
         }
     }
 

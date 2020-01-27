@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Container, Menu, Label } from "semantic-ui-react";
 import Card from '../_App/Card';
 
-const Grid = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
+const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
     const [categories, setCategories] = React.useState([]);
     const [activeItem, setActiveItem] = React.useState('fresh')
 
@@ -103,7 +103,7 @@ const Grid = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
                         {topNewsletters.map(newsletter => {
                             return (
 
-                                <Card user={user} key={newsletter.title} entity={newsletter} />
+                                <Card preliked={likes.includes(parseInt(newsletter.id))} user={user} key={newsletter.title} entity={newsletter} />
                             );
                         })}
                         <Link href='/newsletters'><a className='MoreLink'>More Newsletters</a></Link>
@@ -118,7 +118,7 @@ const Grid = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
                         {topPodcasts.map(podcast => {
                             return (
 
-                                <Card user={user} key={podcast.title} entity={podcast} />
+                                <Card preliked={likes.includes(parseInt(podcast.id))} user={user} key={podcast.title} entity={podcast} />
                             );
                         })}
                         <Link href='/podcasts'><a className='MoreLink'>More Podcasts</a></Link>
@@ -133,7 +133,7 @@ const Grid = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
                         </Link>
                         {topBlogs.map(blog => {
                             return (
-                                <Card user={user} key={blog.title} entity={blog} />
+                                <Card preliked={likes.includes(parseInt(blog.id))} user={user} key={blog.title} entity={blog} />
                             );
                         })}
                         <Link href='/blogs'><a className='MoreLink'>More Blogs</a></Link>

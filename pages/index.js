@@ -1,9 +1,12 @@
 import HeroCarousel from '../components/_App/HeroCarousel';
 import HomeGrid from '../components/Index/HomeGrid';
+import baseUrl from '../utils/baseUrl';
 import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
+import { parseCookies } from 'nookies';
 
-const Home = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
+
+const Home = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
     const featured = [
         {
             type: 'newsletter',
@@ -48,6 +51,7 @@ const Home = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
         <HeroCarousel featured={featured}></HeroCarousel>
 
         <HomeGrid
+            likes={likes}
             user={user}
             topNewsletters={topNewsletters}
             topPodcasts={topPodcasts}
@@ -61,19 +65,36 @@ const Home = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
 
 // GET INITIAL PROPS
 Home.getInitialProps = async ctx => {
+    // Get top newsletters to display
     const newslettersUrl = `${baseCraftUrl}/newsletters.json`;
     const newslettersResponse = await axios.get(newslettersUrl);
     console.log(newslettersResponse.data); 
 
+    // Get top podcasts to display
     const podcastsUrl = `${baseCraftUrl}/podcasts.json`;
     const podcastsResponse = await axios.get(podcastsUrl);
     console.log(podcastsResponse.data); 
 
+    // Get top blogs to display
     const blogsUrl = `${baseCraftUrl}/blogs.json`;
     const blogsResponse = await axios.get(blogsUrl);
     console.log(blogsResponse.data); 
 
+    // Get likes, to display appropriate thumbs-ups
+    
+    const { token } = parseCookies(ctx);
+    let likeArray;
+    if(token) {
+        const url = `${baseUrl}/api/like`;
+        const payload = { headers: { Authorization: token } };
+        const getLikesResponse = await axios.get(url, payload);
+        likeArray = getLikesResponse.data.map(like => {
+            return( like.entity );
+        });
+    }
+    
     return {
+        likes: likeArray,
         topNewsletters: newslettersResponse.data.newsletters,
         topPodcasts: podcastsResponse.data.podcasts,
         topBlogs: blogsResponse.data.blogs
