@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const { ObjectId, String, Date} = mongoose.Schema.Types;
+const { String } = mongoose.Schema.Types;
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -16,18 +16,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         select: false
-    },
-    likes: [
-        {
-            entity: {
-                type: ObjectId,
-                ref: "Entity"
-            },
-            timestamp: {
-                type: Date
-            }
-        }
-    ]
+    }
 }, {
     timestamps: true
 });

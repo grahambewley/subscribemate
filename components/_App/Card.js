@@ -1,14 +1,48 @@
 import React from 'react';
-import Link from 'next/link';
-import { Label, Icon} from 'semantic-ui-react';
+import { Label, Icon, Modal, Header, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
+import baseUrl from '../../utils/baseUrl';
+import axios from 'axios';
+import cookie from 'js-cookie';
 
-const Card = ({ entity }) => {
+const Card = ({ entity, user }) => {
     const [liked, setLiked] = React.useState(false);
+    const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
 
-    function handleLikeButtonClick() {
-        setLiked(!liked);
+    async function handleLikeButtonClick() {
+        if(!user) {
+            setLoginPromptOpen(true);
+        } 
+        else {
+            if(!liked) {
+                // Flip the thumbs up right away
+                setLiked(!liked);
+                // Add like to the likes collection
+                const url = `${baseUrl}/api/like`;
+                const payload = { entity };
+                const token = cookie.get('token');
+                // Sending user token along with this reqest to only allow authorized users to like stuff
+                const headers = { headers: { Authorization: token } };
+                const userLikeResponse = await axios.post(url, payload, headers);
+                console.log(userLikeResponse);
+            } 
+            else {
+                // Flip the thumbs up right away
+                setLiked(!liked)
+                // Remove like from likes collection
+                const url = `${baseUrl}/api/like`;
+                const token = cookie.get('token');
+                const entityId = entity.id;
+                const payload = { 
+                    params: { entityId },
+                    headers: { Authorization: token } 
+                };
+                const userUnlikeResponse = await axios.delete(url, payload);
+                console.log(userUnlikeResponse);
+            }
+
+        }
     }
 
     function getFrequencyText(shorthand) {
@@ -55,7 +89,7 @@ const Card = ({ entity }) => {
             <div className='CardImageContainer'>
                 <h4 style={{fontSize: '.8em', color: '#ccc', margin: '0', position: 'absolute', top: '5px', left: '5px'}}>ID: {entity.id}</h4>
                 <Label as='a' corner="right" onClick={handleLikeButtonClick}>
-                    <Icon style={{cursor: 'pointer'}} name='thumbs up' onClick={handleLikeButtonClick} color={liked ? 'teal' : null}/>
+                    <Icon style={{cursor: 'pointer'}} name='thumbs up' color={liked ? 'teal' : null}/>
                 </Label>
             </div>
             <div className='CardDetails'>
@@ -70,16 +104,31 @@ const Card = ({ entity }) => {
             <div className='CardAuthorContainer'>
                 { entity.authors.map((author) => {
                     return (
-                        <div key={author.twitter_username} className='CardAuthor'>
+                        <div key={author.authorTwitterUsername} className='CardAuthor'>
                             <img className='CardAuthorImage' src={author.authorTwitterProfileImageUrl} />
                             <h4 className='CardAuthorName'>{author.authorName}</h4>
-                            {/*<Link href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4 className='CardAuthorTwitterUsername'>@{author.authorTwitterUsername}</h4></Link>*/}
                             <a className='CardAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4>@{author.authorTwitterUsername}</h4></a>
                         </div>
                     );
                 })}
             </div>
         </div>
+        <Modal
+            open={loginPromptOpen}
+            onClose={() => setLoginPromptOpen(false)}
+            basic
+            size='small'
+        >
+            <Header icon='browser' content='Cookies policy' />
+            <Modal.Content>
+                <h3>You must be logged in to do that.</h3>
+            </Modal.Content>
+            <Modal.Actions>
+            <Button color='green' onClick={() => setLoginPromptOpen(false)} inverted>
+                <Icon name='checkmark'/> Got It
+            </Button>
+            </Modal.Actions>
+      </Modal>
         <style jsx>{`
         .CardContainer {
             border: 1px solid #eee;
@@ -169,6 +218,9 @@ const Card = ({ entity }) => {
             grid-template-columns: 36px 1fr;
             grid-template-rows: 1fr 1fr;
             grid-column-gap: 10px;
+        }
+        .CardAuthor:not(:last-child) {
+            margin-bottom: 8px;
         }
         .CardAuthorImage {
             grid-column: 1 / span 1;

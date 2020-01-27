@@ -3,7 +3,7 @@ import Header from './Navigation';
 import Footer from './Footer';
 import HeadContent from './HeadContent';
 
-function Layout({ children }) {
+function Layout({ user, children }) {
  
     return (
         <>
@@ -17,7 +17,7 @@ function Layout({ children }) {
                 <title>Feed Seek &mdash; The Freshest Newsletters, Podcasts, and Blogs</title>
                 
             </Head>
-            <Header />
+            <Header user={user}/>
             <>
                 { children }
             </>

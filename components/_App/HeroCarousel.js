@@ -42,7 +42,6 @@ const Hero = () => {
     }
   ]
 
-  console.log("Featured array: ", featured);
   const featuredPanes = featured.map((feature) => {
     return (
       <div className='FeatureContainer' style={{backgroundImage: `/static/patterns/${feature.backgroundPattern}.png`}}>

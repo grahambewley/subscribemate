@@ -3,7 +3,7 @@ import HomeGrid from '../components/Index/HomeGrid';
 import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
 
-const Home = ({ topNewsletters, topPodcasts, topBlogs }) => {
+const Home = ({ user, topNewsletters, topPodcasts, topBlogs }) => {
     const featured = [
         {
             type: 'newsletter',
@@ -48,7 +48,7 @@ const Home = ({ topNewsletters, topPodcasts, topBlogs }) => {
         <HeroCarousel featured={featured}></HeroCarousel>
 
         <HomeGrid
-            
+            user={user}
             topNewsletters={topNewsletters}
             topPodcasts={topPodcasts}
             topBlogs={topBlogs}

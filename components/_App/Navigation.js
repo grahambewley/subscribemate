@@ -1,10 +1,7 @@
 import { Menu, Container, Icon, Input, Image } from "semantic-ui-react";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
-
-Router.onRouteChangeStart = () => NProgress.start();
-Router.onRouteChangeComplete = () => NProgress.done();
-Router.onRouteChangeError = () => NProgress.done();
+import { handleLogout } from '../../utils/auth';
 
 function Header({ user }) {
   const router = useRouter();
@@ -59,6 +56,37 @@ function Header({ user }) {
             icon='search'
             placeholder='Search...'
           />
+          {user ? (
+          <>
+            <Link href="/account">
+              <Menu.Item header active={isActive("/account")}>
+                <Icon name="user" size="large" />
+                Account
+              </Menu.Item>
+            </Link>
+
+            <Menu.Item onClick={handleLogout} header>
+              <Icon name="sign out" size="large" />
+              Logout
+            </Menu.Item>
+          </>
+        ) : (
+          <>
+            <Link href="/login">
+              <Menu.Item header active={isActive("/login")}>
+                <Icon name="sign in" size="large" />
+                Login
+              </Menu.Item>
+            </Link>
+
+            <Link href="/signup">
+              <Menu.Item header active={isActive("/signup")}>
+                <Icon name="signup" size="large" />
+                Signup
+              </Menu.Item>
+            </Link>
+          </>
+        )}
         </Menu.Menu>
       </Container>
     </Menu>
