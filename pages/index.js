@@ -5,8 +5,12 @@ import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 
-
-const Home = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
+const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs }) => {
+    
+    const [newsletters, setNewsletters] = React.useState(initNewsletters);
+    const [podcasts, setPodcasts] = React.useState(initPodcasts);
+    const [blogs, setBlogs] = React.useState(initBlogs);
+    
     const featured = [
         {
             type: 'newsletter',
@@ -47,41 +51,68 @@ const Home = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
         }
     ];
 
+    function handleFilterChange(dateSpan, categories) {
+        console.log("Date span to use is", dateSpan);
+        console.log("Categories to filter on are", categories);
+    }
+
     return (<>
         <HeroCarousel featured={featured}></HeroCarousel>
 
         <HomeGrid
             likes={likes}
             user={user}
-            topNewsletters={topNewsletters}
-            topPodcasts={topPodcasts}
-            topBlogs={topBlogs}
-               
+            newsletters={newsletters}
+            podcasts={podcasts}
+            blogs={blogs}
+            handleFilterChange={handleFilterChange}
         />
-
-
     </>);
 }
 
 // GET INITIAL PROPS
 Home.getInitialProps = async ctx => {
-    // Get top newsletters to display
-    const newslettersUrl = `${baseCraftUrl}/newsletters.json`;
-    const newslettersResponse = await axios.get(newslettersUrl);
-    console.log(newslettersResponse.data); 
+    // Get top newsletters from 7 days to display
+    const topUrl = `${baseUrl}/api/top`;
+    const topNewslettersPayload = {
+        params: {
+            secId: 1,
+            days: 7
+        }
+    };
+    const topPodcastsPayload = {
+        params: {
+            secId: 2,
+            days: 7
+        }
+    };
+    const topBlogsPayload = {
+        params: {
+            secId: 3,
+            days: 7
+        }
+    };
+    // Get arrays of the top liked newsletters, podcasts, and blogs in the last 7 days
+    // e.g. ['230', '249', '206']
+    const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
+    const topPodcastsResponse = await axios.get(topUrl, topPodcastsPayload);
+    const topBlogsResponse = await axios.get(topUrl, topBlogsPayload);
 
-    // Get top podcasts to display
-    const podcastsUrl = `${baseCraftUrl}/podcasts.json`;
-    const podcastsResponse = await axios.get(podcastsUrl);
-    console.log(podcastsResponse.data); 
+    // Request the entries matching these IDs from CMS
 
-    // Get top blogs to display
-    const blogsUrl = `${baseCraftUrl}/blogs.json`;
-    const blogsResponse = await axios.get(blogsUrl);
-    console.log(blogsResponse.data); 
-
-    // Get likes, to display appropriate thumbs-ups
+    const newslettersByIdUrl = `${baseCraftUrl}/newsletters.json`;
+    const podcastsByIdUrl = `${baseCraftUrl}/podcasts.json`;
+    const blogsByIdUrl = `${baseCraftUrl}/blogs.json`;
     
+    const newslettersByIdPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data }) };
+    const podcastsByIdPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data }) };
+    const blogsByIdPayload = { params: new URLSearchParams({ id: topBlogsResponse.data }) };
+
+    const newslettersByIdResponse = await axios.get(newslettersByIdUrl, newslettersByIdPayload);
+    const podcastsByIdResponse = await axios.get(podcastsByIdUrl, podcastsByIdPayload);
+    const blogsByIdResponse = await axios.get(blogsByIdUrl, blogsByIdPayload);
+
+    // Get likes, to display appropriate thumbs-ups    
     const { token } = parseCookies(ctx);
     let likeArray;
     if(token) {
@@ -91,13 +122,15 @@ Home.getInitialProps = async ctx => {
         likeArray = getLikesResponse.data.map(like => {
             return( like.entity );
         });
+    } else {
+        likeArray = [];
     }
     
     return {
         likes: likeArray,
-        topNewsletters: newslettersResponse.data.newsletters,
-        topPodcasts: podcastsResponse.data.podcasts,
-        topBlogs: blogsResponse.data.blogs
+        initNewsletters: newslettersByIdResponse.data.newsletters,
+        initPodcasts: podcastsByIdResponse.data.podcasts,
+        initBlogs: blogsByIdResponse.data.blogs
     }
 }
     

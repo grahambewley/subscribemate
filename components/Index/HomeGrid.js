@@ -3,10 +3,24 @@ import Link from 'next/link';
 import { Container, Menu, Label } from "semantic-ui-react";
 import Card from '../_App/Card';
 
-const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
+const Grid = ({ likes, user, newsletters, podcasts, blogs, handleFilterChange }) => {
     const [categories, setCategories] = React.useState([]);
-    const [activeItem, setActiveItem] = React.useState('fresh')
+    const [dateSpan, setDateSpan] = React.useState('this week')
 
+    // Initializing didMount as false
+    const [didMount, setDidMount] = React.useState(false)
+    // Setting didMount to true upon mounting
+    React.useEffect(() => setDidMount(true), []);
+
+    React.useEffect(() => {
+        // checking for didMount keeps this from running on first render
+        if(didMount) {
+            console.log("Categories or active item changed");
+            // Send updated dateSpan and categories back to index.js for handling
+            handleFilterChange(dateSpan, categories);    
+        }
+    }, [categories, dateSpan])
+    
     function handleCategoryClick(e, { name }) {
         if(categories.includes(name)) {
             // If categories already includes this, remove it
@@ -76,19 +90,19 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                     color='teal'
                 >
                     <Menu.Item
-                        name='fresh'
-                        active={activeItem === 'fresh'}
-                        onClick={() => setActiveItem('fresh')}
-                    />
-                    <Menu.Item
                         name='this week'
-                        active={activeItem === 'this week'}
-                        onClick={() => setActiveItem('this week')}
+                        active={dateSpan === 'this week'}
+                        onClick={() => setDateSpan('this week')}
                     />
                     <Menu.Item
                         name='this month'
-                        active={activeItem === 'this month'}
-                        onClick={() => setActiveItem('this month')}
+                        active={dateSpan === 'this month'}
+                        onClick={() => setDateSpan('this month')}
+                    />
+                    <Menu.Item
+                        name='all time'
+                        active={dateSpan === 'all time'}
+                        onClick={() => setDateSpan('all time')}
                     />
                 </Menu>
 
@@ -100,7 +114,7 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                                 <h2>Newsletters</h2>
                             </div>
                         </Link>
-                        {topNewsletters.map(newsletter => {
+                        {newsletters.map(newsletter => {
                             return (
 
                                 <Card preliked={likes.includes(parseInt(newsletter.id))} user={user} key={newsletter.title} entity={newsletter} />
@@ -115,7 +129,7 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                                 <h2>Podcasts</h2>
                             </div>
                         </Link>
-                        {topPodcasts.map(podcast => {
+                        {podcasts.map(podcast => {
                             return (
 
                                 <Card preliked={likes.includes(parseInt(podcast.id))} user={user} key={podcast.title} entity={podcast} />
@@ -131,7 +145,7 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                             <h2>Blogs</h2>
                         </div>
                         </Link>
-                        {topBlogs.map(blog => {
+                        {blogs.map(blog => {
                             return (
                                 <Card preliked={likes.includes(parseInt(blog.id))} user={user} key={blog.title} entity={blog} />
                             );
@@ -140,7 +154,7 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                     </div>
                 </div>
             </main>
-
+            {/*
             <div className='SidebarWrapper'>
                 <aside className='Sidebar'>
                     <h3>Featured</h3>
@@ -151,7 +165,7 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                     </ul>
                 </aside>
             </div>
-
+            */}
             <style jsx>{`
                 body p,
                 body h1,
@@ -163,13 +177,13 @@ const Grid = ({ likes, user, topNewsletters, topPodcasts, topBlogs }) => {
                 .LayoutContainer {
                     padding-top: 1rem;
                     display: grid;
-                    grid-template-columns: 1fr 280px;
+                    grid-template-columns: 1fr;
                     height: 100px;
                 }
                 .ColumnContainer {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    grid-gap: 24px;
+                    grid-gap: 48px;
                 }
                 .Column {
                     height: 100px;

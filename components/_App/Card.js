@@ -10,9 +10,6 @@ const Card = ({ preliked, entity, user }) => {
     const [liked, setLiked] = React.useState(preliked);
     const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
 
-    console.log("Entity is ", entity);
-    console.log("Liked? ", preliked);
-
     async function handleLikeButtonClick() {
         if(!user) {
             setLoginPromptOpen(true);
@@ -116,15 +113,15 @@ const Card = ({ preliked, entity, user }) => {
         <Modal
             open={loginPromptOpen}
             onClose={() => setLoginPromptOpen(false)}
-            basic
             size='small'
+            centered={false}
         >
-            <Header icon='browser' content='Cookies policy' />
+            <Header content='Please Log In' />
             <Modal.Content>
                 <h3>You must be logged in to do that.</h3>
             </Modal.Content>
             <Modal.Actions>
-            <Button color='green' onClick={() => setLoginPromptOpen(false)} inverted>
+            <Button color='green' onClick={() => setLoginPromptOpen(false)}>
                 <Icon name='checkmark'/> Got It
             </Button>
             </Modal.Actions>

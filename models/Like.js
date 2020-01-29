@@ -10,7 +10,12 @@ const LikeSchema = new mongoose.Schema({
     entity: {
         type: Number
     },
-
+    entitySectionId: {
+        type: Number
+    },
+    entityCategories: {
+        type: Array
+    }
 }, {
     timestamps: true
 });

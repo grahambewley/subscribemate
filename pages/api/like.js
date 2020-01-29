@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-import User from '../../models/User';
 import connectDb from '../../utils/connectDb';
 import Like from '../../models/Like';
 
@@ -36,7 +34,9 @@ async function handlePostRequest(req, res) {
         
         const newLike = await new Like({
             user: userId,
-            entity: entity.id
+            entity: entity.id,
+            entitySectionId: entity.sectionId,
+            entityCategories: entity.categories
         }).save();
 
         res.status(201).json(newLike);
@@ -79,7 +79,6 @@ async function handleGetRequest(req, res) {
 
     try {
         const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
-        console.log("User ID we got was ", userId);
         const likes = await Like.find({ user: userId });
         res.status(200).json(likes);
     } catch(error) {

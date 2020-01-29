@@ -31,40 +31,32 @@ function Header({ user }) {
 
         <Link href="/newsletters">
             <Menu.Item header active={isActive("/cart")}>
-                <Icon name="newspaper outline" size="large" />
                 Newsletters
             </Menu.Item>
         </Link>
 
         <Link href="/podcasts">
             <Menu.Item header active={isActive("/create")}>
-                <Icon name="microphone" size="large" />
                 Podcasts
             </Menu.Item>
         </Link>
 
         <Link href="/blogs">
             <Menu.Item header active={isActive("/create")}>
-                <Icon name="write" size="large" />
                 Blogs
             </Menu.Item>
         </Link>
         <Menu.Menu position='right'>
+          {/*
           <Input 
             inverted
             transparent
             icon='search'
             placeholder='Search...'
           />
+          */}
           {user ? (
           <>
-            <Link href="/account">
-              <Menu.Item header active={isActive("/account")}>
-                <Icon name="user" size="large" />
-                Account
-              </Menu.Item>
-            </Link>
-
             <Menu.Item onClick={handleLogout} header>
               <Icon name="sign out" size="large" />
               Logout
