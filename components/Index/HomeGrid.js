@@ -1,11 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
-import { Container, Menu, Label } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import Card from '../_App/Card';
+import Sidebar from './Sidebar/Sidebar';
+import FilterStrip from '../_App/FilterStrip';
 
-const Grid = ({ likes, user, newsletters, podcasts, blogs, handleFilterChange }) => {
+const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterChange }) => {
     const [categories, setCategories] = React.useState([]);
-    const [dateSpan, setDateSpan] = React.useState('this week')
+    const [dateSpan, setDateSpan] = React.useState('this week');
 
     // Initializing didMount as false
     const [didMount, setDidMount] = React.useState(false)
@@ -21,208 +23,151 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, handleFilterChange })
         }
     }, [categories, dateSpan])
     
-    function handleCategoryClick(e, { name }) {
-        if(categories.includes(name)) {
+    function handleCategoryClick(e, { value }) {
+        if(categories.includes(value)) {
             // If categories already includes this, remove it
             setCategories(categories.filter((element) => {
-                return element != name
+                return element != value
             }))
         } else {
             // Otherwise, add to categories
-            setCategories(categories.concat(name))
+            setCategories(categories.concat(value))
         }
     }
+
+    function handleDateSpanChange(e, { value }) {
+        console.log('date value is ', value);
+        setDateSpan(value);
+    }
+
     return (
 
         <Container>
         <div className='LayoutContainer'>
-            
-            <main>
-                <Label.Group>
-                    <Label 
-                        as='a' 
-                        name='all'
-                        color={categories.length == 0 ? 'teal' : null}
-                        onClick={() => setCategories([])}>
-                    All
-                    </Label>
-                    <Label 
-                        as='a'
-                        name='development'
-                        color={categories.includes('development') ? 'teal' : null}
-                        onClick={handleCategoryClick}>
-                    Development
-                    </Label>
-                    <Label 
-                        as='a'
-                        name='design'
-                        color={categories.includes('design') ? 'teal' : null}
-                        onClick={handleCategoryClick}>
-                    Design
-                    </Label>
-                    <Label 
-                        as='a'
-                        name='entrepreneurship'
-                        color={categories.includes('entrepreneurship') ? 'teal' : null}
-                        onClick={handleCategoryClick}>
-                    Entrepreneurship
-                    </Label>
-                    <Label 
-                        as='a'
-                        name='technology'
-                        color={categories.includes('technology') ? 'teal' : null}
-                        onClick={handleCategoryClick}>
-                    Technology
-                    </Label>
-                    <Label 
-                        as='a'
-                        name='personalFinance'
-                        color={categories.includes('personalFinance') ? 'teal' : null}
-                        onClick={handleCategoryClick}>
-                    Personal Finance
-                    </Label>
-                </Label.Group>
-                <Menu 
-                    size='small'
-                    defaultActiveIndex={0}
-                    pointing 
-                    secondary
-                    color='teal'
-                >
-                    <Menu.Item
-                        name='this week'
-                        active={dateSpan === 'this week'}
-                        onClick={() => setDateSpan('this week')}
-                    />
-                    <Menu.Item
-                        name='this month'
-                        active={dateSpan === 'this month'}
-                        onClick={() => setDateSpan('this month')}
-                    />
-                    <Menu.Item
-                        name='all time'
-                        active={dateSpan === 'all time'}
-                        onClick={() => setDateSpan('all time')}
-                    />
-                </Menu>
-
+            <div className='FilterContainer'>
+                <h1>Top Newsletters, Podcasts, and Blogs</h1>
+                <FilterStrip 
+                    categories={categories}
+                    setCategories={setCategories}
+                    handleCategoryClick={handleCategoryClick}
+                    handleDateSpanChange={handleDateSpanChange} />
                 
+            </div>
+            <main>
                 <div className='ColumnContainer'>
                     <div className='Column'>
                         <Link href='/newsletters'>
-                            <div className='ColumnHeader'>
-                                <h2>Newsletters</h2>
-                            </div>
+                            <h2 className='ColumnHeader'>Newsletters</h2>
                         </Link>
-                        {newsletters.map(newsletter => {
-                            return (
-
-                                <Card preliked={likes.includes(parseInt(newsletter.id))} user={user} key={newsletter.title} entity={newsletter} />
-                            );
-                        })}
+                        <div className='CardColumn'>
+                            {newsletters.map(newsletter => {
+                                return (
+                                    <Card preliked={likes.includes(parseInt(newsletter.id))} user={user} key={newsletter.title} entity={newsletter} />
+                                );
+                            })}
+                        </div>
                         <Link href='/newsletters'><a className='MoreLink'>More Newsletters</a></Link>
                     </div>
                     
                     <div className='Column'>
                         <Link href='/podcasts'>
-                            <div className='ColumnHeader'>
-                                <h2>Podcasts</h2>
-                            </div>
+                            <h2 className='ColumnHeader'>Podcasts</h2>
                         </Link>
-                        {podcasts.map(podcast => {
-                            return (
-
-                                <Card preliked={likes.includes(parseInt(podcast.id))} user={user} key={podcast.title} entity={podcast} />
-                            );
-                        })}
+                        <div className='CardColumn'>
+                            {podcasts.map(podcast => {
+                                return (
+                                    <Card preliked={likes.includes(parseInt(podcast.id))} user={user} key={podcast.title} entity={podcast} />
+                                );
+                            })}
+                        </div>
                         <Link href='/podcasts'><a className='MoreLink'>More Podcasts</a></Link>
                     </div>
                     
                     
                     <div className='Column'>
                         <Link href='/blogs'>
-                        <div className='ColumnHeader'>
-                            <h2>Blogs</h2>
-                        </div>
+                            <h2 className='ColumnHeader'>Blogs</h2>
                         </Link>
-                        {blogs.map(blog => {
-                            return (
-                                <Card preliked={likes.includes(parseInt(blog.id))} user={user} key={blog.title} entity={blog} />
-                            );
-                        })}
+                        <div className='CardColumn'>
+                            {blogs.map(blog => {
+                                return (
+                                    <Card preliked={likes.includes(parseInt(blog.id))} user={user} key={blog.title} entity={blog} />
+                                );
+                            })}
+                        </div>
                         <Link href='/blogs'><a className='MoreLink'>More Blogs</a></Link>
                     </div>
                 </div>
             </main>
-            {/*
-            <div className='SidebarWrapper'>
-                <aside className='Sidebar'>
-                    <h3>Featured</h3>
-                    <ul>
-                        <li>Something</li>
-                        <li>Different Something</li>
-                        <li>Something Else</li>
-                    </ul>
-                </aside>
-            </div>
-            */}
+
+            <Sidebar latest={latest} />
+
             <style jsx>{`
-                body p,
-                body h1,
-                body h2,
-                body h3,
-                body h4 {
-                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                }
                 .LayoutContainer {
-                    padding-top: 1rem;
                     display: grid;
-                    grid-template-columns: 1fr;
-                    height: 100px;
+                    grid-template-columns: 1fr 240px;
+                    grid-column-gap: 24px;
+                }
+
+                @media(max-width: 991px) {
+                    .LayoutContainer {
+                        grid-template-columns: 1fr;
+                    }
+                }
+
+                .FilterContainer {
+                    grid-column: 1 / -1;
+                }
+                main {
+                    grid-column: 1 / span 1;
                 }
                 .ColumnContainer {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    grid-gap: 48px;
+                    grid-gap: 24px;
                 }
-                .Column {
-                    height: 100px;
+
+                @media(max-width: 767px) {
+                    .ColumnContainer {
+                        grid-template-columns: 1fr;
+                    }
+                } 
+
+                .CardColumn {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-gap: 16px;
                 }
+
                 .ColumnHeader {
                     cursor: pointer;
-                    background-color: #84CAE7;
-                    border-radius: 2px;
-                    padding: 2px 8px;
                     margin-bottom: 10px;
-                }
-                .ColumnHeader h2 {
-                    color: white;
-                    font-size: 1.2rem;
-                    font-weight: 200;
+                    font-size: 1.4rem;
+                    font-weight: 100;
                     letter-spacing: 2px;
                     text-transform: uppercase;
+                    color: #666;
+                    padding-left: 5px;
                 }
                 .MoreLink {
                     display: block;
                     text-align: center;
+                    margin-top: 1rem;
                     color: #242424;
+                    background-color: #f2f2f2;
+                    border-radius: 500px;
+                    padding: 5px 0;
                     text-transform: uppercase;
+                    transition: all .2s;
                 }
-
-                .SidebarWrapper {
-                    grid-column: 2 / span 1;
-                    padding: 1rem;
-                    width: 100%;
+                .MoreLink:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 2px 3px rgba(0,0,0,0.08);
                 }
-                .Sidebar {
-                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                    background-color: #f7f7f7;
-                    padding: 1rem;
-                    width: 100%;
-                }
-                .Sidebar h3 {
-                    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                }
+                .MoreLink:active {
+                    transform: translateY(-1px);
+                    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+                }   
             `}</style>
         </div>
         </Container>

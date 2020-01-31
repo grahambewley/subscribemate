@@ -63,17 +63,7 @@ const Hero = () => {
     <div className='HeroContainer'> 
       <div className='HeroSlide'>
         <Container style={{height: '100%'}}>
-          <div className='HeroSlideInner'>
-            <div className='HeroSlideImageContainer'>
-              {/*<img className='HeroSlideImage' src='https://pbs.twimg.com/media/EJ-OiPSXkAArawg?format=jpg&name=4096x4096'/>*/}
-            </div>
-            <div className='HeroSlideDetails'>
-              <span className='HeroSlideLabel'>Featured Newsletter</span>
-              <h2 className='HeroSlideName'>Indie Hackers Newsletter</h2>
-              <p className='HeroSlideDescription'>Real stories, advice, and revenue numbers from the founders of profitable businesses. We compile the top interviews, posts, and articles for the week in each issue, as determined by what the community is upvoting.</p>
-              <BigButton text="More Info" />
-            </div>
-          </div>
+          
         </Container>
         
       </div>
@@ -85,26 +75,41 @@ const Hero = () => {
     .HeroContainer {
       height: 35vh;
       border-bottom: 1px solid #eee;
+      margin-bottom: 2rem;
     }
     .HeroSlide {
       position: relative;
+      overflow: hidden;
       height: 100%;
       padding: 4rem 0;
       display: flex;
       align-items: center;
     }
+     
     .HeroSlide::before {
       content: '';
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-repeat: repeat;
-      background-image: url('/static/patterns/doodles.png');
-      opacity: .3;
+      height: calc(100% + 10px);
+      width: calc(100% + 70px);
+      top: -5px;
+      left: -35px;
+      background-image: url('https://i0.wp.com/softwareengineeringdaily.com/wp-content/uploads/2019/10/IndieHackers.jpg');
+      background-position: center;
+      background-size: cover;
+      filter: brightness(50%) blur(3px);
       z-index: -1;
+      animation: 10s slideLeftRight linear;
     }
+
+    @keyframes slideLeftRight {
+      from {
+        transform: translateX(-30px);
+      }
+      to {
+        transform: translateX(30px);
+      }
+    }
+
     .HeroSlideInner {
       height: 100%;
       width: 100%;

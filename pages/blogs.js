@@ -47,7 +47,7 @@ const featured = [
     }
 ];
 
-const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
+const Blogs = ({ user, topBlogs, latestBlogs, likes }) => {
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
 
@@ -101,18 +101,18 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
 
         const topUrl = `${baseUrl}/api/top`;
 
-        const topNewslettersPayload = {
+        const topBlogsPayload = {
             params: { secId: 1, days: daysToSearch }
         };
         
         // Get arrays of the top liked newsletters, podcasts, and blogs in the last 7 days
         // e.g. ['230', '249', '206']
-        const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
+        const topBlogsResponse = await axios.get(topUrl, topBlogsPayload);
 
         // Request the entries matching these IDs from CMS
-        const nUrl = `${baseCraftUrl}/newsletters.json`;
+        const nUrl = `${baseCraftUrl}/blogs.json`;
         
-        const nPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data, categories: categories }) };
+        const nPayload = { params: new URLSearchParams({ id: topBlogsResponse.data, categories: categories }) };
         
         /*
         const nResponse = await axios.get(nUrl, nPayload);
@@ -128,7 +128,7 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
     return (<>
         <HeroCarousel featured={featured}></HeroCarousel>
         <Container>
-            <h1>Newsletters</h1>
+            <h1>Blogs</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
@@ -137,33 +137,33 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
         
             <PageGrid 
                 user={user}
-                top={topNewsletters}
-                latest={latestNewsletters}
+                top={topBlogs}
+                latest={latestBlogs}
                 likes={likes} />
         </Container>
         
     </>);
 }
 
-Newsletters.getInitialProps = async ctx => {
+Blogs.getInitialProps = async ctx => {
     const topUrl = `${baseUrl}/api/top`;
-    const topNewslettersPayload = {
+    const topBlogsPayload = {
         params: {
-            secId: 1,
+            secId: 3,
             days: 7
         }
     };
     
-    // Get array of the top liked newsletters in the last 7 days from Mongo database
-    const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
-    // Get those newsletters from CMS
-    const newslettersByIdUrl = `${baseCraftUrl}/newsletters.json`;
-    const newslettersByIdPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data }) };
-    const newslettersByIdResponse = await axios.get(newslettersByIdUrl, newslettersByIdPayload);
+    // Get array of the top liked blogs in the last 7 days from Mongo database
+    const topBlogsResponse = await axios.get(topUrl, topBlogsPayload);
+    // Get those blogs from CMS
+    const blogsByIdUrl = `${baseCraftUrl}/blogs.json`;
+    const blogsByIdPayload = { params: new URLSearchParams({ id: topBlogsResponse.data }) };
+    const blogsByIdResponse = await axios.get(blogsByIdUrl, blogsByIdPayload);
     
-    // Get most recently added newsletters from CMS
-    const latestNewslettersUrl = `${baseCraftUrl}/newsletters/latest.json`;
-    const latestNewslettersResponse = await axios.get(latestNewslettersUrl);
+    // Get most recently added blogs from CMS
+    const latestBlogsUrl = `${baseCraftUrl}/blogs/latest.json`;
+    const latestBlogsResponse = await axios.get(latestBlogsUrl);
 
     // Get likes, to display appropriate thumbs-ups    
     const { token } = parseCookies(ctx);
@@ -181,9 +181,9 @@ Newsletters.getInitialProps = async ctx => {
     
     return {
         likes: likeArray || [],
-        topNewsletters: newslettersByIdResponse.data.newsletters || [],
-        latestNewsletters: latestNewslettersResponse.data.newsletters || []
+        topBlogs: blogsByIdResponse.data.blogs || [],
+        latestBlogs: latestBlogsResponse.data.blogs || []
     }
 }
 
-export default Newsletters;
+export default Blogs;

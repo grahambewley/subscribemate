@@ -47,7 +47,7 @@ const featured = [
     }
 ];
 
-const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
+const Podcasts = ({ user, topPodcasts, latestPodcasts, likes }) => {
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
 
@@ -101,34 +101,34 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
 
         const topUrl = `${baseUrl}/api/top`;
 
-        const topNewslettersPayload = {
+        const topPodcastsPayload = {
             params: { secId: 1, days: daysToSearch }
         };
         
-        // Get arrays of the top liked newsletters, podcasts, and blogs in the last 7 days
+        // Get arrays of the top liked podcasts, podcasts, and blogs in the last 7 days
         // e.g. ['230', '249', '206']
-        const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
+        const topPodcastsResponse = await axios.get(topUrl, topPodcastsPayload);
 
         // Request the entries matching these IDs from CMS
-        const nUrl = `${baseCraftUrl}/newsletters.json`;
+        const nUrl = `${baseCraftUrl}/podcasts.json`;
         
-        const nPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data, categories: categories }) };
+        const nPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data, categories: categories }) };
         
         /*
         const nResponse = await axios.get(nUrl, nPayload);
         const pResponse = await axios.get(pUrl, pPayload);
         const bResponse = await axios.get(bUrl, bPayload);
         
-        setNewsletters(nResponse);
-        setNewsletters(pResponse);
-        setNewsletters(bResponse);
+        setPodcasts(nResponse);
+        setPodcasts(pResponse);
+        setPodcasts(bResponse);
         */
     }
 
     return (<>
         <HeroCarousel featured={featured}></HeroCarousel>
         <Container>
-            <h1>Newsletters</h1>
+            <h1>Podcasts</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
@@ -137,33 +137,33 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
         
             <PageGrid 
                 user={user}
-                top={topNewsletters}
-                latest={latestNewsletters}
+                top={topPodcasts}
+                latest={latestPodcasts}
                 likes={likes} />
         </Container>
         
     </>);
 }
 
-Newsletters.getInitialProps = async ctx => {
+Podcasts.getInitialProps = async ctx => {
     const topUrl = `${baseUrl}/api/top`;
-    const topNewslettersPayload = {
+    const topPodcastsPayload = {
         params: {
-            secId: 1,
+            secId: 2,
             days: 7
         }
     };
     
-    // Get array of the top liked newsletters in the last 7 days from Mongo database
-    const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
-    // Get those newsletters from CMS
-    const newslettersByIdUrl = `${baseCraftUrl}/newsletters.json`;
-    const newslettersByIdPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data }) };
-    const newslettersByIdResponse = await axios.get(newslettersByIdUrl, newslettersByIdPayload);
+    // Get array of the top liked podcasts in the last 7 days from Mongo database
+    const topPodcastsResponse = await axios.get(topUrl, topPodcastsPayload);
+    // Get those podcasts from CMS
+    const podcastsByIdUrl = `${baseCraftUrl}/podcasts.json`;
+    const podcastsByIdPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data }) };
+    const podcastsByIdResponse = await axios.get(podcastsByIdUrl, podcastsByIdPayload);
     
-    // Get most recently added newsletters from CMS
-    const latestNewslettersUrl = `${baseCraftUrl}/newsletters/latest.json`;
-    const latestNewslettersResponse = await axios.get(latestNewslettersUrl);
+    // Get most recently added podcasts from CMS
+    const latestPodcastsUrl = `${baseCraftUrl}/podcasts/latest.json`;
+    const latestPodcastsResponse = await axios.get(latestPodcastsUrl);
 
     // Get likes, to display appropriate thumbs-ups    
     const { token } = parseCookies(ctx);
@@ -181,9 +181,9 @@ Newsletters.getInitialProps = async ctx => {
     
     return {
         likes: likeArray || [],
-        topNewsletters: newslettersByIdResponse.data.newsletters || [],
-        latestNewsletters: latestNewslettersResponse.data.newsletters || []
+        topPodcasts: podcastsByIdResponse.data.podcasts || [],
+        latestPodcasts: latestPodcastsResponse.data.podcasts || []
     }
 }
 
-export default Newsletters;
+export default Podcasts;

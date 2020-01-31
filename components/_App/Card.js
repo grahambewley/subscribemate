@@ -43,6 +43,10 @@ const Card = ({ preliked, entity, user }) => {
     }
 
     function getFrequencyText(shorthand) {
+        // If the frequency is nothing, just return from this function
+        if(!shorthand) {
+            return;
+        }
 
         if(shorthand === '7w'){
             return "Daily";
@@ -84,20 +88,22 @@ const Card = ({ preliked, entity, user }) => {
     return (<>
         <div className='CardContainer'>
             <div className='CardImageContainer'>
-                <h4 style={{fontSize: '.8em', color: '#ccc', margin: '0', position: 'absolute', top: '5px', left: '5px'}}>ID: {entity.id}</h4>
-                <Label as='a' corner="right" onClick={handleLikeButtonClick}>
-                    <Icon style={{cursor: 'pointer'}} name='thumbs up' color={liked ? 'teal' : null}/>
-                </Label>
-            </div>
-            <div className='CardDetails'>
-                
-                <h3 className='CardName'>{entity.title}</h3>
-                <p className='CardDescription'>{entity.description}</p>
-                <div className='CardFrequencyContainer'>
-                    <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
-                    <span className='CardFrequency'>{getFrequencyText(entity.frequency)}</span>
+                <div className='CardLikeContainer' onClick={handleLikeButtonClick}>
+                    <Icon className='CardLikeIcon' style={{cursor: 'pointer', margin: '0', display: 'flex', alignItems: 'center', justifyContent: 'center' }} name='thumbs up' color={liked ? 'teal' : "grey"}/>
                 </div>
             </div>
+            <div className='CardDetails'>
+                <h3 className='CardName'>{entity.title}</h3>
+                <p className='CardDescription'>{entity.description}</p>
+            </div>
+
+            { entity.frequency ?
+            <div className='CardFrequencyContainer'>
+                <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
+                <span className='CardFrequency'>{getFrequencyText(entity.frequency)}</span>
+            </div>
+            : null }
+
             <div className='CardAuthorContainer'>
                 { entity.authors.map((author) => {
                     return (
@@ -128,29 +134,28 @@ const Card = ({ preliked, entity, user }) => {
       </Modal>
         <style jsx>{`
         .CardContainer {
-            border: 1px solid #eee;
-            border-radius: 2px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 2px rgba(0,0,0,.1);
-            transition: all .15s;
+            transition: all .2s;
             cursor:pointer;
             
+            display: grid;
+            grid-template-rows: 120px 1fr repeat(3, min-content);
         }
         .CardContainer i {
             z-index: 40;
         }
         .CardContainer:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 2px 3px rgba(0,0,0,0.08);
+            transform: translateY(-6px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.08);
         }
         .CardContainer:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
             box-shadow: 0 1px 2px rgba(0,0,0,.1);
         }
         .CardImageContainer {
             position: relative;
-            height: 120px;
             overflow: hidden;
             background-image: url("${entity.imageUrl}");
             background-repeat: no-repeat;
@@ -160,43 +165,28 @@ const Card = ({ preliked, entity, user }) => {
         }
         .CardLikeContainer {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            transform: translateX(-50%);
-        }
-        .CardCategory {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            display: inline-block;
-            font-size: .9rem;
-            line-height: 1;
-            text-transform: uppercase;
-            padding: 6px;
-            background-color: #FFD700;
-            border-radius: 5px;
-            opacity: .9;
-        }
-        .CardStarToggle {
-            position: absolute;
-            bottom: 5px;
+            top: 5px;
             right: 5px;
-            padding: 0;
-            border: none;
-            background-color: transparent;
+            background-color: #f2f2f2;
+            border-radius: 50%;
+            height: 25px;
+            width: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .CardDetails {
             padding: 6px 10px;
         }
         .CardName {
             font-weight: 600;
-            letter-spacing: 1px;
             margin-bottom: 5px;
         }
         .CardFrequencyContainer {
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            margin: 0 10px 5px 10px;
         }
         .CardFrequency {
             text-transform: uppercase;
@@ -206,8 +196,10 @@ const Card = ({ preliked, entity, user }) => {
             opacity: .9
         }
         .CardAuthorContainer {
-            background-color: #f8f8f8;
-            border-top: 1px solid #eee;
+            margin: 5px;
+            margin-top: 0;
+            border-radius: 10px;
+            background-color: #f2f2f2;
             padding: 10px;
         }
         .CardAuthor {
@@ -240,6 +232,41 @@ const Card = ({ preliked, entity, user }) => {
         }
         .CardAuthorTwitterUsername:hover {
             text-decoration: underline;
+        }
+
+        @media(max-width: 767px) {
+            .CardContainer {
+                display: grid;
+                grid-template-columns: 1fr 4fr;
+                grid-template-rows: repeat(2, min-content) 1fr;
+            }
+            .CardImageContainer {
+                grid-column: 1 / span 1;
+                grid-row: 1 / -1;
+                clip-path: none;
+            }
+            .CardLikeContainer {
+                left: 5px;
+                right: initial;
+                width: 30px;
+                height: 30px;
+            }
+            .CardFrequencyContainer {
+                display: none;
+            }
+            .CardAuthorContainer {
+                background-color: inherit;
+                padding: 0;
+                margin: 0;
+            }
+            .CardAuthor {
+                padding: 0 10px 6px 10px;
+                display: flex;
+                justify-content: space-between;
+            }
+            .CardAuthorImage {
+                display: none;
+            }
         }
         `}</style>
     </>);

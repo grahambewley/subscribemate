@@ -19,11 +19,20 @@ async function handleGetRequest(req, res) {
     const { secId, days } = req.query;
 
     const entitySectionId = Number(secId);
-    const countBackDays = Number(days);
+    
+    // Let start date begin with today's date;
+    let startDate = new Date();
 
-    // Get the date to look back as far as
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate()-countBackDays);
+    // If we sent in a number of days to search back for
+    if(days) {
+        const countBackDays = Number(days);
+        // Get the date to look back as far as
+        startDate.setDate(startDate.getDate()-countBackDays);
+    } else {
+        startDate = new Date(0);
+    }
+
+    console.log("Start date we're using is ", startDate);
 
     try {
         const likes = await Like.find({ 
