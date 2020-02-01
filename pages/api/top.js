@@ -32,8 +32,6 @@ async function handleGetRequest(req, res) {
         startDate = new Date(0);
     }
 
-    console.log("Start date we're using is ", startDate);
-
     try {
         const likes = await Like.find({ 
             entitySectionId,

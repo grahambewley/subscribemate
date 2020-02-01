@@ -148,7 +148,7 @@ const Card = ({ preliked, entity, user }) => {
         }
         .CardContainer:hover {
             transform: translateY(-6px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 10px rgba(0,0,0,0.08);
         }
         .CardContainer:active {
             transform: translateY(-1px);

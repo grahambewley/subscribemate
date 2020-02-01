@@ -90,7 +90,7 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
                 margin-bottom: 1rem;
                 padding-right: 1rem;
                 padding-bottom: 1rem;
-                border-bottom: 2px solid #e6f2f2;
+                border-bottom: 2px solid rgba(60,174,163, .3);
             }
             `}</style>
         </div>

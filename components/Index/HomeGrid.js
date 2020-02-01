@@ -17,7 +17,6 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
     React.useEffect(() => {
         // checking for didMount keeps this from running on first render
         if(didMount) {
-            console.log("Categories or active item changed");
             // Send updated dateSpan and categories back to index.js for handling
             handleFilterChange(dateSpan, categories);    
         }
@@ -36,7 +35,6 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
     }
 
     function handleDateSpanChange(e, { value }) {
-        console.log('date value is ', value);
         setDateSpan(value);
     }
 

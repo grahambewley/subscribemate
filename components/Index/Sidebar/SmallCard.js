@@ -1,5 +1,4 @@
 const SmallCard = ({ entity }) => {
-    console.log(entity);
 
     function sectionNameFromId(sectionId) {
         switch(sectionId) {

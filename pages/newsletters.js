@@ -59,7 +59,6 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
     React.useEffect(() => {
         // checking for didMount keeps this from running on first render
         if(didMount) {
-            console.log("Categories or active item changed");
             // Send updated dateSpan and categories back to index.js for handling
             handleFilterChange(dateSpan, categories);    
         }
@@ -78,13 +77,10 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
     }
 
     function handleDateSpanChange(e, { value }) {
-        console.log('date value is ', value);
         setDateSpan(value);
     }
 
     async function handleFilterChange(dateSpan, categories) {
-        console.log("Date span to use is", dateSpan);
-        console.log("Categories to filter on are", categories);
 
         let daysToSearch = null;
         switch(dateSpan) {
@@ -96,8 +92,6 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, likes }) => {
             default:
                 break;
         }
-
-        console.log("Days to search for are ", daysToSearch);
 
         const topUrl = `${baseUrl}/api/top`;
 

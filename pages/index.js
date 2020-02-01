@@ -5,7 +5,7 @@ import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
 import { parseCookies } from 'nookies';
 
-const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLatest }) => {
+const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLatest, initFeatured }) => {
     
     const [newsletters, setNewsletters] = React.useState(initNewsletters.slice(0,3));
     const [podcasts, setPodcasts] = React.useState(initPodcasts.slice(0,3));
@@ -15,50 +15,7 @@ const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLates
     const [pLoading, setPLoading] = React.useState(false);
     const [bLoading, setBLoading] = React.useState(false);
     
-    const featured = [
-        {
-            type: 'newsletter',
-            name: 'Indie Hackers',
-            twitter: '@indiehackers',
-            authors: [
-                {
-                    name: 'Courtland Allen',
-                    twitter: '@csallen'
-                }
-            ],
-            categories: ['entrepreneurship'],
-            frequency: '3w',
-            backgroundPattern: 'funky-lines',
-            imageUrl: 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwj-gJnO15PnAhXJaM0KHdhuAAwQjRx6BAgBEAQ&url=https%3A%2F%2Ftwitter.com%2Findiehackers&psig=AOvVaw3Ebn2Y5Vy9XCJFjSW-nWi9&ust=1579661444770048',
-            description: `We compile the top interviews, posts, and articles for the week in each issue, as determined by what the community is upvoting. We don't include sponsored links, advertisements, or direct requests.`,
-            actionUrl: 'https://www.indiehackers.com/newsletters'
-        },
-        {
-            type: 'podcast',
-            name: 'Shop Talk Show',
-            authors: [
-                {
-                    name: 'Dave Rupert',
-                    twitter: '@davatron5000'
-                },
-                {
-                    name: 'Chris Coyier',
-                    twitter: '@chriscoyier'
-                }
-            ],
-            categories: ['design', 'development'],
-            frequency: '1w',
-            backgroundPattern: 'doodles',
-            imageUrl: 'https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/01/f1/9f/01f19f03-a486-8a03-289b-65e728c3a741/mza_2487052099784590113.png/268x0w.png',
-            description: `A podcast about building websites starring Dave Rupert and Chris Coyier. Development, design, performance, accessibility, tooling, a little bit of everything!`,
-            actionUrl: 'https://shoptalkshow.com/'
-        }
-    ];
-
-
     async function handleFilterChange(dateSpan, categories) {
-        console.log("Date span to use is", dateSpan);
-        console.log("Categories to filter on are", categories);
 
         let daysToSearch = null;
         switch(dateSpan) {
@@ -70,8 +27,6 @@ const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLates
             default:
                 break;
         }
-
-        console.log("Days to search for are ", daysToSearch);
 
         const topUrl = `${baseUrl}/api/top`;
 
@@ -111,7 +66,7 @@ const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLates
     }
 
     return (<>
-        <HeroCarousel featured={featured}></HeroCarousel>
+        <HeroCarousel featured={initFeatured}></HeroCarousel>
 
         <HomeGrid
             likes={likes}
@@ -156,7 +111,10 @@ Home.getInitialProps = async ctx => {
     const newslettersByIdUrl = `${baseCraftUrl}/newsletters.json`;
     const podcastsByIdUrl = `${baseCraftUrl}/podcasts.json`;
     const blogsByIdUrl = `${baseCraftUrl}/blogs.json`;
+    // Getting latest entries to display in sidebar
     const latestAllUrl = `${baseCraftUrl}/latest.json`;
+    // Getting featured entries to display in hero carousel
+    const featuredAllUrl = `${baseCraftUrl}/featured.json`;
 
     const newslettersByIdPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data }) };
     const podcastsByIdPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data }) };
@@ -166,15 +124,15 @@ Home.getInitialProps = async ctx => {
     const podcastsByIdResponse = await axios.get(podcastsByIdUrl, podcastsByIdPayload);
     const blogsByIdResponse = await axios.get(blogsByIdUrl, blogsByIdPayload);
     const latestAllResponse = await axios.get(latestAllUrl);
+    const featuredAllResponse = await axios.get(featuredAllUrl);
 
-    // If response is less than 3 entities long, fill array with new stuff
+    /* If response is less than 3 entities long, fill array with new stuff
     if(newslettersByIdResponse.data.newsletters.length < 3) {
         // Get most recently added newsletters from CMS
         const latestNewslettersUrl = `${baseCraftUrl}/newsletters/latest.json`;
         const latestNewslettersResponse = await axios.get(latestNewslettersUrl);
-        
     }
-    
+    */
 
     // Get likes, to display appropriate thumbs-ups    
     const { token } = parseCookies(ctx);
@@ -195,7 +153,8 @@ Home.getInitialProps = async ctx => {
         initNewsletters: newslettersByIdResponse.data.newsletters,
         initPodcasts: podcastsByIdResponse.data.podcasts,
         initBlogs: blogsByIdResponse.data.blogs,
-        initLatest: latestAllResponse.data.data
+        initLatest: latestAllResponse.data.data,
+        initFeatured: featuredAllResponse.data.data
     }
 }
 
