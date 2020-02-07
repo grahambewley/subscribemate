@@ -126,9 +126,11 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
     }
 
     return (<>
+        {/*
         <HeroCarousel featured={initFeatured}></HeroCarousel>
+        */}
         <Container>
-            <h1>Podcasts</h1>
+            <h1 style={{marginTop: '4rem'}}>Podcasts</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}

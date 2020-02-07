@@ -126,9 +126,11 @@ const Blogs = ({ user, topBlogs, latestBlogs, initLikes, initFeatured }) => {
     }
 
     return (<>
+        {/*
         <HeroCarousel featured={initFeatured}></HeroCarousel>
+        */}
         <Container>
-            <h1>Blogs</h1>
+            <h1 style={{marginTop: '4rem'}}>Blogs</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}

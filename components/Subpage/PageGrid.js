@@ -186,8 +186,8 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         
         <style jsx>{`
         .TrendingContainer {
-            margin-bottom: 8rem;
-            padding: 0 1rem 1rem 1rem;
+            margin-bottom: 6rem;
+            padding: 0 2rem 2rem 2rem;
             background-color: rgba(61, 174, 172, .15);
             border-radius: 10px;
             box-shadow: 0 1px 1px rgba(0,0,0,.03),
@@ -198,9 +198,10 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
 
         .TopTrendingHeader {
             text-align: center;
-            background-color: rgba(255,255,255,.3);
-            padding: 10px 0;
-            margin: 0 -1rem 1rem -1rem;
+            background-color: rgba(61, 174, 172,.12);
+            border-bottom: 3px solid rgba(61, 174, 172,.1);
+            padding: 1rem 0;
+            margin: 0 -2rem 2rem -2rem;
         }
 
         .CardGrid {
@@ -251,9 +252,13 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         .TopTrendingTitle {
             margin-top: 0;
         }
+        .TopTrendingDescription {
+            font-size: 1.2rem;
+        } 
         .TopTrendingFrequency {
             text-transform: uppercase;
-            font-size: .8rem;
+            font-size: 1rem;
+            opacity: .9;
             position: relative;
             transform: translateX(calc(1.5rem + 2px));
         }
@@ -311,10 +316,9 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
 
         .SlideControlRow {
             width: 100%;
-            margin-top: 3rem;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
         .SlideControlHeader {
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
@@ -356,6 +360,12 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         }
 
         @media (max-width: 767px) {
+            .TopTrendingContainer {
+                padding: 0 1rem 1rem 1rem;
+            }
+            .TopTrendingHeader {
+                margin: 0 -1rem 1rem -1rem;
+            }
             .TopTrendingBox {
                 flex-direction: column;
             }

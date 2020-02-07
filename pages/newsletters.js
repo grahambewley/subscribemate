@@ -126,9 +126,11 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
     }
 
     return (<>
+        {/*
         <HeroCarousel featured={initFeatured}></HeroCarousel>
+        */}
         <Container>
-            <h1>Newsletters</h1>
+            <h1 style={{marginTop: '4rem'}}>Newsletters</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
