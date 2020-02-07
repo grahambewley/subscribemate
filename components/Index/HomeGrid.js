@@ -5,7 +5,7 @@ import Card from '../_App/Card';
 import Sidebar from './Sidebar/Sidebar';
 import FilterStrip from '../_App/FilterStrip';
 
-const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterChange }) => {
+const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, podcasts, blogs, latest, handleFilterChange, triggerDetailModal }) => {
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
 
@@ -60,7 +60,14 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                         <div className='CardColumn'>
                             {newsletters.map(newsletter => {
                                 return (
-                                    <Card preliked={likes.includes(parseInt(newsletter.id))} user={user} key={newsletter.title} entity={newsletter} />
+                                    <Card 
+                                        preliked={likes.includes(parseInt(newsletter.id))} 
+                                        handleEntityLike={handleEntityLike}
+                                        handleEntityUnlike={handleEntityUnlike}
+                                        user={user} 
+                                        key={newsletter.title} 
+                                        entity={newsletter}
+                                        triggerDetailModal={triggerDetailModal} />
                                 );
                             })}
                         </div>
@@ -74,7 +81,14 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                         <div className='CardColumn'>
                             {podcasts.map(podcast => {
                                 return (
-                                    <Card preliked={likes.includes(parseInt(podcast.id))} user={user} key={podcast.title} entity={podcast} />
+                                    <Card 
+                                        preliked={likes.includes(parseInt(podcast.id))}
+                                        handleEntityLike={handleEntityLike}
+                                        handleEntityUnlike={handleEntityUnlike}
+                                        user={user}
+                                        key={podcast.title}
+                                        entity={podcast}
+                                        triggerDetailModal={triggerDetailModal} />
                                 );
                             })}
                         </div>
@@ -89,7 +103,14 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                         <div className='CardColumn'>
                             {blogs.map(blog => {
                                 return (
-                                    <Card preliked={likes.includes(parseInt(blog.id))} user={user} key={blog.title} entity={blog} />
+                                    <Card
+                                        preliked={likes.includes(parseInt(blog.id))}
+                                        handleEntityLike={handleEntityLike}
+                                        handleEntityUnlike={handleEntityUnlike}
+                                        user={user}
+                                        key={blog.title}
+                                        entity={blog}
+                                        triggerDetailModal={triggerDetailModal} />
                                 );
                             })}
                         </div>
@@ -98,13 +119,13 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                 </div>
             </main>
 
-            <Sidebar latest={latest} />
+            <Sidebar latest={latest} triggerDetailModal={triggerDetailModal} />
 
             <style jsx>{`
                 .LayoutContainer {
                     display: grid;
-                    grid-template-columns: 1fr 240px;
-                    grid-column-gap: 24px;
+                    grid-template-columns: 3fr 1fr;
+                    grid-column-gap: 32px;
                 }
 
                 @media(max-width: 991px) {
@@ -122,7 +143,7 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                 .ColumnContainer {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
-                    grid-gap: 24px;
+                    grid-gap: 32px;
                 }
 
                 @media(max-width: 767px) {
@@ -134,7 +155,7 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                 .CardColumn {
                     display: grid;
                     grid-template-columns: 1fr;
-                    grid-gap: 16px;
+                    grid-gap: 20px;
                 }
 
                 .ColumnHeader {
@@ -149,10 +170,11 @@ const Grid = ({ likes, user, newsletters, podcasts, blogs, latest, handleFilterC
                 }
                 .MoreLink {
                     display: block;
+                    margin: 0 1rem;
                     text-align: center;
                     margin-top: 1rem;
-                    color: #242424;
-                    background-color: #f2f2f2;
+                    color: white;
+                    background-color: #3daea3;
                     border-radius: 500px;
                     padding: 5px 0;
                     text-transform: uppercase;

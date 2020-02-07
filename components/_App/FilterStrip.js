@@ -20,7 +20,10 @@ const dateSpanOptions = [
 
 const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDateSpanChange }) => {
     return(
+        
+        
         <div className='FilterContainer'>
+            
             <Label.Group>
                 <Label 
                     style={{marginBottom: '0'}}
@@ -87,10 +90,9 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 1rem;
-                padding-right: 1rem;
-                padding-bottom: 1rem;
-                border-bottom: 2px solid rgba(60,174,163, .3);
+                margin-bottom: 2.5rem;
+                padding-bottom: 1.5rem;
+                border-bottom: 2px solid rgba(60,174,163, .4);
             }
             `}</style>
         </div>

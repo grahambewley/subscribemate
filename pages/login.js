@@ -45,7 +45,7 @@ function Login() {
     }
 
     return <>
-    <Container>
+    <Container text>
         <Message
             attached
             icon="privacy"

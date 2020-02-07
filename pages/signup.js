@@ -47,7 +47,7 @@ function Singup() {
     }
 
     return <>
-    <Container>
+    <Container text>
         <Message
             attached
             icon="settings"

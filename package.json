@@ -24,6 +24,7 @@
     "next-sass": "^1.0.3",
     "node-sass": "^4.13.1",
     "nookies": "^2.0.8",
+    "nprogress": "^0.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "semantic-ui-react": "^0.88.2",

@@ -1,6 +1,6 @@
 import SmallCard from "./SmallCard";
 
-const Sidebar = ({ latest }) => {
+const Sidebar = ({ latest, triggerDetailModal }) => {
     return (
         <div className='SidebarWrapper'>
             <aside className='Sidebar'>
@@ -8,7 +8,7 @@ const Sidebar = ({ latest }) => {
                 <div className='SmallCardColumn'>
                     { latest.map(entity => {
                         return (
-                            <SmallCard entity={entity}/>
+                            <SmallCard entity={entity} triggerDetailModal={triggerDetailModal} key={entity.id}/>
                         );
                     })}
                 </div>
@@ -26,11 +26,11 @@ const Sidebar = ({ latest }) => {
             }
             .Sidebar {
                 font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                background-color: #f7f7f7;
+                background-color: #fff;
                 padding: 14px;
                 width: 100%;
                 border-radius: 10px;
-                border: 1px solid #ddd;
+                box-shadow: 0 1px 2px rgba(0,0,0,.1);
             }
             .SidebarHeader {
                 font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;

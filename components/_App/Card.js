@@ -1,16 +1,25 @@
 import React from 'react';
-import { Label, Icon, Modal, Header, Button } from 'semantic-ui-react';
+import { Icon, Modal, Header, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
-import baseUrl from '../../utils/baseUrl';
-import axios from 'axios';
-import cookie from 'js-cookie';
 
-const Card = ({ preliked, entity, user }) => {
+const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, triggerDetailModal }) => {
     const [liked, setLiked] = React.useState(preliked);
     const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
 
-    async function handleLikeButtonClick() {
+
+    function handleCardClick(e) {
+        // If the thing clicked was the like button, do nothing here
+        if (e.target.classList.contains('CardLikeContainer') || e.target.classList.contains('CardLikeIcon')) {
+            return;
+        } 
+        // Otherwise, trigger the details modal
+        else {
+            triggerDetailModal(entity);
+        }
+    }
+
+    function handleLikeButtonClick() {
         if(!user) {
             setLoginPromptOpen(true);
         } 
@@ -18,26 +27,12 @@ const Card = ({ preliked, entity, user }) => {
             if(!liked) {
                 // Flip the thumbs up right away
                 setLiked(!liked);
-                // Add like to the likes collection
-                const url = `${baseUrl}/api/like`;
-                const payload = { entity };
-                const token = cookie.get('token');
-                // Sending user token along with this reqest to only allow authorized users to like stuff
-                const headers = { headers: { Authorization: token } };
-                const userLikeResponse = await axios.post(url, payload, headers);
+                handleEntityLike(entity);
             } 
             else {
                 // Flip the thumbs up right away
                 setLiked(!liked)
-                // Remove like from likes collection
-                const url = `${baseUrl}/api/like`;
-                const token = cookie.get('token');
-                const entityId = entity.id;
-                const payload = { 
-                    params: { entityId },
-                    headers: { Authorization: token } 
-                };
-                const userUnlikeResponse = await axios.delete(url, payload);
+                handleEntityUnlike(entity)
             }
         }
     }
@@ -86,15 +81,18 @@ const Card = ({ preliked, entity, user }) => {
     }
 
     return (<>
-        <div className='CardContainer'>
+        <div className='CardContainer' onClick={handleCardClick}>
             <div className='CardImageContainer'>
-                <div className='CardLikeContainer' onClick={handleLikeButtonClick}>
+                <div className='CardLikeContainer' style={liked ? {opacity: '1'} : null} onClick={handleLikeButtonClick}>
                     <Icon className='CardLikeIcon' style={{cursor: 'pointer', margin: '0', display: 'flex', alignItems: 'center', justifyContent: 'center' }} name='thumbs up' color={liked ? 'teal' : "grey"}/>
                 </div>
             </div>
             <div className='CardDetails'>
                 <h3 className='CardName'>{entity.title}</h3>
-                <p className='CardDescription'>{entity.description}</p>
+                { entity.description.length > 120 ?
+                <p className='CardDescription'>{entity.description.slice(0,120)}...</p>
+                : 
+                <p className='CardDescription'>{entity.description}</p> }
             </div>
 
             { entity.frequency ?
@@ -104,17 +102,19 @@ const Card = ({ preliked, entity, user }) => {
             </div>
             : null }
 
+            { entity.authors.length > 0 ?
             <div className='CardAuthorContainer'>
                 { entity.authors.map((author) => {
                     return (
                         <div key={author.authorTwitterUsername} className='CardAuthor'>
                             <img className='CardAuthorImage' src={author.authorTwitterProfileImageUrl} />
                             <h4 className='CardAuthorName'>{author.authorName}</h4>
-                            <a className='CardAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4>@{author.authorTwitterUsername}</h4></a>
+                            <a className='CardAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
                         </div>
                     );
                 })}
             </div>
+            : null }
         </div>
         <Modal
             open={loginPromptOpen}
@@ -134,12 +134,16 @@ const Card = ({ preliked, entity, user }) => {
       </Modal>
         <style jsx>{`
         .CardContainer {
-            border: 1px solid #e1e1e1;
+            box-shadow: 0 1px 1px rgba(0,0,0,.03),
+                        0 2px 2px rgba(0,0,0,.03),
+                        0 4px 4px rgba(0,0,0,.03);
             border-radius: 10px;
             overflow: hidden;
-            transition: all .2s;
+            transition: all .17s;
             cursor:pointer;
-            
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: transparent;
+            background-color: white;
             display: grid;
             grid-template-rows: 120px 1fr repeat(3, min-content);
         }
@@ -147,33 +151,60 @@ const Card = ({ preliked, entity, user }) => {
             z-index: 40;
         }
         .CardContainer:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 10px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.03), 
+                        0 2px 2px rgba(0,0,0,0.03), 
+                        0 4px 4px rgba(0,0,0,0.03), 
+                        0 8px 8px rgba(0,0,0,0.03);
+                        0 16px 16px rgba(0,0,0,0.03),
+                        0 32px 32px rgba(0,0,0,0.03);
         }
         .CardContainer:active {
-            transform: translateY(-1px);
-            box-shadow: 0 1px 2px rgba(0,0,0,.1);
+            transform: translateY(0);
+            box-shadow: 0 1px 1px rgba(0,0,0,.03),
+                        0 2px 2px rgba(0,0,0,.03),
+                        0 4px 4px rgba(0,0,0,.03);
         }
         .CardImageContainer {
             position: relative;
             overflow: hidden;
+            background-color: white;
             background-image: url("${entity.imageUrl}");
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
         }
+        .CardImageContainer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: radial-gradient(rgba(7, 36, 35,.15), rgba(7, 36, 35,.4));
+            opacity: 0;
+            transition: all .25s;
+        }
+        .CardContainer:hover .CardImageContainer::before {
+            opacity: 1;
+        }
         .CardLikeContainer {
             position: absolute;
             top: 5px;
             right: 5px;
-            background-color: #f2f2f2;
+            background-color: #f7f7f7;
             border-radius: 50%;
             height: 25px;
             width: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 0;
+            transition: all .25s;
+        }
+        .CardContainer:hover .CardLikeContainer {
+            opacity: 1;
         }
         .CardDetails {
             padding: 6px 10px;
@@ -199,12 +230,12 @@ const Card = ({ preliked, entity, user }) => {
             margin: 5px;
             margin-top: 0;
             border-radius: 10px;
-            background-color: #f2f2f2;
-            padding: 10px;
+            background-color: #f1f1f1;
+            padding: 8px;
         }
         .CardAuthor {
             display: grid;
-            grid-template-columns: 36px 1fr;
+            grid-template-columns: 32px 1fr;
             grid-template-rows: 1fr 1fr;
             grid-column-gap: 10px;
         }
@@ -214,21 +245,28 @@ const Card = ({ preliked, entity, user }) => {
         .CardAuthorImage {
             grid-column: 1 / span 1;
             grid-row: 1 / span 2;
+            align-self: center;
             width: 100%;
             border-radius: 50%;
-            border: 1px solid #ddd;
+            border: 1px solid #edf2f2;
         }
         .CardAuthorName {
             grid-column: 2 / span 1;
             grid-row: 1 / span 1;
+            align-self: center;
             margin: 0;
+            font-size: 1rem;
+            line-height: 1;
         }
         .CardAuthorTwitterUsername {
             color: inherit;
             grid-column: 2 / span 1;
             grid-row: 2 / span 1;
+            align-self: center;
             margin: 0;
-            opacity: .75;
+            opacity: .9;
+            font-size: .9rem;
+            line-height: 1;
         }
         .CardAuthorTwitterUsername:hover {
             text-decoration: underline;
@@ -237,8 +275,16 @@ const Card = ({ preliked, entity, user }) => {
         @media(max-width: 767px) {
             .CardContainer {
                 display: grid;
-                grid-template-columns: 1fr 4fr;
+                grid-template-columns: 1fr 3fr;
                 grid-template-rows: repeat(2, min-content) 1fr;
+            }
+            .CardContainer:hover {
+                transform: inherit;
+                box-shadow: inherit;
+            }
+            .CardContainer:active {
+                transform: inherit;
+                box-shadow: inherit;
             }
             .CardImageContainer {
                 grid-column: 1 / span 1;

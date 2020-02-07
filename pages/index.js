@@ -1,19 +1,22 @@
 import HeroCarousel from '../components/_App/HeroCarousel';
 import HomeGrid from '../components/Index/HomeGrid';
+import Modal from '../components/_App/DetailModal';
 import baseUrl from '../utils/baseUrl';
 import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
+import cookie from 'js-cookie';
 import { parseCookies } from 'nookies';
 
-const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLatest, initFeatured }) => {
+const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initLatest, initFeatured }) => {
+    const [likes, setLikes] = React.useState(initLikes);    
     
     const [newsletters, setNewsletters] = React.useState(initNewsletters.slice(0,3));
     const [podcasts, setPodcasts] = React.useState(initPodcasts.slice(0,3));
     const [blogs, setBlogs] = React.useState(initBlogs.slice(0,3));
     const [latest, setLatest] = React.useState(initLatest.slice(0,3));
-    const [nLoading, setNLoading] = React.useState(false);
-    const [pLoading, setPLoading] = React.useState(false);
-    const [bLoading, setBLoading] = React.useState(false);
+
+    const [detailModalOpen, setDetailModalOpen] = React.useState(false);
+    const [detailModalEntity, setDetailModalEntity] = React.useState();
     
     async function handleFilterChange(dateSpan, categories) {
 
@@ -53,16 +56,56 @@ const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLates
         const nPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data, categories: categories }) };
         const pPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data, categories: categories }) };
         const bPayload = { params: new URLSearchParams({ id: topBlogsResponse.data, categories: categories }) };
-
-        /*
+        
         const nResponse = await axios.get(nUrl, nPayload);
         const pResponse = await axios.get(pUrl, pPayload);
         const bResponse = await axios.get(bUrl, bPayload);
         
-        setNewsletters(nResponse);
-        setNewsletters(pResponse);
-        setNewsletters(bResponse);
-        */
+        console.log('newsletter response is ', nResponse);
+
+        setNewsletters(nResponse.data.newsletters);
+        setPodcasts(pResponse.data.podcasts);
+        setBlogs(bResponse.data.blogs);
+        
+    }
+
+    function triggerDetailModal(entity) {
+        console.log("Triggering modal with entity:", entity);
+        setDetailModalEntity(entity);
+        setDetailModalOpen(true);
+    }
+
+    async function handleEntityLike(entity) {
+        // Add entity to likes array
+        const newLikes = likes;
+        newLikes.push(parseInt(entity.id));
+        setLikes(newLikes);
+
+        // Add like to the likes collection
+        const url = `${baseUrl}/api/like`;
+        const payload = { entity };
+        const token = cookie.get('token');
+        // Sending user token along with this reqest to only allow authorized users to like stuff
+        const headers = { headers: { Authorization: token } };
+        const userLikeResponse = await axios.post(url, payload, headers);
+    }
+    
+    async function handleEntityUnlike(entity) {
+        // Remove entity from likes array
+        const newLikes = likes.filter(element => {
+            return (element != parseInt(entity.id));
+        });
+        setLikes(newLikes);
+
+        // Remove like from likes collection
+        const url = `${baseUrl}/api/like`;
+        const token = cookie.get('token');
+        const entityId = entity.id;
+        const payload = { 
+            params: { entityId },
+            headers: { Authorization: token } 
+        };
+        const userUnlikeResponse = await axios.delete(url, payload);
     }
 
     return (<>
@@ -70,12 +113,24 @@ const Home = ({ likes, user, initNewsletters, initPodcasts, initBlogs, initLates
 
         <HomeGrid
             likes={likes}
+            handleEntityLike={handleEntityLike}
+            handleEntityUnlike={handleEntityUnlike}
             user={user}
             newsletters={newsletters}
             podcasts={podcasts}
             blogs={blogs}
             latest={latest}
             handleFilterChange={handleFilterChange}
+            triggerDetailModal={triggerDetailModal}
+        />
+        <Modal 
+            user={user}
+            opened={detailModalOpen}
+            close={() => setDetailModalOpen(false)}
+            entity={detailModalEntity}
+            likes={likes}
+            handleEntityLike={handleEntityLike}
+            handleEntityUnlike={handleEntityUnlike}
         />
     </>);
 }
@@ -126,14 +181,6 @@ Home.getInitialProps = async ctx => {
     const latestAllResponse = await axios.get(latestAllUrl);
     const featuredAllResponse = await axios.get(featuredAllUrl);
 
-    /* If response is less than 3 entities long, fill array with new stuff
-    if(newslettersByIdResponse.data.newsletters.length < 3) {
-        // Get most recently added newsletters from CMS
-        const latestNewslettersUrl = `${baseCraftUrl}/newsletters/latest.json`;
-        const latestNewslettersResponse = await axios.get(latestNewslettersUrl);
-    }
-    */
-
     // Get likes, to display appropriate thumbs-ups    
     const { token } = parseCookies(ctx);
     let likeArray;
@@ -149,7 +196,7 @@ Home.getInitialProps = async ctx => {
     }
     
     return {
-        likes: likeArray,
+        initLikes: likeArray,
         initNewsletters: newslettersByIdResponse.data.newsletters,
         initPodcasts: podcastsByIdResponse.data.podcasts,
         initBlogs: blogsByIdResponse.data.blogs,

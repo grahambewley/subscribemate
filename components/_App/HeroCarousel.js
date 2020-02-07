@@ -28,12 +28,12 @@ const Hero = ({ featured }) => {
     
   }, [displaySlide]);
 
-  const slides = featured.map(feature => {
-    return generateSlide(feature);
+  const slides = featured.map((feature, index) => {
+    return generateSlide(feature, index);
   });
   slides.push(generateSlide(featured[0]));
 
-  function generateSlide(feature) {
+  function generateSlide(feature, index) {
     function sectionNameFromId(sectionId) {
       switch(sectionId) {
         case '1':
@@ -82,8 +82,8 @@ const Hero = ({ featured }) => {
       }
     }
 
-    return (<>
-      <div className='HeroSlide'>
+    return (
+      <div className='HeroSlide' key={index}>
         <Container>
           <div className='DetailsContainer'>
             <div className='FeatureImage'>
@@ -98,8 +98,7 @@ const Hero = ({ featured }) => {
           </div>
         </Container>
 
-      </div>
-      <style jsx>{`
+        <style jsx>{`
       .HeroSlide {
         position: relative;
         height: 100%;
@@ -124,20 +123,18 @@ const Hero = ({ featured }) => {
 
       @keyframes filterShift {
         0% {
-          filter: contrast(100%) blur(85px) brightness(80%) sepia(0);
-          transform: translateX(-5%);
+          transform: translateX(-100px);
         }
 
         50% {
-          filter: contrast(175%) blur(85px) brightness(80%) sepia(60%);
-          transform: translateX(5%);
+          transform: translateX(100px);
         }
 
         100% {
-          filter: contrast(100%) blur(85px) brightness(80%) sepia(0);
-          transform: translateX(-5%);
+          transform: translateX(-100px);
         }
       }
+
       .DetailsContainer {
         width: 100%;
         height: 100%;
@@ -204,13 +201,18 @@ const Hero = ({ featured }) => {
         .FeatureImage {
           align-self: flex-start;
           height: 150px;
+          width: 100%;
           margin-right: 0;
           margin-bottom: 1rem;
         }
-        
+        .HeroSlide::before {
+          animation: none;
+        }
       }
       `}</style>
-    </>);
+      </div>
+      
+    );
   }
   
   return (<>

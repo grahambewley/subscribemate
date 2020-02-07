@@ -39,6 +39,8 @@ async function handlePostRequest(req, res) {
             entityCategories: entity.categories
         }).save();
 
+        console.log("Liked, responding with ", newLike);        
+
         res.status(201).json(newLike);
     } catch(error) {
         console.error(error);
@@ -64,7 +66,9 @@ async function handleDeleteRequest(req, res) {
             entity: entityId
         });
 
-        res.status(200).send("Successfully removed like");
+        console.log("Removed like, responding with ", likes);
+
+        res.status(200).json(likes);
     } catch(error) {
         console.error(error);
         res.status(403).send("Could not remove like. Oops.");

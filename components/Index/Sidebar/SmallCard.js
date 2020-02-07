@@ -1,4 +1,4 @@
-const SmallCard = ({ entity }) => {
+const SmallCard = ({ entity, triggerDetailModal }) => {
 
     function sectionNameFromId(sectionId) {
         switch(sectionId) {
@@ -13,21 +13,24 @@ const SmallCard = ({ entity }) => {
     }
 
     return (<>
-        <div className='Container'>
+        <div className='Container' onClick={() => triggerDetailModal(entity)}>
             <div className='Image'></div>
             <div className='DetailsContainer'>
                 <h4 className='TypeLabel'>{sectionNameFromId(entity.sectionId)}</h4>
                 <h3 className='Title'>{entity.title}</h3>
-                <p className='Description'>{entity.description}</p>
+                { entity.description.length > 120 ?
+                <p className='CardDescription'>{entity.description.slice(0,120)}...</p>
+                : 
+                <p className='CardDescription'>{entity.description}</p> }
             </div>
         </div>
 
         <style jsx>{`
         .Container {
-            border: 1px solid #ddd;
+            border: 1px solid #3daea3;
             border-radius: 8px;
             overflow: hidden;
-            background-color: #fefefe;
+            
             cursor: pointer;
         }
         .Image {

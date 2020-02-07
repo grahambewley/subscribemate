@@ -2,54 +2,26 @@ import { Container } from 'semantic-ui-react';
 import HeroCarousel from '../components/_App/HeroCarousel';
 import PageGrid from '../components/Subpage/PageGrid';
 import FilterStrip from '../components/_App/FilterStrip';
+import Modal from '../components/_App/DetailModal';
 import baseUrl from '../utils/baseUrl';
 import baseCraftUrl from '../utils/baseCraftUrl';
 import axios from 'axios';
+import cookie from 'js-cookie';
 import { parseCookies } from 'nookies';
 
-const featured = [
-    {
-        type: 'newsletter',
-        name: 'Indie Hackers',
-        twitter: '@indiehackers',
-        authors: [
-            {
-                name: 'Courtland Allen',
-                twitter: '@csallen'
-            }
-        ],
-        categories: ['entrepreneurship'],
-        frequency: '3w',
-        backgroundPattern: 'funky-lines',
-        imageUrl: 'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwj-gJnO15PnAhXJaM0KHdhuAAwQjRx6BAgBEAQ&url=https%3A%2F%2Ftwitter.com%2Findiehackers&psig=AOvVaw3Ebn2Y5Vy9XCJFjSW-nWi9&ust=1579661444770048',
-        description: `We compile the top interviews, posts, and articles for the week in each issue, as determined by what the community is upvoting. We don't include sponsored links, advertisements, or direct requests.`,
-        actionUrl: 'https://www.indiehackers.com/newsletters'
-    },
-    {
-        type: 'podcast',
-        name: 'Shop Talk Show',
-        authors: [
-            {
-                name: 'Dave Rupert',
-                twitter: '@davatron5000'
-            },
-            {
-                name: 'Chris Coyier',
-                twitter: '@chriscoyier'
-            }
-        ],
-        categories: ['design', 'development'],
-        frequency: '1w',
-        backgroundPattern: 'doodles',
-        imageUrl: 'https://is3-ssl.mzstatic.com/image/thumb/Podcasts113/v4/01/f1/9f/01f19f03-a486-8a03-289b-65e728c3a741/mza_2487052099784590113.png/268x0w.png',
-        description: `A podcast about building websites starring Dave Rupert and Chris Coyier. Development, design, performance, accessibility, tooling, a little bit of everything!`,
-        actionUrl: 'https://shoptalkshow.com/'
-    }
-];
+const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }) => {
+    // ENTITIES STATE
+    const [top, setTop] = React.useState(topPodcasts);
+    const [latest, setLatest] = React.useState(latestPodcasts);
+    const [likes, setLikes] = React.useState(initLikes);
 
-const Podcasts = ({ user, topPodcasts, latestPodcasts, likes }) => {
+    // FILTER STATE
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
+    
+    // DETAIL MODAL STATE
+    const [detailModalOpen, setDetailModalOpen] = React.useState(false);
+    const [detailModalEntity, setDetailModalEntity] = React.useState();
 
     // Initializing didMount as false
     const [didMount, setDidMount] = React.useState(false)
@@ -93,34 +65,68 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, likes }) => {
                 break;
         }
 
-        const topUrl = `${baseUrl}/api/top`;
-
-        const topPodcastsPayload = {
+        // Get array of top podcast IDs in order using last X days
+        const apiTopUrl = `${baseUrl}/api/top`;
+        const apiTopPayload = {
             params: { secId: 1, days: daysToSearch }
         };
-        
-        // Get arrays of the top liked podcasts, podcasts, and blogs in the last 7 days
-        // e.g. ['230', '249', '206']
-        const topPodcastsResponse = await axios.get(topUrl, topPodcastsPayload);
+        const apiTopResponse = await axios.get(apiTopUrl, apiTopPayload);
 
-        // Request the entries matching these IDs from CMS
-        const nUrl = `${baseCraftUrl}/podcasts.json`;
-        
-        const nPayload = { params: new URLSearchParams({ id: topPodcastsResponse.data, categories: categories }) };
-        
-        /*
-        const nResponse = await axios.get(nUrl, nPayload);
-        const pResponse = await axios.get(pUrl, pPayload);
-        const bResponse = await axios.get(bUrl, bPayload);
-        
-        setPodcasts(nResponse);
-        setPodcasts(pResponse);
-        setPodcasts(bResponse);
-        */
+        // Request the entries matching these IDs from CMS, filtered by categories
+        const topUrl = `${baseCraftUrl}/podcasts.json`;
+        const topPayload = { params: new URLSearchParams({ id: apiTopResponse.data, categories: categories }) };
+        const topResponse = await axios.get(topUrl, topPayload);
+
+        // Request the latest podcasts, filtered by categories
+        const latestUrl = `${baseCraftUrl}/podcasts/latest.json`;
+        const latestPayload = { params: new URLSearchParams({ categories: categories }) };
+        const latestResponse = await axios.get(latestUrl, latestPayload);
+
+        setTop(topResponse.data.podcasts);
+        setLatest(latestResponse.data.podcasts); 
+    }
+
+    async function handleEntityLike(entity) {
+        // Add entity to likes array
+        const newLikes = likes;
+        newLikes.push(parseInt(entity.id));
+        setLikes(newLikes);
+
+        // Add like to the likes collection
+        const url = `${baseUrl}/api/like`;
+        const payload = { entity };
+        const token = cookie.get('token');
+        // Sending user token along with this reqest to only allow authorized users to like stuff
+        const headers = { headers: { Authorization: token } };
+        const userLikeResponse = await axios.post(url, payload, headers);
+    }
+    
+    async function handleEntityUnlike(entity) {
+        // Remove entity from likes array
+        const newLikes = likes.filter(element => {
+            return (element != parseInt(entity.id));
+        });
+        setLikes(newLikes);
+
+        // Remove like from likes collection
+        const url = `${baseUrl}/api/like`;
+        const token = cookie.get('token');
+        const entityId = entity.id;
+        const payload = { 
+            params: { entityId },
+            headers: { Authorization: token } 
+        };
+        const userUnlikeResponse = await axios.delete(url, payload);
+    }
+
+    function triggerDetailModal(entity) {
+        console.log("Triggering modal with entity:", entity);
+        setDetailModalEntity(entity);
+        setDetailModalOpen(true);
     }
 
     return (<>
-        <HeroCarousel featured={featured}></HeroCarousel>
+        <HeroCarousel featured={initFeatured}></HeroCarousel>
         <Container>
             <h1>Podcasts</h1>
             <FilterStrip 
@@ -131,11 +137,23 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, likes }) => {
         
             <PageGrid 
                 user={user}
-                top={topPodcasts}
-                latest={latestPodcasts}
-                likes={likes} />
+                top={top}
+                latest={latest}
+                likes={likes} 
+                handleEntityLike={handleEntityLike}
+                handleEntityUnlike={handleEntityUnlike}
+                triggerDetailModal={triggerDetailModal}/>
         </Container>
         
+        <Modal 
+            user={user}
+            opened={detailModalOpen}
+            close={() => setDetailModalOpen(false)}
+            entity={detailModalEntity}
+            likes={likes}
+            handleEntityLike={handleEntityLike}
+            handleEntityUnlike={handleEntityUnlike}
+        />
     </>);
 }
 
@@ -172,11 +190,16 @@ Podcasts.getInitialProps = async ctx => {
     } else {
         likeArray = [];
     }
+
+    // Getting featured entries to display in hero carousel
+    const featuredAllUrl = `${baseCraftUrl}/featured.json`;
+    const featuredAllResponse = await axios.get(featuredAllUrl);
     
     return {
-        likes: likeArray || [],
+        initLikes: likeArray,
         topPodcasts: podcastsByIdResponse.data.podcasts || [],
-        latestPodcasts: latestPodcastsResponse.data.podcasts || []
+        latestPodcasts: latestPodcastsResponse.data.podcasts || [],
+        initFeatured: featuredAllResponse.data.data
     }
 }
 

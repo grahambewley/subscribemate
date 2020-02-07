@@ -4,9 +4,9 @@ import { parseCookies, destroyCookie } from 'nookies';
 import { redirectUser } from '../utils/auth';
 import baseUrl from '../utils/baseUrl';
 import axios from "axios";
-import { Router } from "next/router";
 
 class MyApp extends App {
+
     static async getInitialProps({ Component, ctx }) {
         // Use nookies library to get cookies from context object
         const { token } = parseCookies(ctx);
@@ -51,12 +51,16 @@ class MyApp extends App {
 
     render() {
         const { Component, pageProps } = this.props;
-        return (<>
+        return (<div className='pageWrapper'>
             <Layout {...pageProps}>
                 <Component {...pageProps} />
             </Layout>
-
-        </>);
+            <style jsx>{`
+            .pageWrapper {
+                background-color: #f6f6f6;
+            }
+            `}</style>
+        </div>);
     }
 }
 
