@@ -175,36 +175,24 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             background-size: cover;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
         }
-        .CardImageContainer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: radial-gradient(rgba(7, 36, 35,.15), rgba(7, 36, 35,.4));
-            opacity: 0;
-            transition: all .25s;
-        }
-        .CardContainer:hover .CardImageContainer::before {
-            opacity: 1;
-        }
         .CardLikeContainer {
             position: absolute;
             top: 5px;
             right: 5px;
             background-color: #f7f7f7;
             border-radius: 50%;
-            height: 25px;
-            width: 25px;
+            height: 30px;
+            width: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: all .25s;
         }
-        .CardContainer:hover .CardLikeContainer {
-            opacity: 1;
+        @media(min-width: 768px){
+            .CardContainer:hover .CardLikeContainer {
+                opacity: 1;
+            }
         }
         .CardDetails {
             padding: 6px 10px;
@@ -296,6 +284,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 right: initial;
                 width: 30px;
                 height: 30px;
+                opacity: 1;
             }
             .CardFrequencyContainer {
                 display: none;

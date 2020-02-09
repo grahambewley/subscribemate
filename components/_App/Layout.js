@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import Header from './Navigation';
-import Navigation from './Navigation/NewNavigation'
+import Navigation from './Navigation/NavigationBar'
 import Footer from './Footer';
 import HeadContent from './HeadContent';
 import SideDrawer from './Navigation/SideDrawer';
@@ -28,9 +27,6 @@ function Layout({ user, children }) {
                 <title>Feed Seek &mdash; The Freshest Newsletters, Podcasts, and Blogs</title>
                 
             </Head>
-            {/*
-            <Header user={user}/>
-            */}
             <Navigation user={user} openDrawer={() => setSideDrawerOpen(true)}/>
             <SideDrawer user={user} open={sideDrawerOpen} closeDrawer={() => setSideDrawerOpen(false)} />
             <>

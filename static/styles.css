@@ -1,3 +1,5 @@
 :root {
     --progressBar: white;
+    
+    --teal-opacity-1: rgba(60,174,163, .7);
 }

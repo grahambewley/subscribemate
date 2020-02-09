@@ -1,16 +1,14 @@
 import React from 'react';
-import baseUrl from '../../utils/baseUrl';
-import axios from 'axios';
-import { Container, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Container from './Container';
 
 const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened, entity, close }) => {
     const [liked, setLiked] = React.useState(false);
     
     React.useEffect(() => {
         if(opened && entity != undefined) {
-            console.log("Opened, set the like button...");
             setLiked(likes.includes(parseInt(entity.id)));
         }
     }, [opened]);
@@ -60,7 +58,7 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
     return(<>
         { opened ?
         <div className='Backdrop' onClick={handleBackdropClick}>
-            <Container text>
+            <Container>
             <div className='ModalContainer'>
                 <div className='ModalClose' onClick={close}>
                     <FontAwesomeIcon style={{fontSize: '2rem'}} icon={faTimes} color='#ccc'/>
@@ -74,23 +72,26 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                         </div>
                         { entity.websiteUrl && <a target='_blank' className='EntityButton' href={entity.websiteUrl}>Visit Website</a>  }
                     </div>
-                    <div className='EntityDetailsContainer'>
+                    <div className='ModalRight'>
                         
                         <span className='EntityTypeLabel'>{sectionNameFromId(entity.sectionId)}</span>
                         <h2 className='EntityName'>{entity.title}</h2>
                         <p className='EntityDescription'>{entity.description}</p>
+                        { entity.authors.length > 0 ? 
                         <div className='AuthorContainer'>
                             { entity.authors.map((author) => {
                                 return (
                                     <div key={author.authorTwitterUsername} className='Author'>
-                                        <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
-                                        <h4 className='AuthorName'>{author.authorName}</h4>
-                                        <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}><h4>@{author.authorTwitterUsername}</h4></a>
+                                        <div className='AuthorGrid'>
+                                            <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
+                                            <h4 className='AuthorName'>{author.authorName}</h4>
+                                            <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                        </div>
                                     </div>
                                 );
                             })}
                         </div>
-                        
+                        : null }
                     </div>
                 </div>
                 
@@ -107,14 +108,12 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 10px;
             }
             .ModalContainer {
                 background-color: white;
                 padding: 2rem;
                 border-radius: 10px;
                 border: #ddd;
-                
                 position: relative;
                 animation: fadeInUp .2s;
             }
@@ -138,14 +137,21 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
             }
 
             .ModalDetails {
-                display: flex;
+                display: grid;
+                grid-template-columns: 1fr 2fr;
             }
-            
+            .ModalLeft {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin-right: 2rem;
+            }
             .EntityImage {
                 min-height: 150px;
                 min-width: 150px;
                 border-radius: 10px;
-                margin-right: 2rem;
+                width: 100%;
+                margin-bottom: 1rem;
                 background-image: url('${entity.imageUrl}');
                 background-position: center;
                 background-size: cover;
@@ -157,12 +163,13 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 right: 5px;
                 background-color: #f2f2f2;
                 border-radius: 50%;
-                height: 25px;
-                width: 25px;
+                height: 30px;
+                width: 30px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
+            
             .EntityTypeLabel {
                 font-size: 1rem;
                 text-transform: uppercase;
@@ -181,38 +188,47 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
 
             .AuthorContainer {
                 display: flex;
-                margin-bottom: 1rem;
             }
             .Author {
-                border-radius: 10px;
-                background-color: #f2f2f2;
-                padding: 10px;
-                display: grid;
-                grid-template-columns: 36px 1fr;
-                grid-template-rows: 1fr 1fr;
-                grid-column-gap: 10px;
+                display: inline-block;
+                background-color: #f0f0f0;
+                padding: 8px;
+                border-radius: 5px;
             }
             .Author:not(:last-child) {
-                margin-right: 5px;
+                margin-right: 8px;
+            }
+            .AuthorGrid {
+                display: grid;
+                grid-template-columns: 32px 1fr;
+                grid-template-rows: 1fr 1fr;
+                grid-column-gap: 10px;
             }
             .AuthorImage {
                 grid-column: 1 / span 1;
                 grid-row: 1 / span 2;
+                align-self: center;
                 width: 100%;
                 border-radius: 50%;
-                border: 1px solid #ddd;
+                border: 1px solid #edf2f2;
             }
             .AuthorName {
                 grid-column: 2 / span 1;
                 grid-row: 1 / span 1;
+                align-self: center;
                 margin: 0;
+                font-size: 1rem;
+                line-height: 1;
             }
             .AuthorTwitterUsername {
                 color: inherit;
                 grid-column: 2 / span 1;
                 grid-row: 2 / span 1;
+                align-self: center;
                 margin: 0;
-                opacity: .75;
+                opacity: .9;
+                font-size: .9rem;
+                line-height: 1;
             }
             .AuthorTwitterUsername:hover {
                 text-decoration: underline;
@@ -235,35 +251,29 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 background-color: rgba(60,174,163, .9);
             }
 
-            @media(max-width: 991px) {
-                .ModalContainer {
-                  width: 100%;
-                }
-                
-              }
-              @media(max-width: 767px) {
+            @media(max-width: 767px) {
                 .ModalContainer {
                     padding: 1.5rem;
                     padding-top: 3rem;
                 }
                 .ModalDetails {
-                    flex-direction: column;
+                    grid-template-columns: none;
+                    grid-template-rows: 1fr min-content;
                 }
-                .EntityImage {
+                .ModalLeft {
                     margin-right: 0;
                     margin-bottom: 1rem;
+                    align-items: flex-start;
                 }
                 .EntityName {
                     margin: 0;
                     font-size: 1.8rem;
                     margin-bottom: 1rem;
                 }
-              }
+            }
             `}</style>
         </div>
         : null }
-
-        
     </>);
 }
 

@@ -22,15 +22,15 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
         }
     }, [categories, dateSpan])
     
-    function handleCategoryClick(e, { value }) {
-        if(categories.includes(value)) {
+    function handleCategoryClick(category) {
+        if(categories.includes(category)) {
             // If categories already includes this, remove it
             setCategories(categories.filter((element) => {
-                return element != value
+                return element != category
             }))
         } else {
             // Otherwise, add to categories
-            setCategories(categories.concat(value))
+            setCategories(categories.concat(category))
         }
     }
 
@@ -43,7 +43,7 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
         <Container>
         <div className='LayoutContainer'>
             <div className='FilterContainer'>
-                <h1>Top Newsletters, Podcasts, and Blogs</h1>
+                {/*<h1>Top Newsletters, Podcasts, and Blogs</h1>*/}
                 <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}

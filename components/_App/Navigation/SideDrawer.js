@@ -39,14 +39,17 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
                 </div> 
 
                 <div className='PageNavigation'>
+                        <Link href='/'>
+                            <div className='NavigationItem' style={isActive('/') ? {backgroundColor: 'rgba(61, 174, 172,.15'} : null}>Home</div>
+                        </Link>
                         <Link href='/newsletters'>
-                            <div className='NavigationItem' style={isActive('/newsletters') ? {backgroundColor: 'rgba(61, 174, 172,.2'} : null}>Newsletters</div>
+                            <div className='NavigationItem' style={isActive('/newsletters') ? {backgroundColor: 'rgba(61, 174, 172,.15'} : null}>Newsletters</div>
                         </Link>
                         <Link href='/podcasts'>
-                            <div className='NavigationItem' style={isActive('/podcasts') ? {backgroundColor: 'rgba(61, 174, 172,.2'} : null}>Podcasts</div>
+                            <div className='NavigationItem' style={isActive('/podcasts') ? {backgroundColor: 'rgba(61, 174, 172,.15'} : null}>Podcasts</div>
                         </Link>
                         <Link href='/blogs'>
-                            <div className='NavigationItem' style={isActive('/blogs') ? {backgroundColor: 'rgba(61, 174, 172,.2'} : null}>Blogs</div>
+                            <div className='NavigationItem' style={isActive('/blogs') ? {backgroundColor: 'rgba(61, 174, 172,.15'} : null}>Blogs</div>
                         </Link>
                 </div>
 
@@ -127,23 +130,23 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
             text-transform: uppercase;
             letter-spacing: 1px;
             line-height: 1;
-            background-color: rgba(61, 174, 172,.2);
+            background-color: rgba(61, 174, 172,.15);
             transition: all .2s;
             cursor: pointer;
         }
 
         .PageNavigation {
+            width: 100%;
             margin-top: 4rem;
         }
         .NavigationItem {
             font-size: 1.4rem;
-            text-align: center;
             color: #3DAEAC;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
             padding: 8px 18px;
-            border-radius: 200px;
+            border-radius: 5px;
         }
         .NavigationItem:not(:last-child) {
             margin-bottom: 2rem;

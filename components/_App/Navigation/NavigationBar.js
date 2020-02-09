@@ -17,7 +17,9 @@ const Navigation = ({ user, openDrawer }) => {
 
     return (<>
         <nav className='NavigationContainer'>
+            {/*
             <Container style={{height: '100%'}}>
+            */}
                 <div className='NavigationWrapper'>
                     <Link href='/'>
                         <div className='Logo'>
@@ -50,7 +52,9 @@ const Navigation = ({ user, openDrawer }) => {
                     </div> 
                     <div className='DrawerToggle' onClick={openDrawer}></div>
                 </div>
+                {/*
                 </Container>
+                */}
         </nav>
     <style jsx>{`
     .NavigationContainer {
@@ -62,6 +66,7 @@ const Navigation = ({ user, openDrawer }) => {
     .NavigationWrapper {
         width: 100%;
         height: 100%;
+        padding: 0 2rem;
         display: grid;
         grid-template-columns: 1fr 2fr 1fr;
         align-items: center;
@@ -166,6 +171,7 @@ const Navigation = ({ user, openDrawer }) => {
     @media(max-width: 767px) {
         .NavigationWrapper {
             grid-template-columns: 1fr min-content;
+            padding: 0 1rem;
         }
         .AccountNavigation {
             display: none;

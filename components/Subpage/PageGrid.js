@@ -2,10 +2,6 @@ import Card from '../_App/Card';
 
 const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLike, handleEntityUnlike }) => {
 
-    console.log("Top we got was ", top);
-    console.log("Top length is ", top.length);
-    console.log("Latest we got was ", latest);
-
     const [displayedInRow, setDisplayedInRow] = React.useState(1);
     // Number 1 top entity is shown above sliding row, so we need to start with the second element
     const [startingTop, setStartingTop] = React.useState(1);
@@ -17,7 +13,6 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
     }, []);
 
     function calculateDisplayedInRow() {
-        console.log("Component mounted or window size changed, re-calculating");
         const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         if(vw > 1199) {
             setDisplayedInRow(4);
@@ -96,60 +91,62 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
             { top.length >= 1 ?
             <div className='TrendingContainer'>
                 <h2 className='TopTrendingHeader'>Trending</h2>
-                <div className='TopTrendingBox' onClick={() => triggerDetailModal(top[0])}>
-                    <div className='TopTrendingLeft'>
-                        <div className='TopTrendingImage' style={{backgroundImage: `url('${top[0].imageUrl}')`}}>
-                            <div className='TopTrendingNumberOne'>
-                                <span>#1</span>
+                <div className='TrendingInnerContainer'>
+                    <div className='TopTrendingBox' onClick={() => triggerDetailModal(top[0])}>
+                        <div className='TopTrendingLeft'>
+                            <div className='TopTrendingImage' style={{backgroundImage: `url('${top[0].imageUrl}')`}}>
+                                <div className='TopTrendingNumberOne'>
+                                    <span>#1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='TopTrendingRight'>
+                            <h2 className='TopTrendingTitle'>{top[0].title}</h2>
+                            <p className='TopTrendingDescription'>{top[0].description}</p>
+                            {top[0].frequency ? <p className='TopTrendingFrequency'>Released {getFrequencyText(top[0].frequency)}</p> : null}
+                        
+                            <div className='TopTrendingAuthorContainer'>
+                                { top[0].authors.map((author) => {
+                                    return (
+                                        <div key={author.authorTwitterUsername} className='TopTrendingAuthor'>
+                                            <img className='TopTrendingAuthorImage' src={author.authorTwitterProfileImageUrl} />
+                                            <h4 className='TopTrendingAuthorName'>{author.authorName}</h4>
+                                            <a className='TopTrendingAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
-                    <div className='TopTrendingRight'>
-                        <h2 className='TopTrendingTitle'>{top[0].title}</h2>
-                        <p className='TopTrendingDescription'>{top[0].description}</p>
-                        {top[0].frequency ? <p className='TopTrendingFrequency'>Released {getFrequencyText(top[0].frequency)}</p> : null}
                     
-                        <div className='TopTrendingAuthorContainer'>
-                            { top[0].authors.map((author) => {
-                                return (
-                                    <div key={author.authorTwitterUsername} className='TopTrendingAuthor'>
-                                        <img className='TopTrendingAuthorImage' src={author.authorTwitterProfileImageUrl} />
-                                        <h4 className='TopTrendingAuthorName'>{author.authorName}</h4>
-                                        <a className='TopTrendingAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
-                                    </div>
-                                );
-                            })}
+                    { top.length > 1 ? <>
+                    <div className='SlideControlRow'>
+                        <div className='SlideControlLeft' onClick={handleTrendingBackClick}>
+                            <img style={{transform: 'rotate(180deg)'}} className='SlideControlArrow' src='/static/arrow.svg'/>
+                            <p className='SlideControlLabel'>Go Back</p>
+                        </div>
+
+                        <div className='SlideControlRight' onClick={handleTrendingMoreClick}>
+                            <p className='SlideControlLabel'>Show More</p>
+                            <img className='SlideControlArrow' src='/static/arrow.svg'/>
                         </div>
                     </div>
-                </div>
-                
-                { top.length > 1 ? <>
-                <div className='SlideControlRow'>
-                    <div className='SlideControlLeft' onClick={handleTrendingBackClick}>
-                        <img style={{transform: 'rotate(180deg)'}} className='SlideControlArrow' src='/static/arrow.svg'/>
-                        <p className='SlideControlLabel'>Go Back</p>
+                    <div className='CardGrid'>
+                        {top.slice(startingTop, startingTop+displayedInRow).map(entity => {
+                            return (
+                                <Card 
+                                    preliked={likes.includes(parseInt(entity.id))} 
+                                    user={user} 
+                                    key={entity.title} 
+                                    entity={entity} 
+                                    triggerDetailModal={triggerDetailModal}
+                                    handleEntityLike={handleEntityLike}
+                                    handleEntityUnlike={handleEntityUnlike}/>
+                            );
+                        })}
                     </div>
-
-                    <div className='SlideControlRight' onClick={handleTrendingMoreClick}>
-                        <p className='SlideControlLabel'>Show More</p>
-                        <img className='SlideControlArrow' src='/static/arrow.svg'/>
-                    </div>
+                    </> : null }
                 </div>
-                <div className='CardGrid'>
-                    {top.slice(startingTop, startingTop+displayedInRow).map(entity => {
-                        return (
-                            <Card 
-                                preliked={likes.includes(parseInt(entity.id))} 
-                                user={user} 
-                                key={entity.title} 
-                                entity={entity} 
-                                triggerDetailModal={triggerDetailModal}
-                                handleEntityLike={handleEntityLike}
-                                handleEntityUnlike={handleEntityUnlike}/>
-                        );
-                    })}
-                </div>
-                </> : null }
             </div> : null }
 
             { latest.length >= 1 ?
@@ -179,7 +176,6 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
                         );
                     })}
                 </div>
-
             </div> : null }
 
     
@@ -187,7 +183,6 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         <style jsx>{`
         .TrendingContainer {
             margin-bottom: 6rem;
-            padding: 0 2rem 2rem 2rem;
             background-color: rgba(61, 174, 172, .15);
             border-radius: 10px;
             box-shadow: 0 1px 1px rgba(0,0,0,.03),
@@ -201,9 +196,11 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
             background-color: rgba(61, 174, 172,.12);
             border-bottom: 3px solid rgba(61, 174, 172,.1);
             padding: 1rem 0;
-            margin: 0 -2rem 2rem -2rem;
+            margin: 0;
         }
-
+        .TrendingInnerContainer {
+            padding: 2rem;
+        }
         .CardGrid {
             display: grid;
             grid-template-columns: repeat(${displayedInRow}, 1fr);
@@ -360,11 +357,11 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         }
 
         @media (max-width: 767px) {
-            .TopTrendingContainer {
-                padding: 0 1rem 1rem 1rem;
+            .TrendingContainer {
+                margin-bottom:0;
             }
-            .TopTrendingHeader {
-                margin: 0 -1rem 1rem -1rem;
+            .TrendingInnerContainer {
+                padding: 1rem;
             }
             .TopTrendingBox {
                 flex-direction: column;
@@ -380,7 +377,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
             }
             .CardGrid {
                 grid-template-columns: none;
-                grid-template-rows: repeat(${displayedInRow}, 1fr);
+                grid-template-rows: repeat(${Math.min(displayedInRow, top.length-1)}, 1fr);
             }
             .SlideControlLeft,
             .SlideControlRight {

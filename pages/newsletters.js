@@ -9,7 +9,7 @@ import axios from 'axios';
 import cookie from 'js-cookie';
 import { parseCookies } from 'nookies';
 
-const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initFeatured }) => {
+const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes }) => {
     // ENTITIES STATE
     const [top, setTop] = React.useState(topNewsletters);
     const [latest, setLatest] = React.useState(latestNewsletters);
@@ -36,15 +36,15 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
         }
     }, [categories, dateSpan])
 
-    function handleCategoryClick(e, { value }) {
-        if(categories.includes(value)) {
+    function handleCategoryClick(category) {
+        if(categories.includes(category)) {
             // If categories already includes this, remove it
             setCategories(categories.filter((element) => {
-                return element != value
+                return element != category
             }))
         } else {
             // Otherwise, add to categories
-            setCategories(categories.concat(value))
+            setCategories(categories.concat(category))
         }
     }
 
@@ -70,16 +70,19 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
         const apiTopPayload = {
             params: { secId: 1, days: daysToSearch }
         };
+        console.log("Filter change - getting top newsletter IDs (mongodb)");
         const apiTopResponse = await axios.get(apiTopUrl, apiTopPayload);
 
         // Request the entries matching these IDs from CMS, filtered by categories
         const topUrl = `${baseCraftUrl}/newsletters.json`;
         const topPayload = { params: new URLSearchParams({ id: apiTopResponse.data, categories: categories }) };
+        console.log("Filter change - getting top newsletters (Craft)");
         const topResponse = await axios.get(topUrl, topPayload);
 
         // Request the latest newsletters, filtered by categories
         const latestUrl = `${baseCraftUrl}/newsletters/latest.json`;
         const latestPayload = { params: new URLSearchParams({ categories: categories }) };
+        console.log("Filter change - getting latest newsletters (Craft)");
         const latestResponse = await axios.get(latestUrl, latestPayload);
 
         setTop(topResponse.data.newsletters);
@@ -98,6 +101,7 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
         const token = cookie.get('token');
         // Sending user token along with this reqest to only allow authorized users to like stuff
         const headers = { headers: { Authorization: token } };
+        console.log("Posting new like (mongodb)");
         const userLikeResponse = await axios.post(url, payload, headers);
     }
     
@@ -116,11 +120,11 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
             params: { entityId },
             headers: { Authorization: token } 
         };
+        console.log("Deleting like (mongodb)");
         const userUnlikeResponse = await axios.delete(url, payload);
     }
 
     function triggerDetailModal(entity) {
-        console.log("Triggering modal with entity:", entity);
         setDetailModalEntity(entity);
         setDetailModalOpen(true);
     }
@@ -130,7 +134,7 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
         <HeroCarousel featured={initFeatured}></HeroCarousel>
         */}
         <Container>
-            <h1 style={{marginTop: '4rem'}}>Newsletters</h1>
+            <h1 className='Header'>Newsletters</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
@@ -156,6 +160,18 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes, initF
             handleEntityLike={handleEntityLike}
             handleEntityUnlike={handleEntityUnlike}
         />
+
+        <style jsx>{`
+        .Header {
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 767px) {
+            .Header {
+                margin-top: 1rem;
+            }
+        }
+        `}</style>
     </>);
 }
 
@@ -169,14 +185,17 @@ Newsletters.getInitialProps = async ctx => {
     };
     
     // Get array of the top liked newsletters in the last 7 days from Mongo database
+    console.log("Getting initial top newsletter IDs (mongodb)");
     const topNewslettersResponse = await axios.get(topUrl, topNewslettersPayload);
     // Get those newsletters from CMS
     const newslettersByIdUrl = `${baseCraftUrl}/newsletters.json`;
     const newslettersByIdPayload = { params: new URLSearchParams({ id: topNewslettersResponse.data }) };
+    console.log("Getting initial top newsletters (Craft)");
     const newslettersByIdResponse = await axios.get(newslettersByIdUrl, newslettersByIdPayload);
     
     // Get most recently added newsletters from CMS
     const latestNewslettersUrl = `${baseCraftUrl}/newsletters/latest.json`;
+    console.log("Getting initial latest newsletters (Craft)");
     const latestNewslettersResponse = await axios.get(latestNewslettersUrl);
 
     // Get likes, to display appropriate thumbs-ups    
@@ -185,6 +204,7 @@ Newsletters.getInitialProps = async ctx => {
     if(token) {
         const url = `${baseUrl}/api/like`;
         const payload = { headers: { Authorization: token } };
+        console.log("Getting initial likes (mongodb)");
         const getLikesResponse = await axios.get(url, payload);
         likeArray = getLikesResponse.data.map(like => {
             return( like.entity );
@@ -192,16 +212,11 @@ Newsletters.getInitialProps = async ctx => {
     } else {
         likeArray = [];
     }
-
-    // Getting featured entries to display in hero carousel
-    const featuredAllUrl = `${baseCraftUrl}/featured.json`;
-    const featuredAllResponse = await axios.get(featuredAllUrl);
     
     return {
         initLikes: likeArray,
         topNewsletters: newslettersByIdResponse.data.newsletters || [],
         latestNewsletters: latestNewslettersResponse.data.newsletters || [],
-        initFeatured: featuredAllResponse.data.data
     }
 }
 

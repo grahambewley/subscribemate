@@ -36,15 +36,15 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
         }
     }, [categories, dateSpan])
 
-    function handleCategoryClick(e, { value }) {
-        if(categories.includes(value)) {
+    function handleCategoryClick(category) {
+        if(categories.includes(category)) {
             // If categories already includes this, remove it
             setCategories(categories.filter((element) => {
-                return element != value
+                return element != category
             }))
         } else {
             // Otherwise, add to categories
-            setCategories(categories.concat(value))
+            setCategories(categories.concat(category))
         }
     }
 
@@ -68,7 +68,7 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
         // Get array of top podcast IDs in order using last X days
         const apiTopUrl = `${baseUrl}/api/top`;
         const apiTopPayload = {
-            params: { secId: 1, days: daysToSearch }
+            params: { secId: 2, days: daysToSearch }
         };
         const apiTopResponse = await axios.get(apiTopUrl, apiTopPayload);
 
@@ -120,7 +120,6 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
     }
 
     function triggerDetailModal(entity) {
-        console.log("Triggering modal with entity:", entity);
         setDetailModalEntity(entity);
         setDetailModalOpen(true);
     }
@@ -130,7 +129,7 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
         <HeroCarousel featured={initFeatured}></HeroCarousel>
         */}
         <Container>
-            <h1 style={{marginTop: '4rem'}}>Podcasts</h1>
+            <h1 className='Header'>Podcasts</h1>
             <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
@@ -156,6 +155,18 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
             handleEntityLike={handleEntityLike}
             handleEntityUnlike={handleEntityUnlike}
         />
+
+        <style jsx>{`
+        .Header {
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 767px) {
+            .Header {
+                margin-top: 1rem;
+            }
+        }
+        `}</style>
     </>);
 }
 
@@ -193,15 +204,10 @@ Podcasts.getInitialProps = async ctx => {
         likeArray = [];
     }
 
-    // Getting featured entries to display in hero carousel
-    const featuredAllUrl = `${baseCraftUrl}/featured.json`;
-    const featuredAllResponse = await axios.get(featuredAllUrl);
-    
     return {
         initLikes: likeArray,
         topPodcasts: podcastsByIdResponse.data.podcasts || [],
         latestPodcasts: latestPodcastsResponse.data.podcasts || [],
-        initFeatured: featuredAllResponse.data.data
     }
 }
 

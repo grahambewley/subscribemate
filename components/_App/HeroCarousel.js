@@ -1,9 +1,11 @@
 import React from 'react';
-import { Container, Segment, Label } from 'semantic-ui-react';
+import { Segment, Label } from 'semantic-ui-react';
+import Container from './Container';
+import { usePalette } from 'react-palette';
 
-const Hero = ({ featured }) => {
+const Hero = ({ featured, triggerDetailModal }) => {
   const [displaySlide, setDisplaySlide] = React.useState(0);
-  
+
   React.useEffect(() => {
     const wrapper = document.querySelector('.HeroWrapper');
     if(displaySlide == 0) {
@@ -28,12 +30,19 @@ const Hero = ({ featured }) => {
     
   }, [displaySlide]);
 
+  
+
   const slides = featured.map((feature, index) => {
     return generateSlide(feature, index);
   });
   slides.push(generateSlide(featured[0]));
 
   function generateSlide(feature, index) {
+
+    const { data } = usePalette(feature.imageUrl);
+    const direction = Math.floor(Math.random()*360) + 'deg';
+    console.log("Direction: ", direction);
+
     function sectionNameFromId(sectionId) {
       switch(sectionId) {
         case '1':
@@ -83,8 +92,8 @@ const Hero = ({ featured }) => {
     }
 
     return (
-      <div className='HeroSlide' key={index}>
-        <Container>
+      <div className='HeroSlide' key={index} onClick={() => triggerDetailModal(feature)}>
+        <Container style={{minWidth: '100%'}}>
           <div className='DetailsContainer'>
             <div className='FeatureImage'>
               
@@ -105,36 +114,16 @@ const Hero = ({ featured }) => {
         width: 100vw; 
         display: flex;
         align-items: center;
+        cursor: pointer;
       }
       .HeroSlide::before {
         content: '';
         position: absolute;
         z-index: -1;
-        left: -50%;
-        top: -50%;
-        height: 200%;
-        width: 200%;
-        background-image: url('${feature.imageUrl}');
-        background-position: center;
-        background-size: cover;
-        filter: contrast(175%) blur(85px) brightness(80%);
-        animation: 15s filterShift ease-in-out infinite;
+        height: 100%;
+        width: 100%;
+        background-image: linear-gradient( 45deg,  ${data.vibrant}, ${data.muted});
       }
-
-      @keyframes filterShift {
-        0% {
-          transform: translateX(-100px);
-        }
-
-        50% {
-          transform: translateX(100px);
-        }
-
-        100% {
-          transform: translateX(-100px);
-        }
-      }
-
       .DetailsContainer {
         width: 100%;
         height: 100%;
@@ -156,7 +145,7 @@ const Hero = ({ featured }) => {
         padding: 1px 6px;
         margin-bottom: 5px;
         border-radius: 200px;
-        background-color: rgba(255,255,255,.2);
+        background-color: rgba(255,255,255,.3);
         font-size: .8rem;
         text-transform: uppercase;
         font-weight: 200;
@@ -170,7 +159,7 @@ const Hero = ({ featured }) => {
       }
       .FeatureFrequency {
         text-transform: uppercase;
-        font-size: .8rem;
+        font-size: .9rem;
         position: relative;
         transform: translateX(calc(1.5rem + 2px));
       }
@@ -186,7 +175,7 @@ const Hero = ({ featured }) => {
         transform: translateX(calc(-100% - 2px));
       }
       .FeatureDescription {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
       }
 
       @media(max-width: 991px) {
@@ -197,16 +186,26 @@ const Hero = ({ featured }) => {
       @media(max-width: 767px) {
         .DetailsContainer {
           flex-direction: column;
+          align-items: flex-start;
         }
         .FeatureImage {
           align-self: flex-start;
           height: 150px;
-          width: 100%;
+          min-width: 100%;
           margin-right: 0;
           margin-bottom: 1rem;
         }
         .HeroSlide::before {
           animation: none;
+        }
+        .FeatureTitle {
+          margin-bottom: 0;
+        }
+        .FeatureDescription {
+          display: none;
+        }
+        .FeatureFrequency {
+          display: none;
         }
       }
       `}</style>
