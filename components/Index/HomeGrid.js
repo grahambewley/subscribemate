@@ -174,7 +174,7 @@ const Grid = ({ user, likes,
                 }
                 .LoadMoreButton {
                     display: block;
-                    margin: 10px;
+                    margin: 1rem 10px;
                     text-align: center;
                     color: white;
                     background-color: #3daea3;
@@ -206,12 +206,11 @@ const Grid = ({ user, likes,
                         grid-template-columns: 1fr;
                         grid-gap: 56px;
                     }
-
-                    .MoreLink {
-                        font-size: 1.1rem;
-                        margin: 0;
+                    .LoadMoreButton {
+                        font-size: 1.2rem;
+                        letter-spacing: 1px;
+                        padding: 10px 0;
                         margin-top: 2rem;
-
                     }
                 } 
             `}</style>

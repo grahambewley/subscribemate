@@ -46,8 +46,9 @@ function Layout({ user, children }) {
                 <title>Feed Seek &mdash; The Freshest Newsletters, Podcasts, and Blogs</title>
                 
             </Head>
-            <Navigation user={user} openDrawer={() => setSideDrawerOpen(true)}/>
             <SideDrawer user={user} open={sideDrawerOpen} closeDrawer={() => setSideDrawerOpen(false)} />
+            
+            <Navigation user={user} openDrawer={() => setSideDrawerOpen(true)}/>
             <>
                 { children }
             </>

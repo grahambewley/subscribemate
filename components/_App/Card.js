@@ -299,7 +299,6 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 padding: 10px 12px;
                 margin: 0;
                 border-radius: 0;
-                border-top: 1px solid #ddd;
             }
             .CardAuthor {
                 display: flex;
