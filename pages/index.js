@@ -11,9 +11,15 @@ import { parseCookies } from 'nookies';
 const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initLatest, initFeatured }) => {
     const [likes, setLikes] = React.useState(initLikes);    
     
-    const [newsletters, setNewsletters] = React.useState(initNewsletters.slice(0,3));
-    const [podcasts, setPodcasts] = React.useState(initPodcasts.slice(0,3));
-    const [blogs, setBlogs] = React.useState(initBlogs.slice(0,3));
+    const [newsletters, setNewsletters] = React.useState(initNewsletters);
+    const [displayedNewsletterCount, setDisplayedNewsletterCount] = React.useState(3);
+    
+    const [podcasts, setPodcasts] = React.useState(initPodcasts);
+    const [displayedPodcastCount, setDisplayedPodcastCount] = React.useState(3);
+    
+    const [blogs, setBlogs] = React.useState(initBlogs);
+    const [displayedBlogCount, setDisplayedBlogCount] = React.useState(3);
+    
     const [latest, setLatest] = React.useState(initLatest.slice(0,3));
 
     const [detailModalOpen, setDetailModalOpen] = React.useState(false);
@@ -114,6 +120,19 @@ const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initL
         const userUnlikeResponse = await axios.delete(url, payload);
     }
 
+    function handleLoadMoreNewsletters() {
+        const newCount = displayedNewsletterCount + 3;
+        setDisplayedNewsletterCount(newCount);
+    }
+    function handleLoadMorePodcasts() {
+        const newCount = displayedNewsletterCount + 3;
+        setDisplayedPodcastCount(newCount);
+    }
+    function handleLoadMoreBlogs() {
+        const newCount = displayedNewsletterCount + 3;
+        setDisplayedBlogCount(newCount);
+    }
+
     return (<>
         <NextSeo
             title="FeedSeek &mdash; Discover Newsletters, Podcasts, and Blogs"
@@ -125,14 +144,22 @@ const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initL
             triggerDetailModal={triggerDetailModal}
         />
         <HomeGrid
+            user={user}
             likes={likes}
+            
             handleEntityLike={handleEntityLike}
             handleEntityUnlike={handleEntityUnlike}
-            user={user}
-            newsletters={newsletters}
-            podcasts={podcasts}
-            blogs={blogs}
+            
+            newsletters={newsletters.slice(0,displayedNewsletterCount)}
+            podcasts={podcasts.slice(0,displayedPodcastCount)}
+            blogs={blogs.slice(0,displayedBlogCount)}
+            
+            handleLoadMoreNewsletters={handleLoadMoreNewsletters}
+            handleLoadMorePodcasts={handleLoadMorePodcasts}
+            handleLoadMoreBlogs={handleLoadMoreBlogs}
+            
             latest={latest}
+            
             handleFilterChange={handleFilterChange}
             triggerDetailModal={triggerDetailModal}
         />
@@ -176,6 +203,8 @@ Home.getInitialProps = async ctx => {
     const topPodcastsResponse = await axios.get(topUrl, topPodcastsPayload);
     console.log("Running top blogs (mongodb) GET request");
     const topBlogsResponse = await axios.get(topUrl, topBlogsPayload);
+
+    console.log("Top Podcasts Response = ", topPodcastsResponse.data);
 
     // Request the entries matching these IDs from CMS
 

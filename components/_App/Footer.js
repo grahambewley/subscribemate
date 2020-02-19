@@ -4,18 +4,18 @@ const Footer = () => {
     return (<>
         <div className='FooterContainer'>
             <Container>
-                <h3>FOOTER CONTENT</h3>
+                <h3></h3>
             </Container>
 
         </div>
 
     <style jsx>{`
         .FooterContainer {
-            position: absolute;
             bottom: 0;
             width: 100%;
-            margin-top: 60px;
-            background-color: #f7f7f7;
+            padding: 3rem 0;
+            margin-top: 6rem;
+            background-color: #e3e3e3;
         }
     `}</style>
     </>);

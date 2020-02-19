@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
 import Container from './Container';
 
 const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened, entity, close }) => {
@@ -55,13 +55,51 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
         return ("https://www.twitter.com/" + username);
     }
 
+    function getFrequencyText(shorthand) {
+        // If the frequency is nothing, just return from this function
+        if(!shorthand) {
+            return;
+        }
+
+        if(shorthand === '7w'){
+            return "Daily";
+        } else {
+            let text = '';
+            const number = shorthand.slice(0, 1);
+            const range = shorthand.slice(1);
+
+            switch(number) {
+                case '1':
+                    break;
+                case '2':
+                    text += "Twice ";
+                    break;
+                default: 
+                    text += number + ' Times ';
+                    break;    
+            }
+    
+            switch(range) {
+                case 'w':
+                    text += "Weekly";
+                    break;
+                case 'm':
+                    text += "Monthly";
+                    break;
+                default: 
+                    break;
+            }
+            return text;
+        }
+    }
+
     return(<>
         { opened ?
         <div className='Backdrop' onClick={handleBackdropClick}>
             <Container>
             <div className='ModalContainer'>
                 <div className='ModalClose' onClick={close}>
-                    <FontAwesomeIcon style={{fontSize: '2rem'}} icon={faTimes} color='#ccc'/>
+                    <FontAwesomeIcon style={{fontSize: '2.5rem'}} icon={faTimes} color='white'/>
                 </div>
                 <div className='ModalDetails'>
                     <div className='ModalLeft'>
@@ -77,21 +115,30 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                         <span className='EntityTypeLabel'>{sectionNameFromId(entity.sectionId)}</span>
                         <h2 className='EntityName'>{entity.title}</h2>
                         <p className='EntityDescription'>{entity.description}</p>
-                        { entity.authors.length > 0 ? 
-                        <div className='AuthorContainer'>
-                            { entity.authors.map((author) => {
-                                return (
-                                    <div key={author.authorTwitterUsername} className='Author'>
-                                        <div className='AuthorGrid'>
-                                            <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
-                                            <h4 className='AuthorName'>{author.authorName}</h4>
-                                            <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                        <div className='ModalBottomRow'>
+                            { entity.authors.length > 0 ? 
+                                <div className='AuthorContainer'>
+                                    { entity.authors.map((author) => {
+                                        return (
+                                            <div key={author.authorTwitterUsername} className='Author'>
+                                                <div className='AuthorGrid'>
+                                                    <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
+                                                    <h4 className='AuthorName'>{author.authorName}</h4>
+                                                    <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            : null }
+
+                            { entity.frequency ?
+                            <div className='EntityFrequencyContainer'>
+                                <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
+                                <span className='EntityFrequency'>{getFrequencyText(entity.frequency)}</span>
+                            </div>
+                            : null }
                         </div>
-                        : null }
                     </div>
                 </div>
                 
@@ -108,6 +155,7 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                z-index: 200;
             }
             .ModalContainer {
                 background-color: white;
@@ -130,10 +178,12 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
             }
             .ModalClose {
                 position: absolute;
-                top: 1rem;
+                top: 0;
                 right: 1rem;
                 cursor: pointer;
-                z-index: 5;
+                z-index: 210;
+                transform: translateY(-3rem);
+                color: white;
             }
 
             .ModalDetails {
@@ -186,7 +236,12 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 font-size: 1.2rem;
             }
 
+            .ModalBottomRow {
+                display: grid;
+                grid-template-columns: 1fr max-content;
+            }
             .AuthorContainer {
+                grid-column: 1 / span 1;
                 display: flex;
             }
             .Author {
@@ -234,14 +289,28 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 text-decoration: underline;
             }
 
+            .EntityFrequencyContainer {
+                grid-column: 2 / span 1;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            .EntityFrequency {
+                text-transform: uppercase;
+                font-weight: 200;
+                letter-spacing: 1px;
+                opacity: .9
+            }
+
             .EntityButton {
                 display: inline-block;
-                padding: 8px 16px;
+                padding: 5px 10px;
                 border-radius: 200px;
                 background-color: rgba(60,174,163);
                 text-transform: uppercase;
                 font-weight: 100;
                 color: white;
+                font-size: .9rem;
                 letter-spacing: 1px;
                 transition: all .15s;
             }
@@ -254,7 +323,6 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
             @media(max-width: 767px) {
                 .ModalContainer {
                     padding: 1.5rem;
-                    padding-top: 3rem;
                 }
                 .ModalDetails {
                     grid-template-columns: none;
@@ -265,11 +333,33 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                     margin-bottom: 1rem;
                     align-items: flex-start;
                 }
+                .EntryLikeContainer {
+                    left: 5px;
+                    right: initial;
+                    width: 35px;
+                    height: 35px;
+                }
                 .EntityName {
                     margin: 0;
                     font-size: 1.8rem;
                     margin-bottom: 1rem;
                 }
+                .ModalBottomRow {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: repeat(2, min-content);
+                }
+                .AuthorContainer {
+                    grid-column: 1 / span 1;
+                    grid-row: 1 / span 1;
+                }
+                .AuthorName {
+                    font-size: 1.1rem;
+                }
+                .EntityFrequencyContainer {
+                    grid-column: 1 / span 1;
+                    grid-row: 2 / span 1;
+                }
+
             }
             `}</style>
         </div>

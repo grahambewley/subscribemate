@@ -4,9 +4,12 @@ import { parseCookies, destroyCookie } from 'nookies';
 import { redirectUser } from '../utils/auth';
 import baseUrl from '../utils/baseUrl';
 import axios from "axios";
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css'; // Import the CSS
+
+config.autoAddCss = false; // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
 class MyApp extends App {
-
     static async getInitialProps({ Component, ctx }) {
         // Use nookies library to get cookies from context object
         const { token } = parseCookies(ctx);
@@ -51,13 +54,18 @@ class MyApp extends App {
 
     render() {
         const { Component, pageProps } = this.props;
-        return (<div className='pageWrapper'>
+
+        return (
+        
+        <div className='pageWrapper'>
             <Layout {...pageProps}>
                 <Component {...pageProps} />
             </Layout>
             <style jsx>{`
             .pageWrapper {
-                background-color: #f6f6f6;
+                background-color: #f4f4f4;
+                min-height: 100vh;
+                position: relative;
             }
             `}</style>
         </div>);

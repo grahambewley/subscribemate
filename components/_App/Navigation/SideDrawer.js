@@ -1,9 +1,17 @@
 import Link from "next/link";
+import SearchResultsModal from '../SearchResultsModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/router";
 import { handleLogout } from '../../../utils/auth';
+import baseCraftUrl from '../../../utils/baseCraftUrl';
+import axios from 'axios';
 
 const SideDrawer = ({ user, open, closeDrawer }) => {
-    
+    const [searchQuery, setSearchQuery] = React.useState();
+    const [searchModalOpen, setSearchModalOpen] = React.useState(false);
+    const [searchResults, setSearchResults] = React.useState();
+
     const router = useRouter();
 
     function isActive(route) {
@@ -11,32 +19,57 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
     }
 
     function handleSidebarClick(e) {
-        if (e.target.classList.contains('SidebarContainer')) {
-            return;
-        } else {
+        if (e.target.classList.contains('SidebarBackdrop')) {
             closeDrawer();
+        } else {
+            return;
         }
     }
 
-    return (<>
+    function handleSearchInputChange(e) {
+        setSearchQuery(e.target.value);
+    }
 
+    async function handleSearch(e) {
+        e.preventDefault();
+        console.log("Going to search for ", searchQuery);
+        const url = `${baseCraftUrl}/search.json`;
+        const payload = { params: new URLSearchParams({ q: searchQuery }) };
+        const response = await axios.get(url, payload);
+        
+        setSearchResults(response.data.data);
+        setSearchModalOpen(true);
+    }
+
+    return (<>
+        { searchModalOpen ? 
+            <SearchResultsModal entities={searchResults} closeModal={() => setSearchModalOpen(false)}/>
+        : null }
         <div className='SidebarBackdrop' style={open ? { transform: 'translateX(0)'} : null} onClick={ handleSidebarClick }>
             <div className='SidebarContainer' style={open ? {transform: 'translateX(0)' } : null}>
                 <div className='SidebarCloseButton' onClick={closeDrawer}></div>
 
-                <div className='AccountNavigation'>
-                    {user ? (<>
-                        <span className='Greeting'>Hi, {user.name}</span>
-                        <div className='AccountButton' onClick={handleLogout}>Sign Out</div>
-                    </>) : (<>
-                        <Link href='/login'>
-                            <span className='AccountLink'>Log In</span>
-                        </Link>
-                        <Link href='/signup'>
-                            <div className='AccountButton'>Sign Up</div>
-                        </Link>
-                    </>)}
-                </div> 
+                <div className='SidebarTopContainer'>
+                    <div className='AccountNavigation'>
+                        {user ? (<>
+                            <span className='Greeting'>Hi, {user.name}</span>
+                            <div className='AccountButton' onClick={handleLogout}>Sign Out</div>
+                        </>) : (<>
+                            <Link href='/login'>
+                                <span className='AccountLink'>Log In</span>
+                            </Link>
+                            <Link href='/signup'>
+                                <div className='AccountButton'>Sign Up</div>
+                            </Link>
+                        </>)}
+                    </div> 
+                    <div className='SearchBar'>
+                        <form onSubmit={handleSearch}>
+                            <input onChange={handleSearchInputChange} type='search'/>
+                        </form>
+                        <FontAwesomeIcon icon={faSearch} style={{fontSize: '1.2rem'}} color='#3DAEAC'/>
+                    </div>
+                </div>
 
                 <div className='PageNavigation'>
                         <Link href='/'>
@@ -53,6 +86,10 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
                         </Link>
                 </div>
 
+                <div className='SubmitContainer'>
+                    <p>Got a Source We're Missing?</p>
+                    <button>Submit It</button>
+                </div>
             </div>
         </div>
         
@@ -64,7 +101,7 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
             right: 0;
             bottom: 0;
             background-color: rgba(0,0,0,.6);
-            z-index: 300;
+            z-index: 150;
             transform: translateX(100%);
         }
         .SidebarContainer {
@@ -74,15 +111,15 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
             height: 100%;
             right: 0;
             top: 0;
-            z-index: 301;
+            z-index: 160;
             background-color: white;
             transform: translateX(100%);
             transition: all .4s;
 
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-rows: 1fr 3fr 1fr;
             align-items: center;
-            padding: 8rem 1rem 1rem 1rem;
+            padding: 5rem 1rem;
         }
         .SidebarCloseButton {
             position: absolute;
@@ -105,9 +142,16 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
             background-color: #3DAEAC;
         }
 
+        .SidebarTopContainer {
+            grid-rows: 1 / span 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .AccountNavigation {
             display: flex;
             align-items: center;
+            justify-content: center;
         }
         .Greeting {
             color: #3DAEAC;
@@ -134,10 +178,29 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
             transition: all .2s;
             cursor: pointer;
         }
+        .SearchBar {
+            margin-top: 2rem;
+            background-color: rgba(61, 174, 172,.15);
+            padding: 5px 10px;
+            border-radius: 200px;
+            display: flex;
+            align-items: center;
+        }
+        .SearchBar input {
+            background-color: transparent;
+            border: none;
+            margin-right: 10px;
+        }
+        .SearchBar input:focus {
+            outline: none;
+        }
 
         .PageNavigation {
+            grid-rows: 2 / span 1;
             width: 100%;
-            margin-top: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .NavigationItem {
             font-size: 1.4rem;
@@ -150,6 +213,28 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
         }
         .NavigationItem:not(:last-child) {
             margin-bottom: 2rem;
+        }
+        .SubmitContainer {
+            grid-rows: 3 / span 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 170;
+        }
+        .SubmitContainer p {
+
+        }
+        .SubmitContainer button {
+            border: none;
+            margin: 0;
+            background-color: rgba(61, 174, 172,.65);
+            border-radius: 200px;
+            color: white;
+            padding: 10px 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
         }
 
         @media(min-width: 768px) {

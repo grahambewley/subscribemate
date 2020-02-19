@@ -24,7 +24,7 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
     const [categoriesModalOpen, setCategoriesModalOpen] = React.useState(false);
 
     function handleBackdropClick(e) {
-        if (e.target.classList.contains('CategoriesModal') || e.target.classList.contains('CategoryLabel')) {
+        if (e.target.classList.contains('CategoriesModal') || e.target.classList.contains('MobileCategoryLabel')) {
             return;
         }
         else {
@@ -132,24 +132,21 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
             .CategoryLabel {
                 display: flex;
                 align-items: center;
-                text-align: center;
                 cursor: pointer;
                 padding: 5px 10px;
                 border-radius: 5px;
                 background-color: rgba(60,174,163, .2);
                 line-height: 1;
-                font-weight: 400;
                 text-transform: uppercase;
                 font-size: .9rem;
                 letter-spacing: 1px;
-                color: rgba(0,0,0,.65)
+                color: rgba(0,0,0,.7);
                 transition: all .2s;
             }
             .CategoryLabel:hover {
                 background-color: rgba(60,174,163, .35);
             }
-            .CategoryLabel:not(:last-child),
-            .MobileCategoryLabel:not(:last-child) {
+            .CategoryLabel:not(:last-child) {
                 margin-right: 7px;
             }
             .CategoriesButton {
@@ -167,7 +164,7 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
 
             .CategoriesModalBackdrop {
                 position: fixed;
-                z-index: 3;
+                z-index: 100;
                 top: 0;
                 bottom: 0;
                 left: 0;
@@ -198,11 +195,15 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 color: rgba(0,0,0,.65);
-                margin-bottom: 7px;
+                margin-bottom: 10px;
+            }
+            .MobileCategoryLabel:not(:last-child) {
+                margin-right: 10px;
             }
             @media(max-width:767px) {
                 .CategoriesButton {
                     display: block;
+                    font-size: 1.1rem;
                 }
                 .TopCategoryContainer {
                     display: none;

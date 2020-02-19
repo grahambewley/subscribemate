@@ -12,7 +12,7 @@ const Hero = ({ featured, triggerDetailModal }) => {
       window.setTimeout(() => {
         wrapper.style.transition = 'all 0s';
         wrapper.style.transform = `translateX(-${displaySlide*100}vw)`;
-      }, 1000);
+      }, 450);
       
     } else {
       wrapper.style.transition = 'all .4s';
@@ -39,10 +39,11 @@ const Hero = ({ featured, triggerDetailModal }) => {
 
   function generateSlide(feature, index) {
 
-    const { data } = usePalette(feature.imageUrl);
-    const direction = Math.floor(Math.random()*360) + 'deg';
-    console.log("Direction: ", direction);
+    let fallbackColorDark = '#3e4268';
+    let fallbackColorLight = '#5f648f';
 
+    const { data } = usePalette(feature.imageUrl);
+    
     function sectionNameFromId(sectionId) {
       switch(sectionId) {
         case '1':
@@ -93,7 +94,7 @@ const Hero = ({ featured, triggerDetailModal }) => {
 
     return (
       <div className='HeroSlide' key={index} onClick={() => triggerDetailModal(feature)}>
-        <Container style={{minWidth: '100%'}}>
+        <Container style={{height: "100%"}}>
           <div className='DetailsContainer'>
             <div className='FeatureImage'>
               
@@ -101,7 +102,10 @@ const Hero = ({ featured, triggerDetailModal }) => {
             <div className='DetailsInnerContainer'>
               <span className='FeatureLabel'>Featured {sectionNameFromId(feature.sectionId)}</span>
               <h2 className='FeatureTitle'>{feature.title}</h2>
-              <p className='FeatureDescription'>{feature.description}</p>
+              { feature.description.length > 280 ?
+                <p className='FeatureDescription'>{feature.description.slice(0,120)}...</p>
+                : 
+                <p className='FeatureDescription'>{feature.description}</p> }
               {feature.frequency ? <p className='FeatureFrequency'>Released {getFrequencyText(feature.frequency)}</p> : null}
             </div>
           </div>
@@ -111,6 +115,7 @@ const Hero = ({ featured, triggerDetailModal }) => {
       .HeroSlide {
         position: relative;
         height: 100%;
+        padding: 2rem 0;
         width: 100vw; 
         display: flex;
         align-items: center;
@@ -122,23 +127,26 @@ const Hero = ({ featured, triggerDetailModal }) => {
         z-index: -1;
         height: 100%;
         width: 100%;
-        background-image: linear-gradient( 45deg,  ${data.vibrant}, ${data.muted});
+        background-image: linear-gradient( 45deg,  ${data.darkVibrant || fallbackColorDark}, ${data.muted || fallbackColorLight});
       }
       .DetailsContainer {
         width: 100%;
         height: 100%;
         color: white;
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-gap: 2rem;
         align-items: center;
       }
       .FeatureImage {
-        height: 250px;
-        width: 33%;
+        height: 100%;
         border-radius: 10px;
-        margin-right: 2rem;
         background-image: url('${feature.imageUrl}');
         background-position: center;
         background-size: cover;
+      }
+      .DetailsInnerContainer {
+        
       }
       .FeatureLabel {
         display: inline-block;
@@ -178,36 +186,47 @@ const Hero = ({ featured, triggerDetailModal }) => {
         font-size: 1.2rem;
       }
 
-      @media(max-width: 991px) {
-        .FeatureImage {
-          width: 50%;
-        }
-      }
-      @media(max-width: 767px) {
+      @media(max-width: 820px) {
         .DetailsContainer {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .FeatureImage {
-          align-self: flex-start;
-          height: 150px;
-          min-width: 100%;
-          margin-right: 0;
-          margin-bottom: 1rem;
-        }
-        .HeroSlide::before {
-          animation: none;
-        }
-        .FeatureTitle {
-          margin-bottom: 0;
+          grid-template-columns: none;
+          grid-template-rows: 1fr min-content;
+          grid-gap: 1rem;
         }
         .FeatureDescription {
           display: none;
         }
-        .FeatureFrequency {
-          display: none;
-        }
       }
+
+      // @media(max-width: 991px) {
+      //   .FeatureImage {
+      //     width: 50%;
+      //   }
+      // }
+      // @media(max-width: 767px) {
+      //   .DetailsContainer {
+      //     flex-direction: column;
+      //     align-items: flex-start;
+      //   }
+      //   .FeatureImage {
+      //     align-self: flex-start;
+      //     height: 150px;
+      //     min-width: 100%;
+      //     margin-right: 0;
+      //     margin-bottom: 1rem;
+      //   }
+      //   .HeroSlide::before {
+      //     animation: none;
+      //   }
+      //   .FeatureTitle {
+      //     margin-bottom: 0;
+      //   }
+      // .FeatureDescription {
+      //   display: none;
+      // }
+      //   .FeatureFrequency {
+      //     display: none;
+      //   }
+      // }
       `}</style>
       </div>
       

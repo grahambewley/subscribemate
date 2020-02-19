@@ -42,11 +42,13 @@ async function handleGetRequest(req, res) {
         const entityArray = likes.map(like => {
             return (like.entity);
         });
+        
         // Map to an object that stores each entity ID as a key and the number of occurences as its value
         var map = entityArray.reduce(function (p, c) {
             p[c] = (p[c] || 0) + 1;
             return p;
         }, {});
+        
         // Get an array of just the keys (entity IDs) from the object above, sorted by number of occurences
         var newTypesArray = Object.keys(map).sort(function (a, b) {
             return map[a] < map[b];

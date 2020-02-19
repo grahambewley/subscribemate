@@ -5,7 +5,12 @@ import Card from '../_App/Card';
 import Sidebar from './Sidebar/Sidebar';
 import FilterStrip from '../_App/FilterStrip';
 
-const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, podcasts, blogs, latest, handleFilterChange, triggerDetailModal }) => {
+const Grid = ({ user, likes, 
+                latest,
+                newsletters, podcasts, blogs, 
+                handleEntityLike, handleEntityUnlike,
+                handleLoadMoreNewsletters, handleLoadMorePodcasts, handleLoadMoreBlogs,
+                handleFilterChange, triggerDetailModal }) => {
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
 
@@ -71,7 +76,8 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
                                 );
                             })}
                         </div>
-                        <Link href='/newsletters'><a className='MoreLink'>More Newsletters</a></Link>
+                        <div className='LoadMoreButton' onClick={handleLoadMoreNewsletters}>Load More</div>
+                        <Link href='/newsletters'><a className='SubpageLink'>All Newsletters</a></Link>
                     </div>
                     
                     <div className='Column'>
@@ -92,7 +98,8 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
                                 );
                             })}
                         </div>
-                        <Link href='/podcasts'><a className='MoreLink'>More Podcasts</a></Link>
+                        <div className='LoadMoreButton' onClick={handleLoadMorePodcasts}>Load More</div>
+                        <Link href='/newsletters'><a className='SubpageLink'>All Podcasts</a></Link>
                     </div>
                     
                     
@@ -114,7 +121,8 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
                                 );
                             })}
                         </div>
-                        <Link href='/blogs'><a className='MoreLink'>More Blogs</a></Link>
+                        <div className='LoadMoreButton' onClick={handleLoadMoreBlogs}>Load More</div>
+                        <Link href='/newsletters'><a className='SubpageLink'>All Blogs</a></Link>
                     </div>
                 </div>
             </main>
@@ -146,18 +154,14 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
                     grid-gap: 32px;
                 }
 
-                @media(max-width: 767px) {
-                    .ColumnContainer {
-                        grid-template-columns: 1fr;
-                    }
-                } 
-
                 .CardColumn {
                     display: grid;
                     grid-template-columns: 1fr;
                     grid-gap: 20px;
                 }
-
+                .Column {
+                    position: relative;
+                }
                 .ColumnHeader {
                     cursor: pointer;
                     margin-bottom: 10px;
@@ -165,29 +169,51 @@ const Grid = ({ likes, handleEntityLike, handleEntityUnlike, user, newsletters, 
                     font-weight: 100;
                     letter-spacing: 2px;
                     text-transform: uppercase;
-                    color: #666;
-                    padding-left: 5px;
+                    opacity: .9;
+                    padding-left: 10px;
                 }
-                .MoreLink {
+                .LoadMoreButton {
                     display: block;
-                    margin: 0 1rem;
+                    margin: 10px;
                     text-align: center;
-                    margin-top: 1rem;
                     color: white;
                     background-color: #3daea3;
                     border-radius: 500px;
-                    padding: 5px 0;
+                    padding: 3px 0;
                     text-transform: uppercase;
                     transition: all .2s;
+                    cursor: pointer;
                 }
-                .MoreLink:hover {
+                .LoadMoreButton:hover {
                     transform: translateY(-2px);
                     box-shadow: 0 2px 3px rgba(0,0,0,0.08);
                 }
-                .MoreLink:active {
+                .LoadMoreButton:active {
                     transform: translateY(-1px);
                     box-shadow: 0 1px 1px rgba(0,0,0,.1);
                 }   
+                .SubpageLink {
+                    display: inline-block;
+                    margin: 0 auto;
+                    color: black;
+                    opacity: .7;
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+                @media(max-width: 767px) {
+                    .ColumnContainer {
+                        grid-template-columns: 1fr;
+                        grid-gap: 56px;
+                    }
+
+                    .MoreLink {
+                        font-size: 1.1rem;
+                        margin: 0;
+                        margin-top: 2rem;
+
+                    }
+                } 
             `}</style>
         </div>
         </Container>

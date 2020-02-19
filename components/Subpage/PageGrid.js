@@ -274,7 +274,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
         .TopTrendingAuthorContainer {
             margin-top: 0;
             border-radius: 10px;
-            background-color: rgba(255,255,255,.3);
+            background-color: rgba(255,255,255,.7);
             padding: 5px 10px 5px 5px;
         }
         .TopTrendingAuthor {

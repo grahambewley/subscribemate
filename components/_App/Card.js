@@ -134,9 +134,10 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
       </Modal>
         <style jsx>{`
         .CardContainer {
-            box-shadow: 0 1px 1px rgba(0,0,0,.03),
-                        0 2px 2px rgba(0,0,0,.03),
-                        0 4px 4px rgba(0,0,0,.03);
+            box-shadow: 0 1px 1px rgba(0,0,0,.04),
+                        0 2px 2px rgba(0,0,0,.04),
+                        0 4px 4px rgba(0,0,0,.04),
+                        0 8px 8px rgba(0,0,0,.04);
             border-radius: 10px;
             overflow: hidden;
             transition: all .17s;
@@ -147,23 +148,21 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             display: grid;
             grid-template-rows: 120px 1fr repeat(3, min-content);
         }
-        .CardContainer i {
-            z-index: 40;
-        }
         .CardContainer:hover {
             transform: translateY(-5px);
-            box-shadow: 0 1px 1px rgba(0,0,0,0.03), 
-                        0 2px 2px rgba(0,0,0,0.03), 
-                        0 4px 4px rgba(0,0,0,0.03), 
-                        0 8px 8px rgba(0,0,0,0.03);
-                        0 16px 16px rgba(0,0,0,0.03),
-                        0 32px 32px rgba(0,0,0,0.03);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05), 
+                        0 2px 2px rgba(0,0,0,0.05), 
+                        0 4px 4px rgba(0,0,0,0.05), 
+                        0 8px 8px rgba(0,0,0,0.05);
+                        0 16px 16px rgba(0,0,0,0.05),
+                        0 32px 32px rgba(0,0,0,0.05);
         }
         .CardContainer:active {
             transform: translateY(0);
-            box-shadow: 0 1px 1px rgba(0,0,0,.03),
-                        0 2px 2px rgba(0,0,0,.03),
-                        0 4px 4px rgba(0,0,0,.03);
+            box-shadow: 0 1px 1px rgba(0,0,0,.04),
+                        0 2px 2px rgba(0,0,0,.04),
+                        0 4px 4px rgba(0,0,0,.04),
+                        0 8px 8px rgba(0,0,0,.04);
         }
         .CardImageContainer {
             position: relative;
@@ -218,7 +217,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             margin: 5px;
             margin-top: 0;
             border-radius: 10px;
-            background-color: #f1f1f1;
+            background-color: #f0f0f0;
             padding: 8px;
         }
         .CardAuthor {
@@ -278,6 +277,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 grid-column: 1 / span 1;
                 grid-row: 1 / -1;
                 clip-path: none;
+                border-right: 1px solid #ddd;
             }
             .CardLikeContainer {
                 left: 5px;
@@ -286,18 +286,27 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 height: 30px;
                 opacity: 1;
             }
+            .CardName {
+                font-size: 1.35rem;
+            }
+            .CardDescription {
+                font-size: 1.1rem;
+            }
             .CardFrequencyContainer {
                 display: none;
             }
             .CardAuthorContainer {
-                background-color: inherit;
-                padding: 0;
+                padding: 10px 12px;
                 margin: 0;
+                border-radius: 0;
+                border-top: 1px solid #ddd;
             }
             .CardAuthor {
-                padding: 0 10px 6px 10px;
                 display: flex;
                 justify-content: space-between;
+            }
+            .CardAuthorName {
+                font-size: 1.1rem;
             }
             .CardAuthorImage {
                 display: none;
