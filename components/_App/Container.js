@@ -22,7 +22,7 @@ const Container = ({ children, style }) => {
         @media(max-width: 767px) {
             .Container {
                 width: 100%;
-                margin: 0 1em; 
+                padding: 0 1em; 
             }
         }
         `}</style>

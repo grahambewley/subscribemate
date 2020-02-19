@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { initGA, logPageView } from "./GoogleAnalytics.js";
 import Navigation from './Navigation/NavigationBar'
 import Footer from './Footer';
 import HeadContent from './HeadContent';
@@ -7,12 +9,25 @@ import SubmitMissing from './SubmitMissing';
 
 function Layout({ user, children }) {
     const [sideDrawerOpen, setSideDrawerOpen] = React.useState(false);
+    const router = useRouter();
+
+    React.useEffect(() => {
+        console.info("Layout useEffect triggered");
+        if(process.env.NODE_ENV === "production") {
+            if (!window.GA_INITIALIZED) {
+                console.log("Initializing Google Analytics");
+                initGA();
+                window.GA_INITIALIZED = true;
+            }
+            console.log("Logging page view to GA");
+            logPageView();
+        }
+    }, [router.pathname]);
 
     return (
         <>
-            <Head>
+            <Head>                
                 <HeadContent />
-                
                 <link
                     rel="stylesheet"
                     href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css"

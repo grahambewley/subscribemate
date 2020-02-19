@@ -166,6 +166,13 @@ const Submit = () => {
             background-color: rgba(60,174,163, .2);
             color: rgb(60,174,163);
         }
+
+        @media(max-width: 767px) {
+            .FormContainer {
+                margin: 1rem auto 0 auto;
+                padding: 2rem;
+            }
+        }
         `}</style>
     </>);
 }

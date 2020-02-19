@@ -88,7 +88,9 @@ const SideDrawer = ({ user, open, closeDrawer }) => {
 
                 <div className='SubmitContainer'>
                     <p>Got a Source We're Missing?</p>
-                    <button>Submit It</button>
+                    <Link href='/submit'>
+                        <button>Submit It</button>
+                    </Link>
                 </div>
             </div>
         </div>
