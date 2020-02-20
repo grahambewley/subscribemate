@@ -53,7 +53,8 @@ const Submit = () => {
         <Container>
              <div className='FormContainer'>
                 <h1>Submit a Source</h1>
-                <p>We're working on filling out our database of sources so we can help more users discover great newsletters, podcasts, and blogs. If you have a favorite source that isn't yet listed in our database, please let us know about them below. New sources are added daily!</p>
+                <p>We're working on filling out our database of sources so we can help more users discover great news content. If you have a favorite source that isn't yet listed in our database, please let us know about them below.</p>
+                <p>New sources are added daily!</p>
 
                 <form id='submissionForm' onSubmit={handleSourceSubmit}>
                     <div className='FormInput'>
@@ -102,7 +103,7 @@ const Submit = () => {
         <style jsx>{`
         .FormContainer {
             max-width: 768px;
-            margin: 6rem auto 0 auto;
+            margin: 4rem auto 0 auto;
             padding: 3rem;
             background-color: white;
             border-radius: 10px;

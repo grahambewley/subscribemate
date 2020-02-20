@@ -47,7 +47,6 @@ function Layout({ user, children }) {
                 
             </Head>
             <SideDrawer user={user} open={sideDrawerOpen} closeDrawer={() => setSideDrawerOpen(false)} />
-            
             <Navigation user={user} openDrawer={() => setSideDrawerOpen(true)}/>
             <>
                 { children }

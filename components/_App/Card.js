@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Icon, Modal, Header, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +8,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
     const [liked, setLiked] = React.useState(preliked);
     const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
 
+    const router = useRouter();
 
     function handleCardClick(e) {
         // If the thing clicked was the like button, do nothing here
@@ -120,16 +122,19 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             open={loginPromptOpen}
             onClose={() => setLoginPromptOpen(false)}
             size='small'
-            centered={false}
+            style={{transform:'translateY(-50%)'}}
         >
             <Header content='Please Log In' />
             <Modal.Content>
-                <h3>You must be logged in to do that.</h3>
+                <h3>Sorry, you have to be logged in to do that.</h3>
             </Modal.Content>
             <Modal.Actions>
-            <Button color='green' onClick={() => setLoginPromptOpen(false)}>
-                <Icon name='checkmark'/> Got It
-            </Button>
+                <Button onClick={() => router.push('/login')}>
+                    Log In
+                </Button>
+                <Button color='green' onClick={() => router.push('/signup')}>
+                    Sign Up
+                </Button>
             </Modal.Actions>
       </Modal>
         <style jsx>{`
