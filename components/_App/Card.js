@@ -1,8 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Icon, Modal, Header, Button } from 'semantic-ui-react';
+import CategoryIcon from './CategoryIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDay} from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDay, faBinoculars} from '@fortawesome/free-solid-svg-icons';
 
 const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, triggerDetailModal }) => {
     const [liked, setLiked] = React.useState(preliked);
@@ -98,9 +99,16 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             </div>
 
             { entity.frequency ?
-            <div className='CardFrequencyContainer'>
-                <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
-                <span className='CardFrequency'>{getFrequencyText(entity.frequency)}</span>
+            <div className='CardLowerDetailStrip'>
+                <div className='CardCategoriesContainer'>
+                    { entity.categories.map(category => {
+                        return <CategoryIcon category={ category }/>;
+                    })}
+                </div>
+                <div className='CardFrequencyContainer'>
+                    <FontAwesomeIcon style={{marginRight:'6px'}} icon={faCalendarDay} color='#aaa'/>
+                    <span className='CardFrequency'>{getFrequencyText(entity.frequency)}</span>
+                </div>  
             </div>
             : null }
 
@@ -205,11 +213,17 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             font-weight: 600;
             margin-bottom: 5px;
         }
-        .CardFrequencyContainer {
+        .CardLowerDetailStrip {
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin: 0 10px 5px 10px;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin: 10px;
+        }
+        .CardCategoriesContainer {
+            display: flex;
+        }
+        .CardFrequencyContainer {
+            text-align: right;
         }
         .CardFrequency {
             text-transform: uppercase;

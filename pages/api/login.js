@@ -7,6 +7,7 @@ connectDb();
 
 export default async (req, res) => {
     const { email, password } = req.body;
+    console.log("Password received is ", password);
     try {
         // Check to see if user exists with provided email
         // Since password was set to select:false in the schema, it's not returned by default. 

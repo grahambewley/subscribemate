@@ -5,7 +5,7 @@ const Footer = () => {
         <div className='FooterContainer'>
             <Container>
                 <div className='FooterList'>
-                    <p>Built by <a href='https://www.twitter.com/tweetsbygraham' target="_blank">Graham Bewley</a></p>
+                    <p>Built by your friend <a href='https://www.twitter.com/tweetsbygraham' target="_blank">Graham Bewley</a></p>
                 </div>
             </Container>
 
@@ -22,6 +22,11 @@ const Footer = () => {
         .FooterList {
             display: flex;
             justify-content: center;
+        }
+        .FooterList a {
+            color: inherit;
+            text-decoration: underline;
+            opacity: .8;
         }
     `}</style>
     </>);

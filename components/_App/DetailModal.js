@@ -158,6 +158,8 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 z-index: 200;
             }
             .ModalContainer {
+                max-width: 768px;
+                margin: 0 auto;
                 background-color: white;
                 padding: 2rem;
                 border-radius: 10px;
