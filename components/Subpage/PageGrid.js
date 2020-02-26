@@ -318,7 +318,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
             margin: 1rem 0;
         }
         .SlideControlHeader {
-            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+            // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
             letter-spacing: 1px;
             font-weight: 600;
             font-size: 1.8rem;
@@ -341,7 +341,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
             font-weight: 300;
             letter-spacing: 1px;
             opacity: .7;
-            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+            // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
             -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */

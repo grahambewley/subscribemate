@@ -1,10 +1,11 @@
 import React from 'react';
-import { Container, Button, Form, Icon, Message, Segment } from 'semantic-ui-react';
 import Link from 'next/link';
 import catchErrors from '../utils/catchErrors';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { handleLogin } from '../utils/auth';
+import Container from '../components/_App/Container';
+import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
 
 const INITIAL_USER = {
     name: '',
@@ -23,7 +24,7 @@ function Singup() {
         isCompleteUser ? setDisabled(false) : setDisabled(true);
     }, [user]);
 
-    function handleChange(event) {
+    function handleInputChange(event) {
         const { name, value } = event.target;
         setUser(prevState => ({ ...prevState, [name]: value }));
     }
@@ -47,69 +48,43 @@ function Singup() {
     }
 
     return <>
-    <Container text>
-        <Message
-            attached
-            icon="settings"
-            header="Get Started!"
-            content="Create a new account"
-            color="teal"
-        />
-        <Form error={Boolean(error)} loading={loading} onSubmit={handleSubmit}>
-        <Message 
-            error
-            header="Oops!"
-            content={error}
-        />
-        <Segment>
-            <Form.Input
-            fluid
-            icon="user"
-            iconPosition="left"
-            label="Name"
-            placeholder="Name"
-            name="name"
-            value={user.name}
-            onChange={handleChange}
-            />
-            <Form.Input
-            fluid
-            icon="envelope"
-            iconPosition="left"
-            label="Email"
-            placeholder="Email"
-            name="email"
-            type="email"
-            value={user.email}
-            onChange={handleChange}
-            />
-            <Form.Input
-            fluid
-            icon="lock"
-            iconPosition="left"
-            label="Password"
-            placeholder="Password"
-            name="password"
-            type="password"
-            value={user.password}
-            onChange={handleChange}
-            />
-            <Button
-            disabled={disabled || loading}
-            icon="signup"
-            type="submit"
-            color="orange"
-            content="Signup"
-            />
-        </Segment>
+    <Container>
+        <Form 
+            header='Get Started!'
+            instruction="Create a new account"
+            onSubmit={handleSubmit}
+            error={error ? error : null}
+            >
+            <FormInput
+                id='name-input' 
+                name='name' 
+                value={user.name}
+                type='text'
+                placeholder='Name' 
+                onChange={handleInputChange}
+                label='Name' />
+            <FormInput
+                id='email-input' 
+                name='email' 
+                value={user.email}
+                type='email'
+                placeholder='Email address' 
+                onChange={handleInputChange}
+                label='Email address' />
+            <FormInput
+                id='password-input' 
+                name='password' 
+                value={user.password}
+                type='password'
+                placeholder='Password' 
+                onChange={handleInputChange}
+                label='Password' />
+            <FormButton
+                disabled={disabled} >
+                Sign up
+            </FormButton>
+            <FormBottomCta>Already signed up? <Link href='/login'><a>Log in</a></Link></FormBottomCta>
         </Form>
-        <Message attached="bottom" warning>
-            <Icon name="help"/>
-            Existing user?{" "}
-            <Link href="/login">
-                <a>Log in here</a>
-            </Link>{" "}instead.
-        </Message>
     </Container>
   </>;
 }

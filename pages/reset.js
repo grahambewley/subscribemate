@@ -1,7 +1,6 @@
 import React from 'react';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form/Form';
-import Link from 'next/link';
+import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
 import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import cookie from 'js-cookie';

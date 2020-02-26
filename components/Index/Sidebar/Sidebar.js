@@ -25,7 +25,7 @@ const Sidebar = ({ latest, triggerDetailModal }) => {
                 }
             }
             .Sidebar {
-                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+                // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
                 background-color: #fff;
                 padding: 14px;
                 width: 100%;
@@ -33,10 +33,13 @@ const Sidebar = ({ latest, triggerDetailModal }) => {
                 box-shadow: 0 1px 2px rgba(0,0,0,.1);
             }
             .SidebarHeader {
-                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+                // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
                 font-weight: 600;
                 font-size: 1rem;
                 text-align: center;
+                padding: 10px 0;
+                border-radius: 10px;
+                background-color: rgba(60,174,163, .2);
             }
             .SmallCardColumn {
                 display: grid;

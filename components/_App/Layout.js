@@ -12,14 +12,11 @@ function Layout({ user, children }) {
     const router = useRouter();
 
     React.useEffect(() => {
-        console.info("Layout useEffect triggered");
         if(process.env.NODE_ENV === "production") {
             if (!window.GA_INITIALIZED) {
-                console.log("Initializing Google Analytics");
                 initGA();
                 window.GA_INITIALIZED = true;
             }
-            console.log("Logging page view to GA");
             logPageView();
         }
     }, [router.pathname]);

@@ -204,7 +204,9 @@ Home.getInitialProps = async ctx => {
     console.log("Running top blogs (mongodb) GET request");
     const topBlogsResponse = await axios.get(topUrl, topBlogsPayload);
 
+    console.log("Top Newsletters Response = ", topNewslettersResponse.data);
     console.log("Top Podcasts Response = ", topPodcastsResponse.data);
+    console.log("Top Blogs Response = ", topBlogsResponse.data);
 
     // Request the entries matching these IDs from CMS
 

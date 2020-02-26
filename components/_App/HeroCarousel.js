@@ -11,12 +11,12 @@ const Hero = ({ featured, triggerDetailModal }) => {
     if(displaySlide == 0) {
       window.setTimeout(() => {
         wrapper.style.transition = 'all 0s';
-        wrapper.style.transform = `translateX(-${displaySlide*100}vw)`;
+        wrapper.style.transform = `translate3d(-${displaySlide*100}vw, 0, 0)`;
       }, 450);
       
     } else {
       wrapper.style.transition = 'all .4s';
-      wrapper.style.transform = `translateX(-${displaySlide*100}vw)`;
+      wrapper.style.transform = `translate3d(-${displaySlide*100}vw, 0, 0)`;
     }
     
     // If we're on the last slide, jump immediately back to slide 0
@@ -35,10 +35,11 @@ const Hero = ({ featured, triggerDetailModal }) => {
   const slides = featured.map((feature, index) => {
     return generateSlide(feature, index);
   });
+
   slides.push(generateSlide(featured[0]));
 
+  
   function generateSlide(feature, index) {
-
     let fallbackColorDark = '#3e4268';
     let fallbackColorLight = '#5f648f';
 
@@ -93,7 +94,7 @@ const Hero = ({ featured, triggerDetailModal }) => {
     }
 
     return (
-      <div className='HeroSlide' key={index} onClick={() => triggerDetailModal(feature)}>
+      <div className='HeroSlide' onClick={() => triggerDetailModal(feature)}>
         <Container style={{height: "100%"}}>
           <div className='DetailsContainer'>
             <div className='FeatureImage'>

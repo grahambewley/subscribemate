@@ -1,9 +1,14 @@
-const Form = ({ header, instruction, onSubmit, children }) => {
+const Form = ({ header, instruction, onSubmit, children, error }) => {
     return (<>
         <div className='FormContainer'>
             <div className='FormHeaderContainer'>
                 <h1 className='FormHeader'>{ header }</h1>
             </div>
+            { error ? 
+            <div className='FormErrorContainer'>
+                { error }
+            </div>
+            : null }
             <div className='FormBodyContainer'>
                 <p className='FormInstruction'>{ instruction }</p>
                 <form onSubmit={ onSubmit }>
@@ -32,6 +37,12 @@ const Form = ({ header, instruction, onSubmit, children }) => {
         .FormHeader {
             
         }
+        .FormErrorContainer {
+            padding: 1rem 3rem;
+            background-color: rgba(204, 41, 54, .2);
+            border-bottom: 1px solid rgba(204, 41, 54, .2);
+            color: rgba(0,0,0,.9);
+        }
         .FormBodyContainer {
             padding: 2rem 3rem;
         }
@@ -44,7 +55,7 @@ const Form = ({ header, instruction, onSubmit, children }) => {
 
 export default Form;
 
-export const FormInput = ({ id, name, type, placeholder, label, onChange, warningText }) => {
+export const FormInput = ({ id, name, value, type, placeholder, label, onChange, warningText }) => {
 
     function handleInputFocus(e) {
         // When an input is focused, add the LabelPopped class to pop the label up
@@ -68,12 +79,12 @@ export const FormInput = ({ id, name, type, placeholder, label, onChange, warnin
             <input 
                 id={ id } 
                 name={ name } 
+                value={ value }
                 type={ type } 
                 placeholder={ placeholder }
                 onFocus={handleInputFocus} 
                 onBlur={handleInputBlur}
-                onChange={ onChange }
-                />
+                onChange={ onChange } />
             <label htmlFor={ id }>{ label }</label>
         </div>
 
@@ -119,9 +130,72 @@ export const FormInput = ({ id, name, type, placeholder, label, onChange, warnin
     </>)
 }
 
-export const FormButton = ({ children }) => {
+export const FormSelect = ({ children, id, name, value, options, label, onChange, warningText  }) => {
+
+    const optionElements = options.map(option => {
+        return (
+            <option
+                disabled={option.disabled}
+                selected={option.selected}
+                value={option.value}>{ option.text }</option>
+
+        )
+    })
+
     return (<>
-        <button type='submit' className='FormButton'>{ children }</button>
+        <div className='FormInput'>
+            { warningText ? 
+            <span className='FormInputWarningText'>{ warningText }</span>
+            : null }
+            <select 
+                id={ id } 
+                name={ name } 
+                value={ value }
+                onFocus={handleInputFocus} 
+                onBlur={handleInputBlur}
+                onChange={ onChange } >
+                
+                { optionElements }
+            </select>
+            <label htmlFor={ id }>{ label }</label>
+        </div>
+
+        <style jsx>{`
+        .FormInput {
+            display: flex;
+            flex-direction: column-reverse;
+            margin-bottom: .5rem;
+        }
+        .FormInput input {
+            border: 1px solid #ddd;
+            background-color: #fbfbfb;
+            border-radius: 5px;
+            padding: .75rem;
+            z-index: 2;
+        }
+        
+        .FormInput label {
+            margin: 0 0 5px .75rem;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all .25s;
+        }
+        .FormInput.LabelPopped label {
+            transform: translateY(0);
+            opacity: .7;
+        }
+        .FormInputWarningText {
+            margin: 3px 0 0 .75rem;
+            color: rgba(255,0,0,.5);
+            font-size: .9rem;
+        }
+        `}</style>
+    </>)
+}
+
+export const FormButton = ({ children, disabled }) => {
+    return (<>
+        <button type='submit' className='FormButton' disabled={disabled}>{ children }</button>
         <style jsx>{`
         .FormButton {
             margin-top: 1rem;
@@ -136,11 +210,15 @@ export const FormButton = ({ children }) => {
             color: white;
             transition: all .2s;
         }
-        .FormButton:hover {
+        .FormButton:disabled {
+            background-color: rgba(60,174,163, .4);
+        }
+        .FormButton:hover:not([disabled]) {
             background-color: rgba(60,174,163,.75);
             transform: translateY(-3px);
-            box-shadow: 0 2px 4px rgba(0,0,0,.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,.2);
         }
+
         `}</style>
     </>)
 }

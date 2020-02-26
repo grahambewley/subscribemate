@@ -1,10 +1,12 @@
 import React from 'react';
-import { Container, Button, Form, Icon, Message, Segment } from 'semantic-ui-react';
+// import { Container, Button, Form, Icon, Message, Segment } from 'semantic-ui-react';
 import Link from 'next/link';
 import catchErrors from '../utils/catchErrors';
 import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import { handleLogin } from '../utils/auth';
+import Container from '../components/_App/Container';
+import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
 
 const INITIAL_USER = {
   email: "",
@@ -22,7 +24,7 @@ function Login() {
         isCompleteUser ? setDisabled(false) : setDisabled(true);
     }, [user]);
 
-    function handleChange(event) {
+    function handleInputChange(event) {
         const { name, value } = event.target;
         setUser(prevState => ({ ...prevState, [name]: value }));
     }
@@ -45,8 +47,38 @@ function Login() {
     }
 
     return <>
-    <Container text>
-        <Message
+    <Container>
+        <Form 
+            header='Welcome back!'
+            instruction="Log in with your email address and password"
+            onSubmit={handleSubmit}
+            error={ error ? error : null }
+            >
+        
+            <FormInput
+                id='email-input' 
+                name='email' 
+                value={user.email}
+                type='email'
+                placeholder='Email address' 
+                onChange={handleInputChange}
+                label='Email address' />
+            <FormInput
+                id='password-input' 
+                name='password' 
+                value={user.password}
+                type='password'
+                placeholder='Password' 
+                onChange={handleInputChange}
+                label='Password' />
+            <FormButton
+                disabled={disabled} >
+                Login
+            </FormButton>
+            <FormBottomCta>New user? <Link href='/login'><a>Sign up</a></Link> instead</FormBottomCta>
+        </Form>
+        
+        {/* <Message
             attached
             icon="privacy"
             header="Welcome back!"
@@ -97,7 +129,7 @@ function Login() {
             <Link href="/signup">
             <a>Sign up here</a>
             </Link>{" "}instead.
-        </Message>
+        </Message> */}
     </Container>
     </>;
 }

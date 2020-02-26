@@ -38,23 +38,38 @@ async function handleGetRequest(req, res) {
             createdAt: {$gte: startDate}
         });
         
-        // Get array of entity IDs only, representing each like 
-        const entityArray = likes.map(like => {
-            return (like.entity);
+        // Get array of likes, storing the liked entity and the create date of the like 
+        const allLikesArray = likes.map(like => {
+            return ({ 
+                entity: like.entity,
+                createdAt: like.createdAt
+            });
         });
         
-        // Map to an object that stores each entity ID as a key and the number of occurences as its value
-        var map = entityArray.reduce(function (p, c) {
-            p[c] = (p[c] || 0) + 1;
-            return p;
+        // Reduce to an array that stores an object for each entity
+        // with the like quantity and most recent like date as properties
+        var likeQuantityArray = allLikesArray.reduce(function (workingArray, like) {            
+            workingArray[like.entity] = { 
+                // If this entity already exists in the array, start from that entitie's likeQuantity, otherwise, start from 0
+                // ...then increment
+                likeQuantity: (workingArray[like.entity] ? workingArray[like.entity].likeQuantity : 0) + 1,
+                // Set the mostRecentLike property to the latest createdAt date
+                // (likes are already sorted by date, so just keep storing this and we'll end up with the most recent one)
+                mostRecentLike: like.createdAt
+            }
+            return workingArray;
         }, {});
-        
-        // Get an array of just the keys (entity IDs) from the object above, sorted by number of occurences
-        var newTypesArray = Object.keys(map).sort(function (a, b) {
-            return map[a] < map[b];
+
+        // Get an array of just the entity IDs, sorted by number of occurences, then by mostRecentLike date
+        var sortedEntitiesByLikes = Object.keys(likeQuantityArray).sort(function (a, b) {
+            if(likeQuantityArray[a].likeQuantity == likeQuantityArray[b].likeQuantity) {
+                return likeQuantityArray[a].mostRecentLike < likeQuantityArray[b].mostRecentLike;
+            } else {
+                return likeQuantityArray[a].likeQuantity < likeQuantityArray[b].likeQuantity;
+            }
         });
-        
-        res.status(200).json(newTypesArray);
+    
+        res.status(200).json(sortedEntitiesByLikes);
     } catch(error) {
         console.error(error);
         res.error(403).send("Unable to retrieve top entities.");

@@ -70,7 +70,7 @@ const Grid = ({ user, likes,
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user} 
-                                        key={newsletter.title} 
+                                        key={newsletter.id} 
                                         entity={newsletter}
                                         triggerDetailModal={triggerDetailModal} />
                                 );
@@ -92,14 +92,14 @@ const Grid = ({ user, likes,
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user}
-                                        key={podcast.title}
+                                        key={podcast.id}
                                         entity={podcast}
                                         triggerDetailModal={triggerDetailModal} />
                                 );
                             })}
                         </div>
                         <div className='LoadMoreButton' onClick={handleLoadMorePodcasts}>Load More</div>
-                        <Link href='/newsletters'><a className='SubpageLink'>All Podcasts</a></Link>
+                        <Link href='/podcasts'><a className='SubpageLink'>All Podcasts</a></Link>
                     </div>
                     
                     
@@ -115,14 +115,14 @@ const Grid = ({ user, likes,
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user}
-                                        key={blog.title}
+                                        key={blog.id}
                                         entity={blog}
                                         triggerDetailModal={triggerDetailModal} />
                                 );
                             })}
                         </div>
                         <div className='LoadMoreButton' onClick={handleLoadMoreBlogs}>Load More</div>
-                        <Link href='/newsletters'><a className='SubpageLink'>All Blogs</a></Link>
+                        <Link href='/blogs'><a className='SubpageLink'>All Blogs</a></Link>
                     </div>
                 </div>
             </main>
@@ -185,11 +185,11 @@ const Grid = ({ user, likes,
                     cursor: pointer;
                 }
                 .LoadMoreButton:hover {
-                    transform: translateY(-2px);
+                    transform: translate3d(0, -2px, 0);
                     box-shadow: 0 2px 3px rgba(0,0,0,0.08);
                 }
                 .LoadMoreButton:active {
-                    transform: translateY(-1px);
+                    transform: translate3d(0, -1px, 0);
                     box-shadow: 0 1px 1px rgba(0,0,0,.1);
                 }   
                 .SubpageLink {

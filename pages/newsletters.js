@@ -1,5 +1,4 @@
 import { Container } from 'semantic-ui-react';
-import HeroCarousel from '../components/_App/HeroCarousel';
 import PageGrid from '../components/Subpage/PageGrid';
 import FilterStrip from '../components/_App/FilterStrip';
 import Modal from '../components/_App/DetailModal';
@@ -130,9 +129,6 @@ const Newsletters = ({ user, topNewsletters, latestNewsletters, initLikes }) => 
     }
 
     return (<>
-        {/*
-        <HeroCarousel featured={initFeatured}></HeroCarousel>
-        */}
         <Container>
             <h1 className='Header'>Newsletters</h1>
             <FilterStrip 

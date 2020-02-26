@@ -91,6 +91,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 </div>
             </div>
             <div className='CardDetails'>
+                <span style={{fontSize: '.8rem'}}>{entity.id}</span>
                 <h3 className='CardName'>{entity.title}</h3>
                 { entity.description.length > 120 ?
                 <p className='CardDescription'>{entity.description.slice(0,120)}...</p>
@@ -102,7 +103,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             <div className='CardLowerDetailStrip'>
                 <div className='CardCategoriesContainer'>
                     { entity.categories.map(category => {
-                        return <CategoryIcon category={ category }/>;
+                        return <CategoryIcon key={ category } category={ category }/>;
                     })}
                 </div>
                 <div className='CardFrequencyContainer'>
@@ -162,7 +163,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
             grid-template-rows: 120px 1fr repeat(3, min-content);
         }
         .CardContainer:hover {
-            transform: translateY(-5px);
+            transform: translate3d(0, -5px, 0);
             box-shadow: 0 1px 1px rgba(0,0,0,0.05), 
                         0 2px 2px rgba(0,0,0,0.05), 
                         0 4px 4px rgba(0,0,0,0.05), 
@@ -171,7 +172,7 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                         0 32px 32px rgba(0,0,0,0.05);
         }
         .CardContainer:active {
-            transform: translateY(0);
+            transform: translate3d(0);
             box-shadow: 0 1px 1px rgba(0,0,0,.04),
                         0 2px 2px rgba(0,0,0,.04),
                         0 4px 4px rgba(0,0,0,.04),

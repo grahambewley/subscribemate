@@ -317,7 +317,7 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 transition: all .15s;
             }
             .EntityButton:hover {
-                transform: translateY(-3px);
+                transform: translate3d(0, -3px, 0);
                 box-shadow: 0 3px 6px rgba(0,0,0,.08);
                 background-color: rgba(60,174,163, .9);
             }

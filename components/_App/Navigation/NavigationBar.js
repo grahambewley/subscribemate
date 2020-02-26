@@ -148,7 +148,7 @@ const Navigation = ({ user, openDrawer }) => {
         text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
-        transition: all .15s;
+        transition: all .4s;
         padding: 8px 18px;
         border-radius: 200px;
     }
