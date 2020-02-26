@@ -4,6 +4,8 @@ import { Container } from "semantic-ui-react";
 import Card from '../_App/Card';
 import Sidebar from './Sidebar/Sidebar';
 import FilterStrip from '../_App/FilterStrip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNewspaper, faEnvelopeOpenText, faMicrophoneAlt} from '@fortawesome/free-solid-svg-icons';
 
 const Grid = ({ user, likes, 
                 latest,
@@ -48,7 +50,6 @@ const Grid = ({ user, likes,
         <Container>
         <div className='LayoutContainer'>
             <div className='FilterContainer'>
-                {/*<h1>Top Newsletters, Podcasts, and Blogs</h1>*/}
                 <FilterStrip 
                     categories={categories}
                     setCategories={setCategories}
@@ -57,10 +58,17 @@ const Grid = ({ user, likes,
                 
             </div>
             <main>
+                {/* <div className='TrendingHeaderContainer'>Trending</div> */}
                 <div className='ColumnContainer'>
                     <div className='Column'>
                         <Link href='/newsletters'>
-                            <h2 className='ColumnHeader'>Newsletters</h2>
+                            <div className='ColumnHeader'>
+                                <FontAwesomeIcon 
+                                    icon={faEnvelopeOpenText}
+                                    color='#3DAEAC'
+                                    style={{ fontSize: '1.5rem' }}/>
+                                <h2 className='ColumnHeaderText'>Newsletters</h2>
+                            </div>
                         </Link>
                         <div className='CardColumn'>
                             {newsletters.map(newsletter => {
@@ -82,7 +90,13 @@ const Grid = ({ user, likes,
                     
                     <div className='Column'>
                         <Link href='/podcasts'>
-                            <h2 className='ColumnHeader'>Podcasts</h2>
+                        <div className='ColumnHeader'>
+                                <FontAwesomeIcon 
+                                    icon={faMicrophoneAlt}
+                                    color='#3DAEAC'
+                                    style={{ fontSize: '1.5rem' }}/>
+                                <h2 className='ColumnHeaderText'>Podcasts</h2>
+                            </div>
                         </Link>
                         <div className='CardColumn'>
                             {podcasts.map(podcast => {
@@ -105,7 +119,13 @@ const Grid = ({ user, likes,
                     
                     <div className='Column'>
                         <Link href='/blogs'>
-                            <h2 className='ColumnHeader'>Blogs</h2>
+                            <div className='ColumnHeader'>
+                                <FontAwesomeIcon 
+                                    icon={faNewspaper}
+                                    color='#3DAEAC'
+                                    style={{ fontSize: '1.5rem' }}/>
+                                <h2 className='ColumnHeaderText'>Blogs</h2>
+                            </div>
                         </Link>
                         <div className='CardColumn'>
                             {blogs.map(blog => {
@@ -148,6 +168,14 @@ const Grid = ({ user, likes,
                 main {
                     grid-column: 1 / span 1;
                 }
+                .TrendingHeaderContainer {
+                    font-size: 1.2rem;
+                    font-weight: 200;
+                    padding: 5px 1rem;
+                    border-radius: 5px;
+                    background-color: rgba(60,174,163, .2);
+                    margin-bottom: 1rem;
+                }
                 .ColumnContainer {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
@@ -164,13 +192,19 @@ const Grid = ({ user, likes,
                 }
                 .ColumnHeader {
                     cursor: pointer;
-                    margin-bottom: 10px;
-                    font-size: 1.4rem;
+                    margin-bottom: 1.4rem;
+                    padding-left: 10px;
+                    display: flex;
+                    align-items: center;
+                }
+                .ColumnHeaderText {
+                    margin-top: 0;
+                    margin-left: .5rem;
+                    font-size: 1.5rem;
                     font-weight: 100;
                     letter-spacing: 2px;
-                    text-transform: uppercase;
-                    opacity: .9;
-                    padding-left: 10px;
+                    // text-transform: uppercase;
+                    font-smooth: auto;
                 }
                 .LoadMoreButton {
                     display: block;

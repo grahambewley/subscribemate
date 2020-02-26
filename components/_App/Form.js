@@ -210,6 +210,9 @@ export const FormButton = ({ children, disabled }) => {
             color: white;
             transition: all .2s;
         }
+        .FormButton:focus {
+            outline: none;
+        }
         .FormButton:disabled {
             background-color: rgba(60,174,163, .4);
         }

@@ -25,6 +25,7 @@ const SubmitMissing = () => {
             padding: 6px 6px 6px 12px;
             background-color: #77c6c5;
             border-radius: 200px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.2);
         }
 
         .SubmitContainer p {
@@ -42,6 +43,9 @@ const SubmitMissing = () => {
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: .9rem;
+        }
+        .SubmitContainer button:focus {
+            outline: none;
         }
 
         @media(max-width: 767px) {
