@@ -91,7 +91,6 @@ const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, tr
                 </div>
             </div>
             <div className='CardDetails'>
-                <span style={{fontSize: '.8rem'}}>{entity.id}</span>
                 <h3 className='CardName'>{entity.title}</h3>
                 { entity.description.length > 120 ?
                 <p className='CardDescription'>{entity.description.slice(0,120)}...</p>
