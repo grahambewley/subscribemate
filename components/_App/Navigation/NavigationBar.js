@@ -17,6 +17,21 @@ const Navigation = ({ user, openDrawer }) => {
     const [searchModalOpen, setSearchModalOpen] = React.useState(false);
     const [searchResults, setSearchResults] = React.useState();
     const [accountDropdownOpen, setAccountDropdownOpen] = React.useState(false);
+    const [hoveringAccountDropdown, setHoveringAccountDropdown] = React.useState(false);
+
+
+    React.useEffect(() => {
+        if(hoveringAccountDropdown) {
+            setAccountDropdownOpen(true);
+        } else {
+            setAccountDropdownOpen(false);
+            // window.setTimeout(() => {
+            //     if(!hoveringAccountDropdown) {
+            //         setAccountDropdownOpen(false);
+            //     }
+            // }, 1000);
+        }
+    }, [hoveringAccountDropdown])
 
     const router = useRouter();
 
@@ -70,23 +85,28 @@ const Navigation = ({ user, openDrawer }) => {
                         <FontAwesomeIcon icon={faSearch} style={{fontSize: '1.2rem'}} color='white'/>
                     </div>
                     { user ? 
-                    <div className='AccountIconDropdown' onClick={() => setAccountDropdownOpen(!accountDropdownOpen)}>
+                    <div className='AccountIconDropdown' 
+                        onMouseEnter={() => setHoveringAccountDropdown(true)}
+                        onMouseLeave={() => setHoveringAccountDropdown(false)}
+                        >
                         <FontAwesomeIcon icon={faUser} style={{fontSize: '1.2rem', marginRight: '5px'}} color='white'/>
                         <FontAwesomeIcon icon={faCaretDown} style={{fontSize: '1rem'}} color='white'/>
                     
                         { accountDropdownOpen ? 
-                        <div className='AccountDropdownContainer'>
-                            {user ? (<>
-                                <span className='Greeting'>Signed in as {user.name}</span>
-                                <div className='AccountLink' onClick={handleLogout}>Sign Out</div>
-                            </>) : (<>
-                                <Link href='/login'>
-                                    <span className='AccountLink'>Log In</span>
-                                </Link>
-                                <Link href='/signup'>
-                                    <div className='AccountLink'>Sign Up</div>
-                                </Link>
-                            </>)}
+                        <div className='AccountDropdownWrapper'>
+                            <div className='AccountDropdownContainer'>
+                                {user ? (<>
+                                    <span className='Greeting'>Signed in as {user.name}</span>
+                                    <div className='AccountLink' onClick={handleLogout}>Sign Out</div>
+                                </>) : (<>
+                                    <Link href='/login'>
+                                        <span className='AccountLink'>Log In</span>
+                                    </Link>
+                                    <Link href='/signup'>
+                                        <div className='AccountLink'>Sign Up</div>
+                                    </Link>
+                                </>)}
+                            </div>
                         </div>
                         : null}
                     </div>
@@ -190,14 +210,18 @@ const Navigation = ({ user, openDrawer }) => {
         position: relative;
         cursor: pointer;
     }
-    .AccountDropdownContainer {
+    .AccountDropdownWrapper {
         z-index: 105;
-        width: max-content;
-        padding: 10px;
         position: absolute;
         top: 0;
         right: 0;
-        transform: translateY(61px);
+        transform: translateY(56px);
+        padding-top: 5px;
+    }
+    .AccountDropdownContainer {
+        
+        width: max-content;
+        padding: 10px;
         background-color: white;
         border-radius: 3px;
         border: 1px solid #ddd;

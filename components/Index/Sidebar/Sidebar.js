@@ -4,7 +4,7 @@ const Sidebar = ({ latest, triggerDetailModal }) => {
     return (
         <div className='SidebarWrapper'>
             <aside className='Sidebar'>
-                <h3 className='SidebarHeader'>Added Just Now</h3>
+                <h3 className='SidebarHeader'>Recently Added</h3>
                 <div className='SmallCardColumn'>
                     { latest.map(entity => {
                         return (
@@ -34,11 +34,15 @@ const Sidebar = ({ latest, triggerDetailModal }) => {
             }
             .SidebarHeader {
                 // font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-                font-weight: 600;
                 font-size: 1rem;
+                font-weight: 200;
                 text-align: center;
-                padding: 10px 0;
-                border-radius: 10px;
+                padding: 5px 0;
+                border-radius: 5px;
+                margin-top: -7px;
+                margin-left: -7px;
+                margin-right: -7px;
+
                 background-color: rgba(60,174,163, .2);
             }
             .SmallCardColumn {

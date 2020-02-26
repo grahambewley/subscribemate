@@ -27,18 +27,27 @@ const SmallCard = ({ entity, triggerDetailModal }) => {
 
         <style jsx>{`
         .Container {
-            border: 1px solid #3daea3;
+            border: 1px solid #ccc;
             border-radius: 8px;
             overflow: hidden;
-            
             cursor: pointer;
+            transition: all .2s;
+        }
+        .Container:hover {
+            border: 1px solid #3daeac;
+            transform: translate3d(0, -2px, 0);
+            box-shadow: 0 2px 6px rgba(0,0,0,.12);
         }
         .Image {
             height: 80px;
             background-image: url('${entity.imageUrl}');
             background-position: center;
             background-size: cover;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #ccc;
+            transition: all .2s;
+        }
+        .Container:hover .Image {
+            border-bottom: 1px solid #3daeac;
         } 
         .DetailsContainer {
             padding: 5px;
