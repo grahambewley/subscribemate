@@ -1,8 +1,11 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCalendarDay } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCalendarDay,  } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import Container from './Container';
+import CategoryIcon from './CategoryIcon';
+import { FormButton } from './Form';
 
 const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened, entity, close }) => {
     const [liked, setLiked] = React.useState(false);
@@ -108,12 +111,31 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                                 <Icon className='CardLikeIcon' style={{cursor: 'pointer', margin: '0', display: 'flex', alignItems: 'center', justifyContent: 'center' }} name='thumbs up' color={liked ? 'teal' : "grey"}/>
                             </div>
                         </div>
-                        { entity.websiteUrl && <a target='_blank' className='EntityButton' href={entity.websiteUrl}>Visit Website</a>  }
+                        <div className={'EntityButtonRow'}>
+                        { entity.twitterUsername && 
+                            <a className={'EntityTwitterButton'} target='_blank' href={`https://www.twitter.com/${entity.twitterUsername}`}>
+                                <FontAwesomeIcon icon={faTwitter} style={{fontSize: '1rem'}} color='white'/>
+                            </a>
+                        }
+                        { entity.websiteUrl && 
+                            <a target='_blank' href={entity.websiteUrl}>
+                                <FormButton>
+                                    Visit Website
+                                </FormButton>
+                            </a>
+                        }
+                        </div>
+
                     </div>
                     <div className='ModalRight'>
                         
                         <span className='EntityTypeLabel'>{sectionNameFromId(entity.sectionId)}</span>
                         <h2 className='EntityName'>{entity.title}</h2>
+                        <div className='EntityCategoriesContainer'>
+                            { entity.categories.map(category => {
+                                return <CategoryIcon key={ category } category={ category }/>;
+                            })}
+                        </div>
                         <p className='EntityDescription'>{entity.description}</p>
                         <div className='ModalBottomRow'>
                             { entity.authors.length > 0 ? 
@@ -190,13 +212,13 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
 
             .ModalDetails {
                 display: grid;
-                grid-template-columns: 1fr 2fr;
+                grid-template-columns: 3fr 5fr;
+                grid-gap: 2rem;
             }
             .ModalLeft {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
-                margin-right: 2rem;
             }
             .EntityImage {
                 min-height: 150px;
@@ -221,18 +243,44 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 align-items: center;
                 justify-content: center;
             }
-            
+            .EntityButtonRow {
+                display: flex;
+                align-items: center;
+            }
+            .EntityButtonRow > *:not(:last-child) {
+                margin-right: 1rem;
+            }
+            .EntityTwitterButton {
+                height: 2rem;
+                width: 2rem;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #3daeac;
+                transition: all .2s;
+            }
+            .EntityTwitterButton:hover {
+                background-color: rgba(60,174,163,.75);
+                transform: translateY(-3px);
+                box-shadow: 0 2px 6px rgba(0,0,0,.2);
+            }
             .EntityTypeLabel {
                 font-size: 1rem;
                 text-transform: uppercase;
                 font-weight: 200;
                 letter-spacing: 1px;
                 opacity: .9;
+                margin-left: 2px;
             }
             .EntityName {
                 margin: 0;
                 font-size: 2.4rem;
+                margin-bottom: .5rem;
+            }
+            .EntityCategoriesContainer {
                 margin-bottom: 1rem;
+                display: flex;
             }
             .EntityDescription {
                 font-size: 1.2rem;
@@ -302,24 +350,6 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 font-weight: 200;
                 letter-spacing: 1px;
                 opacity: .9
-            }
-
-            .EntityButton {
-                display: inline-block;
-                padding: 5px 10px;
-                border-radius: 200px;
-                background-color: rgba(60,174,163);
-                text-transform: uppercase;
-                font-weight: 100;
-                color: white;
-                font-size: .9rem;
-                letter-spacing: 1px;
-                transition: all .15s;
-            }
-            .EntityButton:hover {
-                transform: translate3d(0, -3px, 0);
-                box-shadow: 0 3px 6px rgba(0,0,0,.08);
-                background-color: rgba(60,174,163, .9);
             }
 
             @media(max-width: 767px) {

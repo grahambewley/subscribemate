@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
+import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
 import Link from 'next/link';
 import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
@@ -45,7 +45,7 @@ const Forgot = ({ user }) => {
                     placeholder='Email address' 
                     onChange={handleInputChange}
                     label='Email address' />
-                <FormButton>Reset</FormButton>
+                <FormSubmit>Reset</FormSubmit>
                 <FormBottomCta>Just Remembered? <Link href='/login'><a>Log In</a></Link></FormBottomCta>
             </Form>
         </Container>

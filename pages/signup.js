@@ -5,7 +5,7 @@ import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
 import { handleLogin } from '../utils/auth';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
+import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
 
 const INITIAL_USER = {
     name: '',
@@ -79,10 +79,10 @@ function Singup() {
                 placeholder='Password' 
                 onChange={handleInputChange}
                 label='Password' />
-            <FormButton
+            <FormSubmit
                 disabled={disabled} >
                 Sign up
-            </FormButton>
+            </FormSubmit>
             <FormBottomCta>Already signed up? <Link href='/login'><a>Log in</a></Link></FormBottomCta>
         </Form>
     </Container>

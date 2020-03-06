@@ -1,7 +1,7 @@
 import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
+import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
 import Link from 'next/link';
 import { FormSelect } from 'semantic-ui-react';
 
@@ -92,7 +92,7 @@ const Submit = () => {
                     onChange={handleSourceUpdate}
                     label='Source Author' />
                 
-                <FormButton>Submit</FormButton>
+                <FormSubmit>Submit</FormSubmit>
                 
                 <FormBottomCta>Just Remembered? <Link href='/login'><a>Log In</a></Link></FormBottomCta>
             </Form>

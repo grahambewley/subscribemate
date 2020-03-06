@@ -61,9 +61,11 @@ const SearchResultsModal = ({ entities, closeModal }) => {
             font-weight: 400;
             opacity: .9;
             margin-top: 0;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
         .ResultsWrapper {
+            padding-top: 2rem;
+            border-top: 2px solid rgba(60,174,163, .5);
             display: grid;
             grid-gap: 32px;
         }

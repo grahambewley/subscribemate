@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
+import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
 import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import cookie from 'js-cookie';
@@ -77,7 +77,7 @@ const ResetPassword = () => {
                     label='Confirm Password' 
                     warningText={ showPasswordMatchWarning ? 'Passwords do not match' : null }
                     />
-                <FormButton >Reset</FormButton>
+                <FormSubmit >Reset</FormSubmit>
                 {/* <FormBottomCta>Just Remembered? <Link href='/login'><a>Log In</a></Link></FormBottomCta> */}
             </Form>
         </Container>

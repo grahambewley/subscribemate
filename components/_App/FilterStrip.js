@@ -121,9 +121,9 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 2.5rem;
+                margin-bottom: 1.5rem;
                 padding-bottom: 1.5rem;
-                border-bottom: 2px solid rgba(60,174,163, .5);
+                border-bottom: 2px solid rgba(0,0,0, .1);
             }
             .TopCategoryContainer {
                 display: flex;

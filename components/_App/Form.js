@@ -193,12 +193,48 @@ export const FormSelect = ({ children, id, name, value, options, label, onChange
     </>)
 }
 
-export const FormButton = ({ children, disabled }) => {
+export const FormSubmit = ({ children, disabled }) => {
     return (<>
-        <button type='submit' className='FormButton' disabled={disabled}>{ children }</button>
+        <button type='submit' className='FormSubmit' disabled={disabled}>{ children }</button>
+        <style jsx>{`
+        .FormSubmit {
+            margin-top: 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(60,174,163,.1);
+            padding: .75rem 1.5rem;
+            background-color: rgba(60,174,163);
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            color: white;
+            transition: all .2s;
+        }
+        .FormSubmit:focus {
+            outline: none;
+        }
+        .FormSubmit:disabled {
+            background-color: rgba(60,174,163, .4);
+        }
+        .FormSubmit:hover:not([disabled]) {
+            background-color: rgba(60,174,163,.75);
+            transform: translateY(-3px);
+            box-shadow: 0 2px 6px rgba(0,0,0,.2);
+        }
+
+        `}</style>
+    </>)
+}
+
+export const FormButton = ({ children, disabled, onClick }) => {
+    return (<>
+        <button 
+            className='FormButton' 
+            disabled={disabled}
+            onClick={onClick}
+            >{ children }</button>
         <style jsx>{`
         .FormButton {
-            margin-top: 1rem;
             border-radius: 5px;
             border: 1px solid rgba(60,174,163,.1);
             padding: .75rem 1.5rem;

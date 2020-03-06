@@ -65,8 +65,8 @@ const Grid = ({ user, likes,
                             <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
                                     icon={faEnvelopeOpenText}
-                                    color='#3DAEAC'
-                                    style={{ fontSize: '1.5rem' }}/>
+                                    color='#3daeac'
+                                    style={{ fontSize: '1.8rem' }}/>
                                 <h2 className='ColumnHeaderText'>Newsletters</h2>
                             </div>
                         </Link>
@@ -93,8 +93,8 @@ const Grid = ({ user, likes,
                         <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
                                     icon={faMicrophoneAlt}
-                                    color='#3DAEAC'
-                                    style={{ fontSize: '1.5rem' }}/>
+                                    color='#3daeac'
+                                    style={{ fontSize: '1.8rem' }}/>
                                 <h2 className='ColumnHeaderText'>Podcasts</h2>
                             </div>
                         </Link>
@@ -122,8 +122,8 @@ const Grid = ({ user, likes,
                             <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
                                     icon={faNewspaper}
-                                    color='#3DAEAC'
-                                    style={{ fontSize: '1.5rem' }}/>
+                                    color='#3daeac'
+                                    style={{ fontSize: '1.8rem' }}/>
                                 <h2 className='ColumnHeaderText'>Blogs</h2>
                             </div>
                         </Link>
@@ -199,12 +199,13 @@ const Grid = ({ user, likes,
                 }
                 .ColumnHeaderText {
                     margin-top: 0;
-                    margin-left: .5rem;
-                    font-size: 1.5rem;
-                    font-weight: 100;
-                    letter-spacing: 2px;
-                    // text-transform: uppercase;
-                    font-smooth: auto;
+                    margin-left: .8rem;
+                    font-size: 1.8rem;
+                    font-family: 'Bebas Neue', sans-serif;
+                    line-height: 1;
+                    letter-spacing: 1px;
+                    color: #3daeac;
+                    margin-top: 3px;
                 }
                 .LoadMoreButton {
                     display: block;

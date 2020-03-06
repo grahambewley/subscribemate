@@ -6,7 +6,7 @@ import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import { handleLogin } from '../utils/auth';
 import Container from '../components/_App/Container';
-import Form, { FormInput, FormButton, FormBottomCta } from '../components/_App/Form';
+import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
 
 const INITIAL_USER = {
   email: "",
@@ -71,11 +71,11 @@ function Login() {
                 placeholder='Password' 
                 onChange={handleInputChange}
                 label='Password' />
-            <FormButton
+            <FormSubmit
                 disabled={disabled} >
                 Login
-            </FormButton>
-            <FormBottomCta>New user? <Link href='/login'><a>Sign up</a></Link> instead</FormBottomCta>
+            </FormSubmit>
+            <FormBottomCta>New user? <Link href='/signup'><a>Sign up</a></Link> instead</FormBottomCta>
         </Form>
         
         {/* <Message
