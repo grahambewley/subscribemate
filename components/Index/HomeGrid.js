@@ -60,13 +60,13 @@ const Grid = ({ user, likes,
             </div>
             <div className='MobileColumnSelector'>
                 <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('newsletters')}>
-                    <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ fontSize: '1.8rem' }} color='white'/>
+                    <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ fontSize: '1.4rem', color: 'rgba(0,0,0,.65)' }} />
                 </button>
                 <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('podcasts')}>
-                    <FontAwesomeIcon icon={faMicrophoneAlt} style={{ fontSize: '1.8rem' }} color='white'/>
+                    <FontAwesomeIcon icon={faMicrophoneAlt} style={{ fontSize: '1.4rem', color: 'rgba(0,0,0,.65)' }} />
                 </button>
                 <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('blogs')}>
-                    <FontAwesomeIcon icon={faNewspaper} style={{ fontSize: '1.8rem' }} color='white'/>
+                    <FontAwesomeIcon icon={faNewspaper} style={{ fontSize: '1.4rem', color: 'rgba(0,0,0,.65)' }} />
                 </button>
             </div>
             <main>
@@ -183,8 +183,8 @@ const Grid = ({ user, likes,
                     display: none;
                 }
                 .MobileColumnButton {
-                    background-color: #3daeac;
-                    padding: .5rem;
+                    background-color: rgba(60,174,163, .15);
+                    padding: 8px;
                     border-radius: 2px;
                     border: none;
                 }
@@ -262,7 +262,7 @@ const Grid = ({ user, likes,
                 }
                 @media(max-width: 767px) {
                     .LayoutContainer {
-                        grid-row-gap: 1rem;
+                        grid-row-gap: 20px;
                     }
                     .MobileColumnSelector {
                         grid-row: 2 / span 1;
