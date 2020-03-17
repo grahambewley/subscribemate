@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Modal, Header, Button } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCalendarDay,  } from '@fortawesome/free-solid-svg-icons';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -9,7 +9,8 @@ import { FormButton } from './Form';
 
 const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened, entity, close }) => {
     const [liked, setLiked] = React.useState(false);
-    
+    const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
+
     React.useEffect(() => {
         if(opened && entity != undefined) {
             setLiked(likes.includes(parseInt(entity.id)));
@@ -166,6 +167,27 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                 
             </div>
             </Container>
+
+            <Modal
+                open={loginPromptOpen}
+                onClose={() => setLoginPromptOpen(false)}
+                size='small'
+                style={{transform:'translateY(-50%)'}}
+            >
+                <Header content='Please Log In' />
+                <Modal.Content>
+                    <h3>Sorry, you have to be logged in to do that.</h3>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button onClick={() => router.push('/login')}>
+                        Log In
+                    </Button>
+                    <Button color='green' onClick={() => router.push('/signup')}>
+                        Sign Up
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+
             <style jsx>{`
             .Backdrop {
                 position: fixed;

@@ -135,7 +135,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
                         {top.slice(startingTop, startingTop+displayedInRow).map(entity => {
                             return (
                                 <Card 
-                                    preliked={likes.includes(parseInt(entity.id))} 
+                                    likes={likes} 
                                     user={user} 
                                     key={entity.title} 
                                     entity={entity} 
@@ -166,7 +166,7 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
                     {latest.slice(startingLatest, startingLatest+displayedInRow).map(entity => {
                         return (
                             <Card 
-                                preliked={likes.includes(parseInt(entity.id))} 
+                                likes={likes}
                                 user={user} 
                                 key={entity.title} 
                                 entity={entity} 

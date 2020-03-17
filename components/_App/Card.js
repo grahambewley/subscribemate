@@ -5,9 +5,14 @@ import CategoryIcon from './CategoryIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDay, faBinoculars} from '@fortawesome/free-solid-svg-icons';
 
-const Card = ({ preliked, handleEntityLike, handleEntityUnlike, entity, user, triggerDetailModal }) => {
-    const [liked, setLiked] = React.useState(preliked);
+const Card = ({ likes, handleEntityLike, handleEntityUnlike, entity, user, triggerDetailModal }) => {
+    const [liked, setLiked] = React.useState(likes.includes(parseInt(entity.id)));
     const [loginPromptOpen, setLoginPromptOpen] = React.useState(false);
+
+    // Watch likes for changes, setLiked if the likes array now contains this entity
+    React.useEffect(() => {
+        setLiked(likes.includes(parseInt(entity.id)));
+    }, [likes]);
 
     const router = useRouter();
 

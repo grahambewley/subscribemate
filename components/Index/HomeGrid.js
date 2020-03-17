@@ -74,7 +74,7 @@ const Grid = ({ user, likes,
                             {newsletters.map(newsletter => {
                                 return (
                                     <Card 
-                                        preliked={likes.includes(parseInt(newsletter.id))} 
+                                        likes={likes}
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user} 
@@ -102,7 +102,7 @@ const Grid = ({ user, likes,
                             {podcasts.map(podcast => {
                                 return (
                                     <Card 
-                                        preliked={likes.includes(parseInt(podcast.id))}
+                                        likes={likes}
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user}
@@ -131,7 +131,7 @@ const Grid = ({ user, likes,
                             {blogs.map(blog => {
                                 return (
                                     <Card
-                                        preliked={likes.includes(parseInt(blog.id))}
+                                        likes={likes}
                                         handleEntityLike={handleEntityLike}
                                         handleEntityUnlike={handleEntityUnlike}
                                         user={user}

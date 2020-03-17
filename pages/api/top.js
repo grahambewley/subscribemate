@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import connectDb from '../../utils/connectDb';
 import Like from '../../models/Like';
 
@@ -46,6 +45,8 @@ async function handleGetRequest(req, res) {
             });
         });
         
+        // console.log("allLikesArray: ", allLikesArray);
+
         // Reduce to an array that stores an object for each entity
         // with the like quantity and most recent like date as properties
         var likeQuantityArray = allLikesArray.reduce(function (workingArray, like) {            
@@ -60,16 +61,29 @@ async function handleGetRequest(req, res) {
             return workingArray;
         }, {});
 
+        // console.log("likeQuantityArray: ", likeQuantityArray);
+
         // Get an array of just the entity IDs, sorted by number of occurences, then by mostRecentLike date
         var sortedEntitiesByLikes = Object.keys(likeQuantityArray).sort(function (a, b) {
             if(likeQuantityArray[a].likeQuantity == likeQuantityArray[b].likeQuantity) {
-                return likeQuantityArray[a].mostRecentLike < likeQuantityArray[b].mostRecentLike;
+                if(likeQuantityArray[a].mostRecentLike > likeQuantityArray[b].mostRecentLike) {
+                    return -1;
+                } else {
+                    return 1;
+                }
             } else {
-                return likeQuantityArray[a].likeQuantity < likeQuantityArray[b].likeQuantity;
+                if(likeQuantityArray[a].likeQuantity > likeQuantityArray[b].likeQuantity) { 
+                    return -1;
+                } else {
+                    return 1;
+                }
             }
         });
     
+        // console.log("sortedEntriesByLikes: ", sortedEntitiesByLikes);
+
         res.status(200).json(sortedEntitiesByLikes);
+        
     } catch(error) {
         console.error(error);
         res.error(403).send("Unable to retrieve top entities.");

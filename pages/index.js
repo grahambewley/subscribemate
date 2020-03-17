@@ -8,7 +8,14 @@ import axios from 'axios';
 import cookie from 'js-cookie';
 import { parseCookies } from 'nookies';
 
-const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initLatest, initFeatured }) => {
+const Home = ({ 
+    initLikes, 
+    user, 
+    initNewsletters, 
+    initPodcasts, 
+    initBlogs, 
+    initLatest, 
+    initFeatured }) => {
     const [likes, setLikes] = React.useState(initLikes);    
     
     const [newsletters, setNewsletters] = React.useState(initNewsletters);
@@ -87,8 +94,7 @@ const Home = ({ initLikes, user, initNewsletters, initPodcasts, initBlogs, initL
 
     async function handleEntityLike(entity) {
         // Add entity to likes array
-        const newLikes = likes;
-        newLikes.push(parseInt(entity.id));
+        const newLikes = [...likes, parseInt(entity.id)];
         setLikes(newLikes);
 
         // Add like to the likes collection

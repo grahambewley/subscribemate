@@ -87,8 +87,7 @@ const Blogs = ({ user, topBlogs, latestBlogs, initLikes, initFeatured }) => {
 
     async function handleEntityLike(entity) {
         // Add entity to likes array
-        const newLikes = likes;
-        newLikes.push(parseInt(entity.id));
+        const newLikes = [...likes, parseInt(entity.id)];
         setLikes(newLikes);
 
         // Add like to the likes collection
