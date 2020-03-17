@@ -61,20 +61,22 @@ const Navigation = ({ user, openDrawer }) => {
 
         <nav className='NavigationContainer'>
             <div className='NavigationWrapper'>
-                <Link href='/'>
+                
                     <div className='Logo'>
+                    <Link href='/'>
                         <img src='/static/logo_horizontal.png'/>
+                    </Link>
                     </div>
-                </Link>
+                
                 <div className='PageNavigation'>
                     <Link href='/newsletters'>
-                        <div className='NavigationItem' style={isActive('/newsletters') ? {backgroundColor: 'rgba(255,255,255,.4'} : null}>Newsletters</div>
+                        <div className='NavigationItem'>Newsletters</div>
                     </Link>
                     <Link href='/podcasts'>
-                        <div className='NavigationItem' style={isActive('/podcasts') ? {backgroundColor: 'rgba(255,255,255,.4'} : null}>Podcasts</div>
+                        <div className='NavigationItem'>Podcasts</div>
                     </Link>
                     <Link href='/blogs'>
-                        <div className='NavigationItem' style={isActive('/blogs') ? {backgroundColor: 'rgba(255,255,255,.4'} : null}>Blogs</div>
+                        <div className='NavigationItem'>Blogs</div>
                     </Link>
                 </div>
                 <div className='RightNavigation'>
@@ -97,13 +99,13 @@ const Navigation = ({ user, openDrawer }) => {
                             <div className='AccountDropdownContainer'>
                                 {user ? (<>
                                     <span className='Greeting'>Signed in as {user.name}</span>
-                                    <div className='AccountLink' onClick={handleLogout}>Sign Out</div>
+                                    <a className='AccountDropdownLink' onClick={handleLogout}>Sign Out</a>
                                 </>) : (<>
                                     <Link href='/login'>
-                                        <span className='AccountLink'>Log In</span>
+                                        <a className='AccountDropdownLink'>Log In</a>
                                     </Link>
                                     <Link href='/signup'>
-                                        <div className='AccountLink'>Sign Up</div>
+                                        <a className='AccountDropdownLink'>Sign Up</a>
                                     </Link>
                                 </>)}
                             </div>
@@ -111,9 +113,14 @@ const Navigation = ({ user, openDrawer }) => {
                         : null}
                     </div>
                     : 
-                    <Link href='/signup'>
-                        <div className='AccountButton'>Sign Up</div> 
-                    </Link>
+                    <>  
+                        <Link href='/login'>
+                            <a className='AccountLink'>Log&nbsp;In</a>
+                        </Link>
+                        <Link href='/signup'>
+                            <div className='AccountButton'>Sign&nbsp;Up</div> 
+                        </Link>
+                    </>
                     }
 
                     {/*
@@ -144,15 +151,16 @@ const Navigation = ({ user, openDrawer }) => {
         height: 100%;
         padding: 0 2rem;
         display: grid;
-        grid-template-columns: 1fr max-content 1fr;
+        grid-template-columns: minmax(max-content, 1fr) max-content 1fr;
+        grid-gap: 1rem;
         align-items: center;
     }
 
     .Logo {
         grid-column: 1 / span 1;
-        cursor: pointer;
     }
     .Logo img {
+        cursor: pointer;
         max-height: 28px;
         width: auto;
     }
@@ -160,29 +168,43 @@ const Navigation = ({ user, openDrawer }) => {
     .PageNavigation {
         grid-column: 2 / span 1;
         justify-self: center;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, min-content);
+        grid-gap: 2rem;
     }
     .NavigationItem {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: white;
         text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
         transition: all .4s;
-        padding: 8px 18px;
         border-radius: 200px;
+        padding: 3px 0;
+        position: relative;
     }
-    .NavigationItem:not(:last-child) {
-        margin-right: .5rem;
+    .NavigationItem::after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: all .2s;
     }
-    .NavigationItem:hover {
-        background-color: rgba(255,255,255,.25);
+    .NavigationItem:hover::after {
+        transform: scaleX(1);
     }
 
     .RightNavigation {
         grid-column: 3 / span 1;
         justify-self: end;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, min-content);
+        grid-gap: 1rem;
         align-items: center;
         height: 100%;
     }
@@ -192,7 +214,6 @@ const Navigation = ({ user, openDrawer }) => {
         border-radius: 200px;
         display: flex;
         align-items: center;
-        margin-right: 1rem;
     }
     .SearchBar input {
         background-color: transparent;
@@ -238,11 +259,17 @@ const Navigation = ({ user, openDrawer }) => {
         font-size: .9rem;
         opacity: .9;
     }
-    .AccountLink {
+    .AccountDropdownLink {
         cursor: pointer;
     }
+    .AccountLink {
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
     .AccountButton {
-        padding: 8px 18px;
+        font-size: .9rem;
+        padding: 8px 12px;
         border-radius: 200px;
         color: white;
         text-transform: uppercase;
