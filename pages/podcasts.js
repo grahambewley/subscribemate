@@ -124,21 +124,23 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
 
     return (<>
         <Container>
-            <h1 className='Header'>Podcasts</h1>
-            <FilterStrip 
-                    categories={categories}
-                    setCategories={setCategories}
-                    handleCategoryClick={handleCategoryClick}
-                    handleDateSpanChange={handleDateSpanChange} />
-        
-            <PageGrid 
-                user={user}
-                top={top}
-                latest={latest}
-                likes={likes} 
-                handleEntityLike={handleEntityLike}
-                handleEntityUnlike={handleEntityUnlike}
-                triggerDetailModal={triggerDetailModal}/>
+            <div className='PageLayout'>
+                <h1 className='Header'>Podcasts</h1>
+                <FilterStrip 
+                        categories={categories}
+                        setCategories={setCategories}
+                        handleCategoryClick={handleCategoryClick}
+                        handleDateSpanChange={handleDateSpanChange} />
+            
+                <PageGrid 
+                    user={user}
+                    top={top}
+                    latest={latest}
+                    likes={likes} 
+                    handleEntityLike={handleEntityLike}
+                    handleEntityUnlike={handleEntityUnlike}
+                    triggerDetailModal={triggerDetailModal}/>
+            </div>
         </Container>
         
         <Modal 
@@ -152,12 +154,17 @@ const Podcasts = ({ user, topPodcasts, latestPodcasts, initLikes, initFeatured }
         />
 
         <style jsx>{`
-        .Header {
+        .PageLayout {
+            display: grid;
+            grid-gap: 1rem;
             margin-top: 4rem;
+        }
+        .Header {
+            margin: 0;
         }
 
         @media (max-width: 767px) {
-            .Header {
+            .PageLayout {
                 margin-top: 1rem;
             }
         }

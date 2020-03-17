@@ -15,6 +15,7 @@ const Grid = ({ user, likes,
                 handleFilterChange, triggerDetailModal }) => {
     const [categories, setCategories] = React.useState([]);
     const [dateSpan, setDateSpan] = React.useState('this week');
+    const [mobileColumnVisible, setMobileColumnVisible] = React.useState('newsletters');
 
     // Initializing didMount as false
     const [didMount, setDidMount] = React.useState(false)
@@ -54,13 +55,24 @@ const Grid = ({ user, likes,
                     categories={categories}
                     setCategories={setCategories}
                     handleCategoryClick={handleCategoryClick}
-                    handleDateSpanChange={handleDateSpanChange} />
-                
+                    handleDateSpanChange={handleDateSpanChange} 
+                    mobileColumn={mobileColumnVisible} />
+            </div>
+            <div className='MobileColumnSelector'>
+                <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('newsletters')}>
+                    <FontAwesomeIcon icon={faEnvelopeOpenText} style={{ fontSize: '1.8rem' }} color='white'/>
+                </button>
+                <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('podcasts')}>
+                    <FontAwesomeIcon icon={faMicrophoneAlt} style={{ fontSize: '1.8rem' }} color='white'/>
+                </button>
+                <button className='MobileColumnButton' onClick={() => setMobileColumnVisible('blogs')}>
+                    <FontAwesomeIcon icon={faNewspaper} style={{ fontSize: '1.8rem' }} color='white'/>
+                </button>
             </div>
             <main>
                 {/* <div className='TrendingHeaderContainer'>Trending</div> */}
                 <div className='ColumnContainer'>
-                    <div className='Column'>
+                    <div className='Column' style={ mobileColumnVisible === 'newsletters' ? {display:'block'} : null }>
                         <Link href='/newsletters'>
                             <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
@@ -88,7 +100,7 @@ const Grid = ({ user, likes,
                         <Link href='/newsletters'><a className='SubpageLink'>All Newsletters</a></Link>
                     </div>
                     
-                    <div className='Column'>
+                    <div className='Column' style={ mobileColumnVisible === 'podcasts' ? {display:'block'} : null }>
                         <Link href='/podcasts'>
                         <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
@@ -117,7 +129,7 @@ const Grid = ({ user, likes,
                     </div>
                     
                     
-                    <div className='Column'>
+                    <div className='Column' style={ mobileColumnVisible === 'blogs' ? {display:'block'} : null }>
                         <Link href='/blogs'>
                             <div className='ColumnHeader'>
                                 <FontAwesomeIcon 
@@ -154,6 +166,7 @@ const Grid = ({ user, likes,
                     display: grid;
                     grid-template-columns: 3fr 1fr;
                     grid-column-gap: 32px;
+                    grid-row-gap: 32px;
                 }
 
                 @media(max-width: 991px) {
@@ -165,6 +178,17 @@ const Grid = ({ user, likes,
                 .FilterContainer {
                     grid-column: 1 / -1;
                 }
+
+                .MobileColumnSelector {
+                    display: none;
+                }
+                .MobileColumnButton {
+                    background-color: #3daeac;
+                    padding: .5rem;
+                    border-radius: 2px;
+                    border: none;
+                }
+
                 main {
                     grid-column: 1 / span 1;
                 }
@@ -237,10 +261,26 @@ const Grid = ({ user, likes,
                     transform: translateX(-50%);
                 }
                 @media(max-width: 767px) {
+                    .LayoutContainer {
+                        grid-row-gap: 1rem;
+                    }
+                    .MobileColumnSelector {
+                        grid-row: 2 / span 1;
+                        grid-column: 1 / -1;
+    
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        grid-gap: 4px;
+                    }
+                    
                     .ColumnContainer {
                         grid-template-columns: 1fr;
-                        grid-gap: 56px;
                     }
+
+                    .Column {
+                        display: none;
+                    }
+
                     .LoadMoreButton {
                         font-size: 1.2rem;
                         letter-spacing: 1px;

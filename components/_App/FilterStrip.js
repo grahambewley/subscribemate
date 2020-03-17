@@ -1,5 +1,7 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNewspaper, faEnvelopeOpenText, faMicrophoneAlt} from '@fortawesome/free-solid-svg-icons';
 
 const dateSpanOptions = [
     {
@@ -35,7 +37,7 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
 
     return(<>
         <div className='FilterContainer'>
-            <div className='CategorySelectContainer'>
+            <div className='CategorySelectorContainer'>
                 <div className='TopCategoryContainer'>
                     <span 
                         className='CategoryLabel'
@@ -71,12 +73,14 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
                 </div>
                 <button className='CategoriesButton' onClick={() => setCategoriesModalOpen(true)}>Categories</button>
             </div>
-            <Dropdown 
-                style={{width: 'fit-content'}}
-                defaultValue='this week'
-                onChange={handleDateSpanChange}
-                options={dateSpanOptions}
-            />   
+            <div className='DateSelectorContainer'>
+                <Dropdown 
+                    style={{width: 'fit-content'}}
+                    defaultValue='this week'
+                    onChange={handleDateSpanChange}
+                    options={dateSpanOptions}
+                />   
+            </div>
         </div>
         { categoriesModalOpen ? 
         <div className='CategoriesModalBackdrop' onClick={handleBackdropClick}>
@@ -118,12 +122,14 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
         : null }
         <style jsx>{`
             .FilterContainer {
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: 1fr max-content;
                 align-items: center;
-                margin-bottom: 1.5rem;
-                padding-bottom: 1.5rem;
-                border-bottom: 2px solid rgba(0,0,0, .1);
+                // padding-bottom: 1rem;
+                // border-bottom: 2px solid rgba(0,0,0, .1);
+            }
+            .CategorySelectorContainer {
+                grid-column: 1 / span 1;
             }
             .TopCategoryContainer {
                 display: flex;
@@ -200,7 +206,16 @@ const FilterStrip = ({ categories, setCategories, handleCategoryClick, handleDat
             .MobileCategoryLabel:not(:last-child) {
                 margin-right: 10px;
             }
+
+            .DateSelectorContainer {
+                grid-column: 2 / span 1;
+            }
+            
             @media(max-width:767px) {
+                .FilterContainer {
+                    padding-bottom: 0;
+                    border: none;
+                }
                 .CategoriesButton {
                     display: block;
                     font-size: 1.1rem;
