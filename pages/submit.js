@@ -2,7 +2,6 @@ import baseUrl from '../utils/baseUrl';
 import axios from 'axios';
 import Container from '../components/_App/Container';
 import Form, { FormInput, FormSubmit, FormBottomCta } from '../components/_App/Form';
-import Link from 'next/link';
 import { FormSelect } from 'semantic-ui-react';
 
 const INIT_SOURCE = {
@@ -56,6 +55,7 @@ const Submit = () => {
     return (<>
         <Container>
             <Form 
+                id='submissionForm'
                 header='Submit a Source'
                 instruction="We're working on filling out our database of sources so we can help more users discover great news content. If you have a favorite source that isn't yet listed in our database, please let us know about them below."
                 onSubmit={handleSourceSubmit}>
@@ -93,8 +93,9 @@ const Submit = () => {
                     label='Source Author' />
                 
                 <FormSubmit>Submit</FormSubmit>
-                
-                <FormBottomCta>Just Remembered? <Link href='/login'><a>Log In</a></Link></FormBottomCta>
+                { showSuccessMessage ?  
+                <FormBottomCta>Submission successful, thank you for your contribution!</FormBottomCta>
+                : null }
             </Form>
         </Container>
     </>);

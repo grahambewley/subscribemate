@@ -1,4 +1,4 @@
-const Form = ({ header, instruction, onSubmit, children, error }) => {
+const Form = ({ id, header, instruction, onSubmit, children, error }) => {
     return (<>
         <div className='FormContainer'>
             <div className='FormHeaderContainer'>
@@ -11,7 +11,7 @@ const Form = ({ header, instruction, onSubmit, children, error }) => {
             : null }
             <div className='FormBodyContainer'>
                 <p className='FormInstruction'>{ instruction }</p>
-                <form onSubmit={ onSubmit }>
+                <form onSubmit={ onSubmit } id={id}>
                     { children }
                 </form>
             </div>
