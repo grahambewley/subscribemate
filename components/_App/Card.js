@@ -124,7 +124,7 @@ const Card = ({ likes, handleEntityLike, handleEntityUnlike, entity, user, trigg
                         <div key={author.authorTwitterUsername} className='CardAuthor'>
                             <img className='CardAuthorImage' src={author.authorTwitterProfileImageUrl} />
                             <h4 className='CardAuthorName'>{author.authorName}</h4>
-                            <a className='CardAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                            <a className='CardAuthorTwitterUsername' rel='noreferrer noopener' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
                         </div>
                     );
                 })}

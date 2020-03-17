@@ -240,7 +240,6 @@ const Navigation = ({ user, openDrawer }) => {
         padding-top: 5px;
     }
     .AccountDropdownContainer {
-        
         width: max-content;
         padding: 10px;
         background-color: white;
@@ -253,14 +252,13 @@ const Navigation = ({ user, openDrawer }) => {
     .AccountDropdownContainer *:not(:last-child) {
         margin-bottom: 10px;
     }
-
     .Greeting {
         font-weight: 200;
         font-size: .9rem;
         opacity: .9;
     }
     .AccountDropdownLink {
-        cursor: pointer;
+        color: #222;
     }
     .AccountLink {
         color: white;

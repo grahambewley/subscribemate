@@ -114,12 +114,12 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                         </div>
                         <div className={'EntityButtonRow'}>
                         { entity.twitterUsername && 
-                            <a className={'EntityTwitterButton'} target='_blank' href={`https://www.twitter.com/${entity.twitterUsername}`}>
+                            <a className={'EntityTwitterButton'} rel='noreferrer noopener' target='_blank' href={`https://www.twitter.com/${entity.twitterUsername}`}>
                                 <FontAwesomeIcon icon={faTwitter} style={{fontSize: '1rem'}} color='white'/>
                             </a>
                         }
                         { entity.websiteUrl && 
-                            <a target='_blank' href={entity.websiteUrl}>
+                            <a rel='noreferrer noopener' target='_blank' href={entity.websiteUrl}>
                                 <FormButton>
                                     Visit Website
                                 </FormButton>
@@ -147,7 +147,7 @@ const DetailModal = ({ user, likes, handleEntityLike, handleEntityUnlike, opened
                                                 <div className='AuthorGrid'>
                                                     <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
                                                     <h4 className='AuthorName'>{author.authorName}</h4>
-                                                    <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                                    <a className='AuthorTwitterUsername' rel='noreferrer noopener' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
                                                 </div>
                                             </div>
                                         );

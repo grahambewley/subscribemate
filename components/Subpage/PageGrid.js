@@ -104,18 +104,18 @@ const PageGrid = ({ user, top, latest, likes, triggerDetailModal, handleEntityLi
                             <h2 className='TopTrendingTitle'>{top[0].title}</h2>
                             <p className='TopTrendingDescription'>{top[0].description}</p>
                             {top[0].frequency ? <p className='TopTrendingFrequency'>Released {getFrequencyText(top[0].frequency)}</p> : null}
-                        
+                            { top[0].authors.length > 0 ?
                             <div className='TopTrendingAuthorContainer'>
                                 { top[0].authors.map((author) => {
                                     return (
                                         <div key={author.authorTwitterUsername} className='TopTrendingAuthor'>
                                             <img className='TopTrendingAuthorImage' src={author.authorTwitterProfileImageUrl} />
                                             <h4 className='TopTrendingAuthorName'>{author.authorName}</h4>
-                                            <a className='TopTrendingAuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                            <a className='TopTrendingAuthorTwitterUsername' rel='noreferrer noopener' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
                                         </div>
                                     );
                                 })}
-                            </div>
+                            </div> : null }
                         </div>
                     </div>
                     

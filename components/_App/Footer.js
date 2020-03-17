@@ -5,7 +5,7 @@ const Footer = () => {
         <div className='FooterContainer'>
             <Container>
                 <div className='FooterList'>
-                    <p>Built by your friend <a href='https://www.twitter.com/tweetsbygraham' target="_blank">Graham Bewley</a></p>
+                    <p>Built by your friend <a href='https://www.twitter.com/tweetsbygraham' rel='noreferrer noopener' target="_blank">Graham Bewley</a></p>
                 </div>
             </Container>
 

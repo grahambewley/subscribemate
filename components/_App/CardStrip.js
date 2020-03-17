@@ -119,7 +119,7 @@ const Card = ({ entity }) => {
                                         <div className='AuthorGrid'>
                                             <img className='AuthorImage' src={author.authorTwitterProfileImageUrl} />
                                             <h4 className='AuthorName'>{author.authorName}</h4>
-                                            <a className='AuthorTwitterUsername' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
+                                            <a className='AuthorTwitterUsername' rel='noreferrer noopener' target='_blank' href={getTwitterProfileUrl(author.authorTwitterUsername)}>@{author.authorTwitterUsername}</a>
                                         </div>
                                     </div>
                                 );
